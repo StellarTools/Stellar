@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
-        .package(path: "../../../Actions/SampleAction")
+        .package(path: "../../../../Actions/SampleAction")
     ],
     targets: [
         .executableTarget(
