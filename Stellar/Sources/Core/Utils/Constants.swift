@@ -7,3 +7,7 @@ public struct Constants {
     public static let executorFolder = "Packages/Executor"
     public static let executor = "Executor"
 }
+
+struct TemplateConstants {
+    static let name = "name"
+}

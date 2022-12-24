@@ -32,7 +32,7 @@ struct BuildCommand: ParsableCommand {
 //                            "--arch arm64",
 //                            "--arch x86_64"
                         ],
-                     at: urlPath.absoluteString,
+                     at: urlPath.path,
                      outputHandle: .standardOutput,
                      errorHandle: .standardError)
         
@@ -43,7 +43,7 @@ struct BuildCommand: ParsableCommand {
                                             "-c release",
                                             "--show-bin-path"
                                         ],
-                                      at: urlPath.absoluteString,
+                                      at: urlPath.path,
                                       errorHandle: .standardError)
         let binaryUrl = URL(string: binaryPath)!
             .appendingPathComponent(Constants.executor, isDirectory: false)
@@ -54,17 +54,15 @@ struct BuildCommand: ParsableCommand {
         
         var objcTrue: ObjCBool = true
         let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: outputUrl.absoluteString,
-                                   isDirectory: &objcTrue) {
-            try fileManager.createDirectory(atPath: outputUrl.absoluteString,
-                                            withIntermediateDirectories: true)
+        if !fileManager.fileExists(atPath: outputUrl.path, isDirectory: &objcTrue) {
+            try fileManager.createDirectory(atPath: outputUrl.path, withIntermediateDirectories: true)
         }
         
         try shellOut(to: "mv",
                      arguments:
                         [
-                            binaryUrl.absoluteString,
-                            outputUrl.absoluteString
+                            binaryUrl.path,
+                            outputUrl.path
                         ],
                      outputHandle: .standardOutput,
                      errorHandle: .standardError)
