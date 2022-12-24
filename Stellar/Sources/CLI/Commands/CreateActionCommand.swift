@@ -9,11 +9,19 @@ struct CreateActionCommand: ParsableCommand {
         commandName: "create-action",
         abstract: "Abstract")
     
-    @Option(name: .long, help: "")
-    private var argument: String
+    @Option(name: .shortAndLong, help: "")
+    private var name: String
+    
+    @Option(name: .shortAndLong, help: "")
+    private var path: String
+    
+    @Option(name: .shortAndLong, help: "")
+    private var templates: String
     
     func run() throws {
-        // creates a package following a template
+        let location = URL(fileURLWithPath: path)
+        let templatesLocation = URL(fileURLWithPath: templates)
+        try ActionCreator().createAction(name: name, at: location, templatesLocation: templatesLocation)
     }
 }
 

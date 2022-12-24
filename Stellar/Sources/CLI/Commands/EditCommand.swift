@@ -24,11 +24,11 @@ struct EditCommand: ParsableCommand {
         
         do {
             try shellOut(to: "xed",
-                         arguments: [executorUrl.absoluteString],
+                         arguments: [executorUrl.path],
                          outputHandle: .standardOutput,
                          errorHandle: .standardError)
         } catch {
-            Logger.log("No package '\(Constants.executor)' found at \(executorUrl.absoluteString).")
+            Logger.log("No package '\(Constants.executor)' found at \(executorUrl.path).")
         }
     }
 }

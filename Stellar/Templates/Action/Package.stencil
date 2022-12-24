@@ -1,0 +1,36 @@
+// swift-tools-version: 5.7
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+import PackageDescription
+
+let package = Package(
+    name: "{{ name }}",
+    platforms: [.macOS(.v12)],
+    products: [
+        .executable(
+            name: "{{ name }}CLI",
+            targets: ["{{ name }}CLI"]),
+        .library(
+            name: "{{ name }}",
+            targets: ["{{ name }}"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0"))
+    ],
+    targets: [
+        .executableTarget(
+            name: "{{ name }}CLI",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "{{ name }}")
+            ],
+            path: "Sources/CLI"),
+        .target(
+            name: "{{ name }}",
+            path: "Sources/Action"),
+        .testTarget(
+            name: "{{ name }}Tests",
+            dependencies: ["{{ name }}"],
+            path: "Tests"),
+    ]
+)
