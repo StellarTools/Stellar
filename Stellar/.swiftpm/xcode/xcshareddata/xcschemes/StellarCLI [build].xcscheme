@@ -82,11 +82,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--path TestApp/"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--output TestApp/"
+            argument = "--app-path TestApp/"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
