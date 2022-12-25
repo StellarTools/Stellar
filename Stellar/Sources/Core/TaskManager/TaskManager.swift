@@ -19,7 +19,7 @@ public struct TaskManager {
     
     @discardableResult
     func deletePackage(at location: URL, packageName: String) throws -> Self {
-        Logger.log("Removing package folder...")
+        Logger().log("Removing package folder...")
         let packageLocation = location
             .appendingPathComponent(packageName, isDirectory: true)
         try FileManager.default.removeItem(atPath: packageLocation.path)
@@ -28,34 +28,36 @@ public struct TaskManager {
     
     @discardableResult
     func createPackageFolder(at location: URL, packageName: String) throws -> Self {
-        Logger.log("Creating package folder...")
-        try shellOut(to: "mkdir",
-                     arguments: [
-                        packageName
-                     ],
-                     at: location.path,
-                     outputHandle: outputHandle,
-                     errorHandle: errorHandle)
+        Logger().log("Creating package folder...")
+        try shellOut(
+            to: "mkdir",
+            arguments: [
+                packageName
+            ],
+            at: location.path,
+            outputHandle: outputHandle,
+            errorHandle: errorHandle)
         return self
     }
     
     @discardableResult
     func initPackage(at location: URL) throws -> Self {
-        Logger.log("Initialising package...")
-        try shellOut(to: "swift",
-                     arguments: [
-                        "package",
-                        "init"
-                     ],
-                     at: location.path,
-                     outputHandle: outputHandle,
-                     errorHandle: errorHandle)
+        Logger().log("Initialising package...")
+        try shellOut(
+            to: "swift",
+            arguments: [
+                "package",
+                "init"
+            ],
+            at: location.path,
+            outputHandle: outputHandle,
+            errorHandle: errorHandle)
         return self
     }
     
     @discardableResult
     func createPackageDotSwift(packageName: String, templateLocation: URL, packageLocation: URL) throws -> Self {
-        Logger.log("Creating Package.swift...")
+        Logger().log("Creating Package.swift...")
         let templater = Templater(templatePath: templateLocation.path)
         let content = try templater.renderTemplate(context: [TemplateConstants.name: packageName])
         let packageDotSwiftLocation = packageLocation
@@ -66,7 +68,7 @@ public struct TaskManager {
     
     @discardableResult
     func createReadme(packageName: String, templateLocation: URL, packageLocation: URL) throws -> Self {
-        Logger.log("Creating README.md...")
+        Logger().log("Creating README.md...")
         let templater = Templater(templatePath: templateLocation.path)
         let content = try templater.renderTemplate(context: [TemplateConstants.name: packageName])
         let readmeLocation = packageLocation
@@ -77,7 +79,7 @@ public struct TaskManager {
     
     @discardableResult
     func deleteSourcesFolder(packageLocation: URL) throws -> Self {
-        Logger.log("Removing Sources...")
+        Logger().log("Removing Sources...")
         let sourcesLocation = packageLocation
             .appendingPathComponent("Sources", isDirectory: true)
         try FileManager.default.removeItem(atPath: sourcesLocation.path)
@@ -86,7 +88,7 @@ public struct TaskManager {
     
     @discardableResult
     func deleteTestsFolder(packageLocation: URL) throws -> Self {
-        Logger.log("Removing Tests...")
+        Logger().log("Removing Tests...")
         let sourcesLocation = packageLocation
             .appendingPathComponent("Tests", isDirectory: true)
         try FileManager.default.removeItem(atPath: sourcesLocation.path)
@@ -95,7 +97,7 @@ public struct TaskManager {
     
     @discardableResult
     func createActionSource(packageName: String, templateLocation: URL, packageLocation: URL) throws -> Self {
-        Logger.log("Creating Sources [Action]...")
+        Logger().log("Creating Sources [Action]...")
         let templater = Templater(templatePath: templateLocation.path)
         let content = try templater.renderTemplate(context: [TemplateConstants.name: packageName])
         let actionSourceLocation = packageLocation
@@ -108,7 +110,7 @@ public struct TaskManager {
     
     @discardableResult
     func createCommandSource(packageName: String, templateLocation: URL, packageLocation: URL) throws -> Self {
-        Logger.log("Creating Sources [Command]...")
+        Logger().log("Creating Sources [Command]...")
         let templater = Templater(templatePath: templateLocation.path)
         let content = try templater.renderTemplate(context: [TemplateConstants.name: packageName])
         let commandSourceLocation = packageLocation
@@ -121,7 +123,7 @@ public struct TaskManager {
     
     @discardableResult
     func createTest(packageName: String, templateLocation: URL, packageLocation: URL) throws -> Self {
-        Logger.log("Creating Tests...")
+        Logger().log("Creating Tests...")
         let templater = Templater(templatePath: templateLocation.path)
         let content = try templater.renderTemplate(context: [TemplateConstants.name: packageName])
         let testsLocation = packageLocation

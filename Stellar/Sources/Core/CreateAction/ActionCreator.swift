@@ -11,7 +11,6 @@ final public class ActionCreator {
     public init() {}
     
     public func createAction(name: String, at location: URL, templatesLocation: URL) throws {
-        try validateName(name)
         let packageLocation = location
             .appendingPathComponent(name, isDirectory: true)
         let packageDotSwiftTemplateLocation = templatesLocation
@@ -31,9 +30,10 @@ final public class ActionCreator {
             .appendingPathComponent("ActionTests.stencil", isDirectory: false)
         
         let taskManager = TaskManager()
+        try taskManager
+            .createPackageFolder(at: location, packageName: name)
         do {
             try taskManager
-                .createPackageFolder(at: location, packageName: name)
                 .initPackage(at: packageLocation)
                 .createPackageDotSwift(packageName: name,
                                        templateLocation: packageDotSwiftTemplateLocation,
@@ -53,16 +53,9 @@ final public class ActionCreator {
                             templateLocation: testTemplateLocation,
                             packageLocation: packageLocation)
         } catch {
-            Logger.log(error.localizedDescription)
+            Logger().log(error.localizedDescription)
             try taskManager
                 .deletePackage(at: location, packageName: name)
-        }
-    }
-    
-    private func validateName(_ name: String) throws {
-        guard name.hasSuffix("Action") else {
-            Logger.log("Actions must have 'Action' suffix.")
-            throw ActionCreatorError.invalidActionName(name)
         }
     }
 }

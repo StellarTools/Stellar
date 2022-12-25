@@ -23,5 +23,11 @@ struct CreateActionCommand: ParsableCommand {
         let templatesLocation = URL(fileURLWithPath: templates)
         try ActionCreator().createAction(name: name, at: location, templatesLocation: templatesLocation)
     }
+    
+    func validate() throws {
+        guard name.hasSuffix("Action") else {
+            throw ValidationError("'name' must have 'Action' suffix.")
+        }
+    }
 }
 
