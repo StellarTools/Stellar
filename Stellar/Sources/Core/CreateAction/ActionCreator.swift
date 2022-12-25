@@ -4,10 +4,6 @@ import Foundation
 
 final public class ActionCreator {
     
-    enum ActionCreatorError: Error {
-        case invalidActionName(String)
-    }
-    
     public init() {}
     
     public func createAction(name: String, at location: URL, templatesLocation: URL) throws {

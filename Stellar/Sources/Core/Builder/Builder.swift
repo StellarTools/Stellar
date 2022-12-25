@@ -25,7 +25,7 @@ final public class Builder {
             errorHandle: .standardError)
         
         let binaryUrl = URL(fileURLWithPath: binaryPath)
-            .appendingPathComponent(Constants.executor, isDirectory: false)
+            .appendingPathComponent(FolderConstants.executor, isDirectory: false)
         
         let executablesUrl = try executablesUrl(at: location)
         
