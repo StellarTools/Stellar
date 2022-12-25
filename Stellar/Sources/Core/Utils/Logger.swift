@@ -5,6 +5,6 @@ import Foundation
 public class Logger {
     
     public func log(_ message: String) {
-        print("[\(Constants.stellar)] \(message)")
+        print("[\(FolderConstants.stellar)] \(message)")
     }
 }

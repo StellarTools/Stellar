@@ -132,4 +132,15 @@ public struct TaskManager {
         try Writer().write(content: content, to: testsLocation)
         return self
     }
+    
+    @discardableResult
+    func createTask(taskName: String, templateLocation: URL, executorSourcesLocation: URL) throws -> Self {
+        Logger().log("Creating Task...")
+        let templater = Templater(templatePath: templateLocation.path)
+        let content = try templater.renderTemplate(context: [TemplateConstants.name: taskName])
+        let taskLocation = executorSourcesLocation
+            .appendingPathComponent("\(taskName).swift", isDirectory: false)
+        try Writer().write(content: content, to: taskLocation)
+        return self
+    }
 }

@@ -11,6 +11,7 @@ struct Stellar: AsyncParsableCommand {
         subcommands: [
             BuildCommand.self,
             CreateActionCommand.self,
+            CreateTaskCommand.self,
             EditCommand.self,
             InitCommand.self
         ]

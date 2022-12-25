@@ -16,7 +16,6 @@ final class Templater {
     }
     
     func renderTemplate(context: [String: Any]) throws -> Content {
-
         let environment = makeEnvironment()
         let filename = URL(fileURLWithPath: templatePath).lastPathComponent
         return try environment.renderTemplate(name: filename, context: context)
