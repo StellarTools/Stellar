@@ -18,25 +18,18 @@ public struct TaskManager {
     }
     
     @discardableResult
-    func deletePackage(at location: URL, packageName: String) throws -> Self {
+    func deletePackage(at location: URL) throws -> Self {
         Logger().log("Removing package folder...")
-        let packageLocation = location
-            .appendingPathComponent(packageName, isDirectory: true)
-        try FileManager.default.removeItem(atPath: packageLocation.path)
+        try FileManager.default.removeItem(atPath: location.path)
         return self
     }
     
     @discardableResult
-    func createPackageFolder(at location: URL, packageName: String) throws -> Self {
+    func createFolder(at location: URL, name: String) throws -> Self {
         Logger().log("Creating package folder...")
-        try shellOut(
-            to: "mkdir",
-            arguments: [
-                packageName
-            ],
-            at: location.path,
-            outputHandle: outputHandle,
-            errorHandle: errorHandle)
+        let folder = location
+            .appendingPathComponent(name)
+        try Writer().createFolderIfMissing(at: folder)
         return self
     }
     
@@ -45,10 +38,7 @@ public struct TaskManager {
         Logger().log("Initialising package...")
         try shellOut(
             to: "swift",
-            arguments: [
-                "package",
-                "init"
-            ],
+            arguments: ["package", "init"],
             at: location.path,
             outputHandle: outputHandle,
             errorHandle: errorHandle)
@@ -141,6 +131,21 @@ public struct TaskManager {
         let taskLocation = executorSourcesLocation
             .appendingPathComponent("\(taskName).swift", isDirectory: false)
         try Writer().write(content: content, to: taskLocation)
+        return self
+    }
+    
+    @discardableResult
+    func createExecutorSourceFile(packageName: String, templateLocation: URL, packageLocation: URL) throws -> Self {
+        Logger().log("Creating Sources...")
+        let filename = templateLocation
+            .deletingPathExtension()
+            .lastPathComponent
+        let templater = Templater(templatePath: templateLocation.path)
+        let content = try templater.renderTemplate(context: [TemplateConstants.name: packageName])
+        let sourceFileLocation = packageLocation
+            .appendingPathComponent("Sources", isDirectory: true)
+            .appendingPathComponent("\(filename).swift", isDirectory: false)
+        try Writer().write(content: content, to: sourceFileLocation)
         return self
     }
 }

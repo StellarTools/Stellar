@@ -9,7 +9,7 @@ final public class TaskCreator {
     public func createTask(name: String, at location: URL, templatesLocation: URL) throws {
         let taskTemplateLocation = templatesLocation
             .appendingPathComponent("Task.stencil", isDirectory: false)
-        let executorSourcesUrl = try URLManager().executorSourcesUrl(at: location)
+        let executorSourcesUrl = try URLManager().existingExecutorSourcesUrl(at: location)
         try TaskManager()
             .createTask(taskName: name,
                         templateLocation: taskTemplateLocation,

@@ -1,10 +1,10 @@
-//  Executor.swift
+//  {{ name }}.swift
 
 import ArgumentParser
 import Foundation
 
 @main
-struct Executor: AsyncParsableCommand {
+struct {{ name }}: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "Abstract",
         subcommands: [

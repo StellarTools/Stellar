@@ -10,7 +10,7 @@ struct BuildCommand: ParsableCommand {
         abstract: "Abstract")
     
     @Option(name: .shortAndLong, help: "")
-    private var appPath: String
+    private var appPath: String = "./"
     
     func run() throws {
         let location = URL(fileURLWithPath: appPath)
