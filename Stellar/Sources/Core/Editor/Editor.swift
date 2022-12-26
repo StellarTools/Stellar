@@ -8,7 +8,7 @@ final public class Editor {
     public init() {}
     
     public func edit(at location: URL) throws {
-        let executorUrl = try URLManager().executorUrl(at: location)
+        let executorUrl = try URLManager().existingExecutorUrl(at: location)
         try shellOut(
             to: "xed",
             arguments: [executorUrl.path],

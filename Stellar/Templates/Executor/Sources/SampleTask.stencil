@@ -2,11 +2,11 @@
 
 import ArgumentParser
 import Foundation
-import SampleAction
+// import <#Some#>Action
 
 struct SampleTask: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "sample",
+        commandName: "{{ name|lowercase }}",
         abstract: "Abstract")
     
     @Argument(help: "A phrase.")
@@ -15,17 +15,17 @@ struct SampleTask: AsyncParsableCommand {
     @Flag(help: "Enable verbose logging.")
     var verbose = false
     
-    @Option(name: .shortAndLong, help: "The number of times to invoke `call` on `SampleAction`.")
+    @Option(name: .shortAndLong, help: "The number of times to invoke `<#Some#>Action`.")
     var count: Int = 1
     
     func run() async throws {
         if verbose {
-            print("[SampleTask] verbose log.")
+            print("[{{ name }}] verbose log.")
         }
         
         for _ in 0..<count {
-            let action = SampleAction(argument: phrase)
-            action.call()
+//            let action = <#Some#>Action(argument: phrase)
+//            action.call()
         }
     }
 }

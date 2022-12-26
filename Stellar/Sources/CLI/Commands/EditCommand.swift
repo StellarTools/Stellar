@@ -10,10 +10,10 @@ struct EditCommand: ParsableCommand {
         abstract: "Abstract")
     
     @Option(name: .long, help: "")
-    private var path: String = "./"
+    private var appPath: String = "./"
     
     func run() throws {
-        let location = URL(fileURLWithPath: path)
+        let location = URL(fileURLWithPath: appPath)
         try Editor().edit(at: location)
     }
 }

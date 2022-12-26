@@ -8,9 +8,9 @@ final class Writer {
         case fileExists(String)
     }
     
-    func write(content: String, to location: URL) throws {
+    func write(content: String, to location: URL, force: Bool = true) throws {
         var objcTrue: ObjCBool = false
-        guard !FileManager.default.fileExists(atPath: location.path, isDirectory: &objcTrue) else {
+        if !force && FileManager.default.fileExists(atPath: location.path, isDirectory: &objcTrue) {
             throw WriterError.fileExists(location.path)
         }
         

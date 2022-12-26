@@ -10,11 +10,17 @@ struct InitCommand: ParsableCommand {
         abstract: "Abstract")
     
     @Option(name: .shortAndLong, help: "")
-    private var path: String
+    private var appPath: String = "./"
+    
+    @Option(name: .shortAndLong, help: "")
+    private var templates: String
     
     func run() throws {
-        // for a project existing at the given 'path',
-        // creates the Executor package inside a 'stellar' folder
+        // create .stellar/Packages/Executor folder
+        // create Executor package
+        let location = URL(fileURLWithPath: appPath)
+        let templatesLocation = URL(fileURLWithPath: templates)
+        try Initializer().install(at: location, templatesLocation: templatesLocation)
     }
 }
 

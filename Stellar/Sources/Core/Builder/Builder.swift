@@ -10,7 +10,7 @@ final public class Builder {
     private let urlManager = URLManager()
     
     public func build(at location: URL) throws {
-        let executorUrl = try urlManager.executorUrl(at: location)
+        let executorUrl = try urlManager.existingExecutorUrl(at: location)
         try shellOut(
             to: "swift",
             arguments: ["build", "-c release"],
@@ -25,7 +25,7 @@ final public class Builder {
             errorHandle: .standardError)
         
         let binaryUrl = URL(fileURLWithPath: binaryPath)
-            .appendingPathComponent(FolderConstants.executor, isDirectory: false)
+            .appendingPathComponent(Constants.executor, isDirectory: false)
         
         let executablesUrl = try executablesUrl(at: location)
         
@@ -39,10 +39,10 @@ final public class Builder {
     
     private func executablesUrl(at location: URL) throws -> URL {
         do {
-            return try urlManager.executablesUrl(at: location)
+            return try urlManager.existingExecutablesUrl(at: location)
         } catch StellarError.missingExecutablesFolder(let url) {
             try Writer().createFolderIfMissing(at: url)
-            return try urlManager.executablesUrl(at: location)
+            return try urlManager.existingExecutablesUrl(at: location)
         }
     }
 }

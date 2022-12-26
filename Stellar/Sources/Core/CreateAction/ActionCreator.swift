@@ -9,6 +9,7 @@ final public class ActionCreator {
     public func createAction(name: String, at location: URL, templatesLocation: URL) throws {
         let packageLocation = location
             .appendingPathComponent(name, isDirectory: true)
+        
         let packageDotSwiftTemplateLocation = templatesLocation
             .appendingPathComponent("Package.stencil", isDirectory: false)
         let readmeTemplateLocation = templatesLocation
@@ -21,13 +22,13 @@ final public class ActionCreator {
             .appendingPathComponent("Sources", isDirectory: true)
             .appendingPathComponent("CLI", isDirectory: true)
             .appendingPathComponent("Command.stencil", isDirectory: false)
-        let testTemplateLocation = templatesLocation
+        let testsTemplateLocation = templatesLocation
             .appendingPathComponent("Tests", isDirectory: true)
             .appendingPathComponent("ActionTests.stencil", isDirectory: false)
         
         let taskManager = TaskManager()
         try taskManager
-            .createPackageFolder(at: location, packageName: name)
+            .createFolder(at: location, name: name)
         do {
             try taskManager
                 .initPackage(at: packageLocation)
@@ -46,12 +47,12 @@ final public class ActionCreator {
                                      templateLocation: commandTemplateLocation,
                                      packageLocation: packageLocation)
                 .createTest(packageName: name,
-                            templateLocation: testTemplateLocation,
+                            templateLocation: testsTemplateLocation,
                             packageLocation: packageLocation)
         } catch {
             Logger().log(error.localizedDescription)
             try taskManager
-                .deletePackage(at: location, packageName: name)
+                .deletePackage(at: packageLocation)
         }
     }
 }
