@@ -2,8 +2,8 @@ name: Build and Release
 
 on:
   push:
-    branches:
-      - github-actions-workflow
+    tags:
+      - '*'
 
 jobs:
   build:
