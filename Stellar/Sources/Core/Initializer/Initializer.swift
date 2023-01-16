@@ -10,17 +10,19 @@ final public class Initializer {
         let urlManager = URLManager()
         let packagesLocation = urlManager.packagesUrl(at: location)
         
-        let packageDotSwiftTemplateLocation = templatesLocation
+        let executorTemplatesLocation = templatesLocation
+            .appendingPathComponent("Executor")
+        let packageDotSwiftTemplateLocation = executorTemplatesLocation
             .appendingPathComponent("Package.stencil", isDirectory: false)
-        let readmeTemplateLocation = templatesLocation
+        let readmeTemplateLocation = executorTemplatesLocation
             .appendingPathComponent("README.stencil", isDirectory: false)
-        let taskTemplateLocation = templatesLocation
+        let taskTemplateLocation = executorTemplatesLocation
             .appendingPathComponent("Sources", isDirectory: true)
             .appendingPathComponent("SampleTask.stencil", isDirectory: false)
-        let executorTemplateLocation = templatesLocation
+        let executorTemplateLocation = executorTemplatesLocation
             .appendingPathComponent("Sources", isDirectory: true)
             .appendingPathComponent("Executor.stencil", isDirectory: false)
-        let testsTemplateLocation = templatesLocation
+        let testsTemplateLocation = executorTemplatesLocation
             .appendingPathComponent("Tests", isDirectory: true)
             .appendingPathComponent("Tests.stencil", isDirectory: false)
         

@@ -78,20 +78,20 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "create-action"
+            argument = "init"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--path Actions"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--name ExampleAction"
+            argument = "--app-path TestApp/"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--templates Stellar/Templates"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--help"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

@@ -16,11 +16,11 @@ struct CreateActionCommand: ParsableCommand {
     private var path: String
     
     @Option(name: .shortAndLong, help: "")
-    private var templates: String
+    private var templates: String?
     
     func run() throws {
         let location = URL(fileURLWithPath: path)
-        let templatesLocation = URL(fileURLWithPath: templates)
+        let templatesLocation = templatesLocation(templates)
         try ActionCreator().createAction(name: name, at: location, templatesLocation: templatesLocation)
     }
     
