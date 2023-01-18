@@ -16,6 +16,6 @@ extension ParsableCommand {
         }
         return URL(fileURLWithPath: CommandLine.arguments.first!)
             .deletingLastPathComponent()
-            .appendingPathExtension("Templates")
+            .appendingPathExtension(FolderConstants.templatesFolder)
     }
 }
