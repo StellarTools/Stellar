@@ -1,14 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Alberto De Bortoli on 16/01/2023.
-//
+//  URLManager.swift
 
 import ArgumentParser
 import Foundation
 
-extension ParsableCommand {
+final class URLManager {
     
     func templatesLocation(_ templates: String?) -> URL {
         if let templates = templates {
