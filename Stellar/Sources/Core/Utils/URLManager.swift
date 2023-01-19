@@ -4,6 +4,13 @@ import Foundation
 
 final class URLManager {
     
+    var environmentURL: URL {
+        FileManager.default
+            .homeDirectoryForCurrentUser
+            .appendingPathComponent(".tuist")//FolderConstants.stellarFolder)
+            .appendingPathComponent(FolderConstants.Installation.versions)
+    }
+    
     func stellarUrl(at location: URL) -> URL {
         location
             .appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)

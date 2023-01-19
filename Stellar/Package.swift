@@ -27,6 +27,7 @@ let package = Package(
             name: "stellarenv",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "Stellar")
             ],
             path: "Sources/stellarenv"
         ),

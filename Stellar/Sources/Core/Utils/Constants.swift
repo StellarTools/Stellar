@@ -7,6 +7,7 @@ struct Constants {
 
 struct FileConstants {
     static let packageDotSwift = "Package.swift"
+    static let versionFileName = ".stellar-version"
 }
 
 struct FolderConstants {
@@ -16,6 +17,11 @@ struct FolderConstants {
     static let executorFolder = "Executor"
     static let sourcesFolder = "Sources"
     static let templatesFolder = "Templates"
+    
+    struct Installation {
+        static let versions = "Versions"
+        
+    }
 }
 
 struct TemplateConstants {
