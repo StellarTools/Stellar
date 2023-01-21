@@ -23,6 +23,14 @@ final class URLManager {
             .appendingPathComponent(FolderConstants.packagesFolder, isDirectory: true)
     }
     
+    func actionsLocation(_ actions: String? = nil) -> URL {
+        if let actions = actions {
+            return URL(fileURLWithPath: actions)
+        }
+        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent(FolderConstants.actionsFolder)
+    }
+    
     func existingPackagesUrl(at location: URL) throws -> URL {
         let packagesUrl = try existingStellarUrl(at: location)
             .appendingPathComponent(FolderConstants.packagesFolder, isDirectory: true)

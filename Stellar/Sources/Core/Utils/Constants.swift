@@ -2,6 +2,7 @@
 
 struct Constants {
     static let stellar = "Stellar"
+    static let stellarHint = "Stellar Hint"
     static let executor = "Executor"
 }
 
@@ -11,6 +12,7 @@ struct FileConstants {
 
 struct FolderConstants {
     static let stellarFolder = ".stellar"
+    static let actionsFolder = ".stellar/Actions"
     static let executablesFolder = "Executables"
     static let packagesFolder = "Packages"
     static let executorFolder = "Executor"

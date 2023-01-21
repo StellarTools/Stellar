@@ -49,6 +49,12 @@ final public class ActionCreator {
                 .createTest(packageName: name,
                             templateLocation: testsTemplateLocation,
                             packageLocation: packageLocation)
+            
+            if location == URLManager().actionsLocation() {
+                let hint = HintManager().hintForAction(with: name)
+                Logger().hint(hint)
+            }
+            
         } catch {
             Logger().log(error.localizedDescription)
             try taskManager
