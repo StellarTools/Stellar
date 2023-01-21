@@ -10,22 +10,19 @@ final public class ActionCreator {
         let packageLocation = location
             .appendingPathComponent(name, isDirectory: true)
         
-        let actionTemplatesLocation = templatesLocation
-            .appendingPathComponent("Action")
-        
-        let packageDotSwiftTemplateLocation = actionTemplatesLocation
+        let packageDotSwiftTemplateLocation = templatesLocation
             .appendingPathComponent("Package.stencil", isDirectory: false)
-        let readmeTemplateLocation = actionTemplatesLocation
+        let readmeTemplateLocation = templatesLocation
             .appendingPathComponent("README.stencil", isDirectory: false)
-        let actionTemplateLocation = actionTemplatesLocation
+        let actionTemplateLocation = templatesLocation
             .appendingPathComponent("Sources", isDirectory: true)
             .appendingPathComponent("Action", isDirectory: true)
             .appendingPathComponent("Action.stencil", isDirectory: false)
-        let commandTemplateLocation = actionTemplatesLocation
+        let commandTemplateLocation = templatesLocation
             .appendingPathComponent("Sources", isDirectory: true)
             .appendingPathComponent("CLI", isDirectory: true)
             .appendingPathComponent("Command.stencil", isDirectory: false)
-        let testsTemplateLocation = actionTemplatesLocation
+        let testsTemplateLocation = templatesLocation
             .appendingPathComponent("Tests", isDirectory: true)
             .appendingPathComponent("ActionTests.stencil", isDirectory: false)
         

@@ -13,13 +13,13 @@ struct CreateActionCommand: ParsableCommand {
     private var name: String
     
     @Option(name: .shortAndLong, help: "")
-    private var path: String
+    private var path: String?
     
     @Option(name: .shortAndLong, help: "")
     private var templates: String?
     
     func run() throws {
-        let location = URL(fileURLWithPath: path)
+        let location = URLManager().actionsLocation(path)
         let templatesLocation = URLManager().templatesLocation(templates)
         try ActionCreator().createAction(name: name, at: location, templatesLocation: templatesLocation)
     }

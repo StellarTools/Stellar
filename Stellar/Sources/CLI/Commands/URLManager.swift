@@ -5,6 +5,14 @@ import Foundation
 
 final class URLManager {
     
+    func actionsLocation(_ actions: String?) -> URL {
+        if let actions = actions {
+            return URL(fileURLWithPath: actions)
+        }
+        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent(FolderConstants.actionsFolder)
+    }
+    
     func templatesLocation(_ templates: String?) -> URL {
         if let templates = templates {
             return URL(fileURLWithPath: templates)
@@ -12,4 +20,5 @@ final class URLManager {
         return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
             .appendingPathComponent(FolderConstants.templatesFolder)
     }
+    
 }
