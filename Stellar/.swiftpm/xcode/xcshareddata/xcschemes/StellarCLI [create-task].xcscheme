@@ -82,15 +82,15 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--templates Stellar/Templates/Task"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "--app-path TestApp"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--name ExampleTask"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--templates Stellar/Templates"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

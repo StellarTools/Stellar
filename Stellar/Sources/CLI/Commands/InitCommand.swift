@@ -13,14 +13,14 @@ struct InitCommand: ParsableCommand {
     private var appPath: String = "./"
     
     @Option(name: .shortAndLong, help: "")
-    private var templates: String
+    private var templates: String?
     
     func run() throws {
         // create .stellar/Packages/Executor folder
         // create Executor package
-        let location = URL(fileURLWithPath: appPath)
-        let templatesLocation = URL(fileURLWithPath: templates)
-        try Initializer().install(at: location, templatesLocation: templatesLocation)
+        let appLocation = URL(fileURLWithPath: appPath)
+        let templatesLocation = URLManager().templatesLocation(templates)
+        try Initializer().install(at: appLocation, templatesLocation: templatesLocation)
     }
 }
 

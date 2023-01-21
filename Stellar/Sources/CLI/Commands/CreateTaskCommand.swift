@@ -16,11 +16,11 @@ struct CreateTaskCommand: ParsableCommand {
     private var appPath: String
     
     @Option(name: .shortAndLong, help: "")
-    private var templates: String
+    private var templates: String?
     
     func run() throws {
         let location = URL(fileURLWithPath: appPath)
-        let templatesLocation = URL(fileURLWithPath: templates)
+        let templatesLocation = URLManager().templatesLocation(templates)
         try TaskCreator().createTask(name: name, at: location, templatesLocation: templatesLocation)
     }
     
