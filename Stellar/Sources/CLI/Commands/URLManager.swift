@@ -9,8 +9,7 @@ final class URLManager {
         if let templates = templates {
             return URL(fileURLWithPath: templates)
         }
-        return URL(fileURLWithPath: CommandLine.arguments.first!)
-            .deletingLastPathComponent()
-            .appendingPathExtension(FolderConstants.templatesFolder)
+        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent(FolderConstants.templatesFolder)
     }
 }
