@@ -44,7 +44,7 @@ jobs:
         run: cp -r Templates .build/apple/Products/Release/
       - name: Zip executable
         working-directory: ./Stellar/.build/apple/Products/Release/
-        run: zip StellarCLI.zip StellarCLI Templates/**/*
+        run: zip -r StellarCLI.zip StellarCLI Templates
       - name: Create Release
         uses: actions/create-release@v1
         id: create_release
