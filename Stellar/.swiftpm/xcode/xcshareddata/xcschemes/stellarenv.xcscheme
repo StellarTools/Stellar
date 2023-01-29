@@ -77,16 +77,20 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "local"
+            argument = "install"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--version 0.1.0"
+            argument = "0.1.0"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "local"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--path /Users/daniele/Desktop/TuistNibTest"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

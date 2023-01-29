@@ -40,6 +40,7 @@ let package = Package(
         .target(
             name: "Stellar",
             dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "StencilSwiftKit", package: "StencilSwiftKit")
             ],

@@ -1,10 +1,3 @@
-//
-//  Created by Eric Firestone on 3/22/16.
-//  Copyright © 2016 Square, Inc. All rights reserved.
-//  Released under the Apache v2 License.
-//
-//  Adapted from https://gist.github.com/efirestone/ce01ae109e08772647eb061b3bb387c3
-
 import Foundation
 
 /// Finds files on the file system using pattern matching.

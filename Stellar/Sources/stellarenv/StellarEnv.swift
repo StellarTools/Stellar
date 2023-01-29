@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import Stellar
 
 @main
 struct StellarEnv: AsyncParsableCommand {
@@ -9,7 +10,8 @@ struct StellarEnv: AsyncParsableCommand {
             commandName: "stellarenv",
             abstract: "Manage the environment stellar versions",
             subcommands: [
-                LocalCommand.self
+                LocalCommand.self,
+                InstallCommand.self
             ]
         )
     }

@@ -3,6 +3,7 @@
 struct Constants {
     static let stellar = "Stellar"
     static let executor = "Executor"
+    static let githubProjectURL = "https://github.com/InterstellarTools/StellarPrototype"
 }
 
 struct FileConstants {
@@ -20,7 +21,9 @@ struct FolderConstants {
     
     struct Installation {
         static let versions = "Versions"
-        
+        static let packageName = "stellar.zip"
+        static let binaryName = "stellar"
+
     }
 }
 
