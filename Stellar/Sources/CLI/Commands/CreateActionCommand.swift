@@ -20,8 +20,8 @@ struct CreateActionCommand: ParsableCommand {
     
     func run() throws {
         let location = URL(fileURLWithPath: path)
-        let templatesLocation = URLManager().templatesLocation(templates)
-        try ActionCreator().createAction(name: name, at: location, templatesLocation: templatesLocation)
+        let actionTemplatesLocation = TemplatesLocationFactory(templatesPath: templates).actionTemplatesLocation
+        try ActionCreator().createAction(name: name, at: location, templatesLocation: actionTemplatesLocation)
     }
     
     func validate() throws {
