@@ -20,8 +20,9 @@ struct CreateTaskCommand: ParsableCommand {
     
     func run() throws {
         let location = URL(fileURLWithPath: appPath)
-        let templatesLocation = URLManager().templatesLocation(templates)
-        try TaskCreator().createTask(name: name, at: location, templatesLocation: templatesLocation)
+        let taskTemplateLocation = TemplatesLocationFactory(templatesPath: templates).taskTemplatesLocation
+            .appendingPathComponent("Task.stencil", isDirectory: false)
+        try TaskCreator().createTask(name: name, at: location, templateLocation: taskTemplateLocation)
     }
     
     func validate() throws {

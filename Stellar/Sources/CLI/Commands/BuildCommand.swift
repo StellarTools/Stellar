@@ -14,8 +14,7 @@ struct BuildCommand: ParsableCommand {
     
     func run() throws {
         let location = URL(fileURLWithPath: appPath)
-        try Builder()
-            .build(at: location)
+        try Builder().build(at: location)
     }
 }
 

@@ -16,11 +16,8 @@ struct InitCommand: ParsableCommand {
     private var templates: String?
     
     func run() throws {
-        // create .stellar/Packages/Executor folder
-        // create Executor package
         let appLocation = URL(fileURLWithPath: appPath)
-        let templatesLocation = URLManager().templatesLocation(templates)
-        try Initializer().install(at: appLocation, templatesLocation: templatesLocation)
+        let executorTemplatesLocation = TemplatesLocationFactory(templatesPath: templates).executorTemplatesLocation
+        try Initializer().install(at: appLocation, templatesLocation: executorTemplatesLocation)
     }
 }
-

@@ -5,10 +5,17 @@ import ShellOut
 
 final public class Editor {
     
-    public init() {}
+    private let urlManager = URLManager()
+    private let fileManager: FileManaging
+    
+    public init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
+    }
     
     public func edit(at location: URL) throws {
-        let executorUrl = try URLManager().existingExecutorUrl(at: location)
+        let executorUrl = urlManager.executorUrl(at: location)
+        try fileManager.verifyFolderExisting(at: executorUrl)
+        
         try shellOut(
             to: "xed",
             arguments: [executorUrl.path],
