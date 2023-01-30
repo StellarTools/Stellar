@@ -23,3 +23,7 @@ struct FolderConstants {
 struct TemplateConstants {
     static let name = "name"
 }
+
+struct HintTemplateNames {
+    static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
+}

@@ -51,7 +51,7 @@ final public class ActionCreator {
                             packageLocation: packageLocation)
             
             if location == URLManager().actionsLocation() {
-                let hint = HintManager().hintForAction(with: name)
+                let hint = try HintManager().hintForActionCreatedOnDefaultPath(with: name)
                 Logger().hint(hint)
             }
             
