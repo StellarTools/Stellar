@@ -39,13 +39,13 @@ struct Templater {
                 .deletingPrefix(source.absoluteString)
             let folderLocation = destination
                 .appendingPathComponent(subPath)
-            try templateFile(source: templateLocation, destination: folderLocation, filename: filename)
+                .appendingPathComponent(filename, isDirectory: false)
+            try templateFile(source: templateLocation, destination: folderLocation)
         }
     }
     
-    func templateFile(source: URL, destination: URL, filename: String) throws {
-        let fileLocation = destination.appendingPathComponent(filename, isDirectory: false)
-        Logger().log("Creating \(fileLocation.relativePath)")
+    func templateFile(source: URL, destination: URL) throws {
+        Logger().log("Creating \(destination.relativePath)")
         
         guard source.pathExtension == Constants.stencil.rawValue else {
             throw TemplaterError.invalidTemplateFile(source)
@@ -53,6 +53,6 @@ struct Templater {
         
         let templater = TemplateRenderer(templatePath: source.path)
         let content = try templater.renderTemplate(with: templatingContext)
-        try Writer().write(content: content, to: fileLocation)
+        try Writer().write(content: content, to: destination)
     }
 }

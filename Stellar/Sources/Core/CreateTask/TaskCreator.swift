@@ -11,11 +11,12 @@ final public class TaskCreator {
         self.fileManager = fileManager
     }
     
-    public func createTask(name: String, at location: URL, templateLocation: URL) throws {
-        let executorSourcesUrl = urlManager.executorSourcesUrl(at: location)
+    public func createTask(name: String, at appLocation: URL, templateLocation: URL) throws {
+        let executorSourcesUrl = urlManager.executorSourcesUrl(at: appLocation)
         try fileManager.verifyFolderExisting(at: executorSourcesUrl)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
         let templatingFileManager = Templater(templatingContext: context)
-        try templatingFileManager.templateFile(source: templateLocation, destination: executorSourcesUrl, filename: "\(name).swift")
+        let destination = executorSourcesUrl.appendingPathComponent("\(name).swift", isDirectory: false)
+        try templatingFileManager.templateFile(source: templateLocation, destination: destination)
     }
 }
