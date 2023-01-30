@@ -23,6 +23,7 @@ struct Templater {
         
     func templateFolder(source: URL, destination: URL) throws {
         Logger().log("Creating folder structure at \(destination.relativePath)")
+        try fileManager.verifyFolderExisting(at: source)
         try fileManager.verifyFolderExisting(at: destination)
         
         guard let enumerator = fileManager.enumerator(at: source) else {
@@ -38,7 +39,7 @@ struct Templater {
                 .absoluteString
                 .deletingPrefix(source.absoluteString)
             let folderLocation = destination
-                .appendingPathComponent(subPath)
+                .appendingPathComponent(subPath, isDirectory: true)
                 .appendingPathComponent(filename, isDirectory: false)
             try templateFile(source: templateLocation, destination: folderLocation)
         }
