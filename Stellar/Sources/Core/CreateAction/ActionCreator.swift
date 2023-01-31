@@ -11,7 +11,7 @@ final public class ActionCreator {
     }
     
     public func createAction(name: String, at location: URL, templatesLocation: URL) throws {
-        let actionLocation = location.appendingPathComponent(name)
+        let actionLocation = location.appendingPathComponent(name, isDirectory: true)
         try fileManager.createFolder(at: actionLocation)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
         let templatingFileManager = Templater(templatingContext: context)

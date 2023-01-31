@@ -1,4 +1,4 @@
-//  Constants.swift
+//  FolderConstants.swift
 
 import Foundation
 
