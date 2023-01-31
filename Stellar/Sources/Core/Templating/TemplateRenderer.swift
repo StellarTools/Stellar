@@ -1,21 +1,19 @@
-//  Templater.swift
+//  TemplateRenderer.swift
 
 import Foundation
 import PathKit
 import Stencil
 import StencilSwiftKit
 
-typealias Content = String
-
-final class Templater {
+final class TemplateRenderer {
     
-    let templatePath: String
+    private let templatePath: String
     
     init(templatePath: String) {
         self.templatePath = templatePath
     }
     
-    func renderTemplate(context: [String: Any]) throws -> Content {
+    func renderTemplate(with context: TemplatingContext) throws -> RenderedTemplate {
         let environment = makeEnvironment()
         let filename = URL(fileURLWithPath: templatePath).lastPathComponent
         return try environment.renderTemplate(name: filename, context: context)

@@ -4,61 +4,27 @@ import Foundation
 
 final public class ActionCreator {
     
-    public init() {}
+    private let fileManager: FileManaging
+    
+    public init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
+    }
     
     public func createAction(name: String, at location: URL, templatesLocation: URL) throws {
-        let packageLocation = location
-            .appendingPathComponent(name, isDirectory: true)
-        
-        let packageDotSwiftTemplateLocation = templatesLocation
-            .appendingPathComponent("Package.stencil", isDirectory: false)
-        let readmeTemplateLocation = templatesLocation
-            .appendingPathComponent("README.stencil", isDirectory: false)
-        let actionTemplateLocation = templatesLocation
-            .appendingPathComponent("Sources", isDirectory: true)
-            .appendingPathComponent("Action", isDirectory: true)
-            .appendingPathComponent("Action.stencil", isDirectory: false)
-        let commandTemplateLocation = templatesLocation
-            .appendingPathComponent("Sources", isDirectory: true)
-            .appendingPathComponent("CLI", isDirectory: true)
-            .appendingPathComponent("Command.stencil", isDirectory: false)
-        let testsTemplateLocation = templatesLocation
-            .appendingPathComponent("Tests", isDirectory: true)
-            .appendingPathComponent("ActionTests.stencil", isDirectory: false)
-        
-        let taskManager = TaskManager()
-        try taskManager
-            .createFolder(at: location, name: name)
+        let actionLocation = location.appendingPathComponent(name)
+        try fileManager.createFolder(at: actionLocation)
+        let context = TemplatingContextFactory().makeTemplatingContext(name: name)
+        let templatingFileManager = Templater(templatingContext: context)
         do {
-            try taskManager
-                .initPackage(at: packageLocation)
-                .createPackageDotSwift(packageName: name,
-                                       templateLocation: packageDotSwiftTemplateLocation,
-                                       packageLocation: packageLocation)
-                .createReadme(packageName: name,
-                              templateLocation: readmeTemplateLocation,
-                              packageLocation: packageLocation)
-                .deleteSourcesFolder(packageLocation: packageLocation)
-                .deleteTestsFolder(packageLocation: packageLocation)
-                .createActionSource(packageName: name,
-                                    templateLocation: actionTemplateLocation,
-                                    packageLocation: packageLocation)
-                .createCommandSource(packageName: name,
-                                     templateLocation: commandTemplateLocation,
-                                     packageLocation: packageLocation)
-                .createTest(packageName: name,
-                            templateLocation: testsTemplateLocation,
-                            packageLocation: packageLocation)
+            try templatingFileManager.templateFolder(source: templatesLocation, destination: actionLocation)
             
-            if location == URLManager().actionsLocation() {
-                let hint = try HintManager().hintForActionCreatedOnDefaultPath(with: name)
-                Logger().hint(hint)
+            if location.standardizedFileURL == URLManager().dotStellarActionUrl().standardizedFileURL {
+                Logger().hint(try HintManager().hintForActionCreatedOnDefaultPath(with: name))
             }
             
         } catch {
             Logger().log(error.localizedDescription)
-            try taskManager
-                .deletePackage(at: packageLocation)
+            try fileManager.deleteFolder(at: actionLocation)
         }
     }
 }

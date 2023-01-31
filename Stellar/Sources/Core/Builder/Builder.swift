@@ -5,44 +5,40 @@ import ShellOut
 
 final public class Builder {
     
-    public init() {}
-    
     private let urlManager = URLManager()
+    private let fileManager: FileManaging
+    
+    public init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
+    }
     
     public func build(at location: URL) throws {
-        let executorUrl = try urlManager.existingExecutorUrl(at: location)
+        let executorLocation = urlManager.executorUrl(at: location)
+        try fileManager.verifyFolderExisting(at: executorLocation)
         try shellOut(
             to: "swift",
             arguments: ["build", "-c release"],
-            at: executorUrl.path,
+            at: executorLocation.path,
             outputHandle: .standardOutput,
             errorHandle: .standardError)
         
         let binaryPath = try shellOut(
             to: "swift",
             arguments: ["build", "-c release", "--show-bin-path"],
-            at: executorUrl.path,
+            at: executorLocation.path,
             errorHandle: .standardError)
         
-        let binaryUrl = URL(fileURLWithPath: binaryPath)
+        let binaryLocation = URL(fileURLWithPath: binaryPath)
             .appendingPathComponent(Constants.executor, isDirectory: false)
         
-        let executablesUrl = try executablesUrl(at: location)
+        let executablesLocation = urlManager.executablesUrl(at: location)
+        try? fileManager.createFolder(at: executablesLocation)
         
         try shellOut(
             to: "mv",
-            arguments: ["\(binaryUrl.path)", "\(executablesUrl.path)"],
-            at: executorUrl.path,
+            arguments: ["\(binaryLocation.path)", "\(executablesLocation.path)"],
+            at: executorLocation.path,
             outputHandle: .standardOutput,
             errorHandle: .standardError)
-    }
-    
-    private func executablesUrl(at location: URL) throws -> URL {
-        do {
-            return try urlManager.existingExecutablesUrl(at: location)
-        } catch StellarError.missingExecutablesFolder(let url) {
-            try Writer().createFolderIfMissing(at: url)
-            return try urlManager.existingExecutablesUrl(at: location)
-        }
     }
 }

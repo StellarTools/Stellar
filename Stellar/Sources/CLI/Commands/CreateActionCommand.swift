@@ -19,9 +19,10 @@ struct CreateActionCommand: ParsableCommand {
     private var templates: String?
     
     func run() throws {
-        let location = URLManager().actionsLocation(path)
-        let templatesLocation = URLManager().templatesLocation(templates)
-        try ActionCreator().createAction(name: name, at: location, templatesLocation: templatesLocation)
+        try validate()
+        let location = URLManager().dotStellarActionsLocation(path)
+        let actionTemplatesLocation = TemplatesLocationFactory(templatesPath: templates).actionTemplatesLocation
+        try ActionCreator().createAction(name: name, at: location, templatesLocation: actionTemplatesLocation)
     }
     
     func validate() throws {

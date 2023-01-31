@@ -23,7 +23,8 @@ class HintManager {
             .appendingPathComponent("Hints", isDirectory: true)
             .appendingPathComponent(templateName, isDirectory: false)
 
-        return try Templater(templatePath: templateURL.path).renderTemplate(context: context)
+        let templateRenderer = TemplateRenderer(templatePath: templateURL.path)
+        return try templateRenderer.renderTemplate(with: context)
     }
     
     /// Searches the well know folder to find a string template and renders the stencil with the given context
