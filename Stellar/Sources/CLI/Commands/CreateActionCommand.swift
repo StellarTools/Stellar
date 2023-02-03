@@ -9,13 +9,13 @@ struct CreateActionCommand: ParsableCommand {
         commandName: "create-action",
         abstract: "Abstract")
     
-    @Option(name: .shortAndLong, help: "")
+    @Option(name: .shortAndLong, help: "The name of the Action. Must have the \"Action\" suffix")
     private var name: String
     
-    @Option(name: .shortAndLong, help: "")
+    @Option(name: .shortAndLong, help: "The path in which create the action. Default <cwd>.stellar/Actions")
     private var path: String?
     
-    @Option(name: .shortAndLong, help: "")
+    @Option(name: .shortAndLong, help: "The path with the action templates. Default <cwd>/Templates")
     private var templates: String?
     
     func run() throws {

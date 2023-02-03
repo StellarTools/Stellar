@@ -31,7 +31,7 @@ Add the newly created action to the Executor's Package.swift.
     ]
     ...
 
-Bye :)
+Bye 🙂
 
 """
         XCTAssert(sut == er)

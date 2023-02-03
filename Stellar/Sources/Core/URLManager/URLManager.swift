@@ -11,11 +11,6 @@ final class URLManager {
         appLocation.appendingPathComponent(FolderConstants.dotStellarFolder, isDirectory: true)
     }
     
-    // .stellar/Action
-    func dotStellarActionUrl() -> URL {
-        currentDirectoryUrl().appendingPathComponent(FolderConstants.dotStellarActionsFolder)
-    }
-    
     // <app_path>/.stellar/Packages
     func packagesUrl(at appLocation: URL) -> URL {
         dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.packagesFolder, isDirectory: true)
@@ -36,7 +31,4 @@ final class URLManager {
         dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.executablesFolder, isDirectory: true)
     }
     
-    func currentDirectoryUrl() -> URL {
-        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-    }
 }
