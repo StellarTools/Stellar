@@ -12,15 +12,16 @@ class HintManager {
     ///   - templateName: the stencil name
     ///   - context: the stencil context that should replace the stencil vairables
     /// - Returns: A stencil template rendered as a string or an Exception.
-    private func loadStencilString(_ templateName: String, context: [String: String]) throws -> String {
+    private func loadStencilString(_ templateName: String, context: [String: Any]) throws -> String {
         // to be replaced with common 'templatesLocation'
         let templatesLocation = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        // Stellar/Templates/Resources/Strings/Hints
         let templateURL = templatesLocation
-            .appendingPathComponent("Stellar", isDirectory: true)
+            .appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
             .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-            .appendingPathComponent("Resources", isDirectory: true)
-            .appendingPathComponent("Strings", isDirectory: true)
-            .appendingPathComponent("Hints", isDirectory: true)
+            .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
+            .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
+            .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
             .appendingPathComponent(templateName, isDirectory: false)
 
         let templateRenderer = TemplateRenderer(templatePath: templateURL.path)
@@ -33,7 +34,8 @@ class HintManager {
     ///   - context: the stencil context that should replace the stencil vairables
     /// - Returns: A stencil template rendered as a string or an Exception.
     func hintForActionCreatedOnDefaultPath(with name: String) throws -> String {
-        return try loadStencilString(HintTemplateNames.actionCreatedOnDefaultPath, context: [TemplateConstants.name: name])
+        let context = TemplatingContextFactory().makeTemplatingContext(name: name)
+        return try loadStencilString(HintTemplateNames.actionCreatedOnDefaultPath, context: context)
     }
     
 }

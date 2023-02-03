@@ -6,14 +6,6 @@ struct Constants {
     static let executor = "Executor"
 }
 
-struct FileConstants {
-    static let packageDotSwift = "Package.swift"
-}
-
-struct TemplateConstants {
-    static let name = "name"
-}
-
 struct HintTemplateNames {
     static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
 }
