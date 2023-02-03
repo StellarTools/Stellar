@@ -3,8 +3,7 @@ name: PR Build and Test
 on:
   pull_request:
     types: [opened, reopened]
-    tags:
-      - '*'
+    branches: *
 
 jobs:
   build:
