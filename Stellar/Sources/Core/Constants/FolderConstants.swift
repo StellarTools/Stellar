@@ -4,7 +4,6 @@ import Foundation
 
 struct FolderConstants {
     static let dotStellarFolder = ".stellar"
-    static let dotStellarActionsFolder = ".stellar/Actions"
     static let executablesFolder = "Executables"
     static let packagesFolder = "Packages"
     static let executorFolder = "Executor"
