@@ -11,9 +11,9 @@ struct TemplatesLocationFactory {
     }
     
     private let templatesLocation: URL
-    
-    init(templatesPath: String? = nil) {
-        templatesLocation = URLManager().templatesLocation(templatesPath)
+
+    init(templatesPath: String? = nil, fileManager: FileManaging = FileManager.default) {
+        templatesLocation = URLManager(fileManager: fileManager).templatesLocation(templatesPath)
     }
     
     var actionTemplatesLocation: URL {
