@@ -2,7 +2,7 @@
 
 import ArgumentParser
 import Foundation
-import Stellar
+import StellarCore
 
 struct CreateActionCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
