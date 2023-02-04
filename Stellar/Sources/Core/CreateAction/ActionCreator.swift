@@ -15,9 +15,9 @@ final public class ActionCreator {
         try fileManager.createFolder(at: actionLocation)
         
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
-        let templatingFileManager = Templater(templatingContext: context)
+        let templater = Templater(templatingContext: context)
         do {
-            try templatingFileManager.templateFolder(source: templatesLocation, destination: actionLocation)
+            try templater.templateFolder(source: templatesLocation, destination: actionLocation)
         } catch {
             Logger().log(error.localizedDescription)
             try fileManager.deleteFolder(at: actionLocation)
