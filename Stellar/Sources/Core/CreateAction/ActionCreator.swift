@@ -10,14 +10,18 @@ final public class ActionCreator {
         self.fileManager = fileManager
     }
     
-    public func createAction(name: String, at location: URL, templatesLocation: URL) throws {
-        let actionLocation = location.appendingPathComponent(name, isDirectory: true)
+    public func createAction(name: String, at location: PathSpec, templatesLocation: URL) throws {
+        let actionLocation = location.url.appendingPathComponent(name, isDirectory: true)
         try fileManager.createFolder(at: actionLocation)
-        
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
         let templater = Templater(templatingContext: context)
         do {
             try templater.templateFolder(source: templatesLocation, destination: actionLocation)
+            
+            if location.isDefault {
+                Logger().hint(try HintManager().hintForActionCreatedOnDefaultPath(with: name))
+            }
+            
         } catch {
             Logger().log(error.localizedDescription)
             try fileManager.deleteFolder(at: actionLocation)

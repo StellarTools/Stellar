@@ -4,7 +4,7 @@ import Foundation
 import StellarCore
 
 class MockFileManager: FileManaging {
-
+    
     enum MockFileManagerError: Error {
         case missingFile(URL)
         case missingFolder(URL)
@@ -51,5 +51,9 @@ class MockFileManager: FileManaging {
 
     func enumerator(at location: URL) -> FileManager.DirectoryEnumerator? {
         FileManager.default.enumerator(at: location)
+    }
+    
+    var currentLocation: URL {
+        URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
     }
 }

@@ -1,6 +1,7 @@
 //  URLManager.swift
 
 import Foundation
+import StellarCore
 
 final class URLManager {
     
@@ -9,6 +10,19 @@ final class URLManager {
     init(fileManager: FileManaging = FileManager.default) {
         self.fileManager = fileManager
     }
+    
+    // MARK: Paths
+    
+    // Default: <cwd>/.stellar/Actions
+    
+    func dotStellarActionsLocation(_ actions: String? = nil) -> PathSpec {
+        if let actions = actions {
+            return (URL(fileURLWithPath: actions), false)
+        }
+        return (fileManager.currentLocation.appendingPathComponent(FolderConstants.dotStellarActionsFolder), true)
+    }
+    
+    // Default: <cwd>/.stellar/Templates
     
     func templatesLocation(_ templates: String?) -> URL {
         if let templates = templates {

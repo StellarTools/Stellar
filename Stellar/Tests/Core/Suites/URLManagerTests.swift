@@ -9,7 +9,7 @@ final class URLManagerTests: XCTestCase {
     private let appLocation = URL(fileURLWithPath: "/tmp/app/")
 
     func test_stellarUrl() throws {
-        let url = urlManager.stellarUrl(at: appLocation)
+        let url = urlManager.dotStellarUrl(at: appLocation)
         XCTAssertEqual(url.path, "/tmp/app/.stellar")
     }
 

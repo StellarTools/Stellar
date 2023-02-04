@@ -1,0 +1,38 @@
+name: PR Build and Test
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches: '*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.macos }}
+    strategy:
+      fail-fast: false
+      matrix:
+        macos: ['macos-12']
+        xcode: ['14.1.0']
+        command: ['test']
+        scheme: ['StellarCLI']
+        destination: ['platform=macOS']
+    steps:
+      - name: Switch xcode to ${{ matrix.xcode }}
+        run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+      - name: Show macOS version (${{ matrix.macos }})
+        run: sw_vers
+      - name: Code Checkout
+        uses: actions/checkout@v2
+      - name: Check xcodebuild version
+        run: xcodebuild -version
+      - name: Check xcode embedded SDKs
+        run: xcodebuild -showsdks
+      - name: Show buildable schemes
+        working-directory: ./Stellar
+        run: xcodebuild -list
+      - name: Show eligible build destinations for ${{ matrix.scheme }}
+        working-directory: ./Stellar
+        run: xcodebuild -showdestinations -scheme ${{ matrix.scheme }}
+      - name: Run command ${{ matrix.command }} on ${{ matrix.scheme }} for destination ${{ matrix.destination }}
+        working-directory: ./Stellar
+        run: xcodebuild ${{ matrix.command }} -scheme ${{ matrix.scheme }} -destination "${{ matrix.destination }}"

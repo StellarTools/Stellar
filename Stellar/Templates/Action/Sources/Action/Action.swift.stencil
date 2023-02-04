@@ -1,4 +1,4 @@
-// {{ name }}.swift
+//  {{ name }}.swift
 
 public struct {{ name }} {
     
