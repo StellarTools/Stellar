@@ -4,16 +4,22 @@ import Foundation
 
 final class URLManager {
     
+    private let fileManager: FileManaging
+    
+    init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
+    }
+    
     // MARK: Paths
     
     // <app_path>/.stellar
-    func stellarUrl(at appLocation: URL) -> URL {
-        appLocation.appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
+    func dotStellarUrl(at appLocation: URL) -> URL {
+        appLocation.appendingPathComponent(FolderConstants.dotStellarFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages
     func packagesUrl(at appLocation: URL) -> URL {
-        stellarUrl(at: appLocation).appendingPathComponent(FolderConstants.packagesFolder, isDirectory: true)
+        dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.packagesFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages/Executor
@@ -28,6 +34,23 @@ final class URLManager {
     
     // <app_path>/.stellar/Executables/
     func executablesUrl(at appLocation: URL) -> URL {
-        stellarUrl(at: appLocation).appendingPathComponent(FolderConstants.executablesFolder, isDirectory: true)
+        dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.executablesFolder, isDirectory: true)
     }
+    
+    // Default: <cwd>/Templates
+    
+    func templatesLocation() -> URL {
+        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+    }
+    
+    // Default: <cwd>/Stellar/Templates/Resources/Strings/Hints
+    
+    func hintFolderLocation() -> URL {
+        fileManager.currentLocation.appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
+            .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
+            .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
+            .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
+            .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
+    }
+    
 }

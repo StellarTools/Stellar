@@ -3,6 +3,7 @@
 import Foundation
 
 public protocol FileManaging {
+    var currentLocation: URL { get }
     func fileExists(at location: URL) -> Bool
     func folderExists(at location: URL) -> Bool
     func createFolder(at location: URL) throws
