@@ -52,7 +52,7 @@ struct Templater {
             throw TemplaterError.invalidTemplateFile(source)
         }
         
-        let templater = TemplateRenderer(templatePath: source.path)
+        let templater = TemplateRenderer(templateLocation: source)
         let content = try templater.renderTemplate(with: templatingContext)
         try Writer().write(content: content, to: destination)
     }
