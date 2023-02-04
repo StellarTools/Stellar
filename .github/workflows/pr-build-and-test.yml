@@ -1,8 +1,6 @@
 name: PR Build and Test
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     types: [opened, reopened]
     branches: '*'
