@@ -34,6 +34,6 @@ Add the newly created action to the Executor's Package.swift.
 Bye 🙂
 
 """
-        XCTAssert(sut == er)
+        XCTAssertEqual(sut, er)
     }
 }

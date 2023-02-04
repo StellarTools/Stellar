@@ -10,6 +10,10 @@ extension FileManager: FileManaging {
         case missingFolder(URL)
     }
     
+    public var currentLocation: URL {
+        URL(fileURLWithPath: currentDirectoryPath)
+    }
+    
     public func fileExists(at location: URL) -> Bool {
         var objcTrue: ObjCBool = false
         return fileExists(atPath: location.path, isDirectory: &objcTrue)
