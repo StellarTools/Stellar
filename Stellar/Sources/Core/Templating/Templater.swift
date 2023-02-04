@@ -40,9 +40,15 @@ struct Templater {
                 .deletingLastPathComponent()
                 .absoluteString
                 .deletingPrefix(source.absoluteString)
-            let folderLocation = destination
-                .appendingPathComponent(subPath, isDirectory: true)
-                .appendingPathComponent(filename, isDirectory: false)
+            let folderLocation: URL
+            if subPath.isEmpty {
+                folderLocation = destination
+                    .appendingPathComponent(filename, isDirectory: false)
+            } else {
+                folderLocation = destination
+                    .appendingPathComponent(subPath, isDirectory: true)
+                    .appendingPathComponent(filename, isDirectory: false)
+            }
             try templateFile(source: templateLocation, destination: folderLocation)
         }
     }
