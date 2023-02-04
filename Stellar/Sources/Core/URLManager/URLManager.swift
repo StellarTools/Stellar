@@ -40,17 +40,12 @@ final class URLManager {
     // Default: <cwd>/Templates
     
     func templatesLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
     }
     
-    // Default: <cwd>/Stellar/Templates/Resources/Strings/Hints
+    // Default: <cwd>/Templates/Hints
     
-    func hintFolderLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
+    func hintsLocation() -> URL {
+        templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
     }
-    
 }

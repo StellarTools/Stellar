@@ -19,7 +19,7 @@ final public class ActionCreator {
             try templater.templateFolder(source: templatesLocation, destination: actionLocation)
             
             if location.isDefault {
-                Logger().hint(try HintManager().hintForActionCreatedOnDefaultPath(with: name))
+                Logger().hint(try HintManager(fileManager: fileManager).hintForActionCreatedOnDefaultPath(with: name))
             }
             
         } catch {
