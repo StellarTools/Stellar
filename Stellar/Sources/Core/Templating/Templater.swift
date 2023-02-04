@@ -12,11 +12,13 @@ struct Templater {
         case invalidTemplateFile(URL)
         case invalidTemplatesFolder(URL)
     }
-    
+
+    private let writer: Writer
     private let fileManager: FileManaging
     private let templatingContext: TemplatingContext
     
     public init(fileManager: FileManaging = FileManager.default, templatingContext: TemplatingContext) {
+        self.writer = Writer(fileManager: fileManager)
         self.fileManager = fileManager
         self.templatingContext = templatingContext
     }
@@ -54,6 +56,6 @@ struct Templater {
         
         let templater = TemplateRenderer(templateLocation: source)
         let content = try templater.renderTemplate(with: templatingContext)
-        try Writer().write(content: content, to: destination)
+        try writer.write(content: content, to: destination)
     }
 }
