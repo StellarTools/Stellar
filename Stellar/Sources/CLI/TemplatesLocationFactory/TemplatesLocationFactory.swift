@@ -4,10 +4,10 @@ import Foundation
 
 struct TemplatesLocationFactory {
     
-    private enum Folder: String {
-        case action = "Action"
-        case executor = "Executor"
-        case task = "Task"
+    enum Folder {
+        static let action = "Action"
+        static let executor = "Executor"
+        static let task = "Task"
     }
     
     private let templatesLocation: URL
@@ -17,14 +17,14 @@ struct TemplatesLocationFactory {
     }
     
     var actionTemplatesLocation: URL {
-        templatesLocation.appendingPathComponent(Folder.action.rawValue)
+        templatesLocation.appendingPathComponent(Folder.action)
     }
     
     var executorTemplatesLocation: URL {
-        templatesLocation.appendingPathComponent(Folder.executor.rawValue)
+        templatesLocation.appendingPathComponent(Folder.executor)
     }
     
     var taskTemplatesLocation: URL {
-        templatesLocation.appendingPathComponent(Folder.task.rawValue)
+        templatesLocation.appendingPathComponent(Folder.task)
     }
 }
