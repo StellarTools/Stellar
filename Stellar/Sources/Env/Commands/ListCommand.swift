@@ -11,7 +11,7 @@ public struct ListCommand: AsyncParsableCommand {
         )
     }
         
-    @Flag(help: "When no version is specified include pre-releases in list")
+    @Flag(help: "Include pre-releases version into the list")
     public var preRelease: Bool = false
     
     // MARK: - Initialization
@@ -21,10 +21,10 @@ public struct ListCommand: AsyncParsableCommand {
     // MARK: - Public Functions
 
     public func run() async throws {
-        try await run(preRelease: preRelease)
+        try await run(includePreRelease: preRelease)
     }
     
-    public func run(preRelease: Bool) async throws {
+    public func run(includePreRelease preRelease: Bool) async throws {
         let manager = InstallManager()
         
         let latestReleases = try await manager.remoteVersions(includePreReleases: preRelease)
