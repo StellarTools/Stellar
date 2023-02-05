@@ -13,4 +13,5 @@ struct FolderConstants {
     static let stellarFolder = "Stellar"
     static let stringsFolder = "Strings"
     static let templatesFolder = "Templates"
+    static let versionsFolder = "Versions"
 }

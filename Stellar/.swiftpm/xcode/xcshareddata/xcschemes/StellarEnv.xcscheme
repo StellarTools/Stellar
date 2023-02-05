@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1400"
+   LastUpgradeVersion = "1420"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Stellar"
-               BuildableName = "Stellar"
-               BlueprintName = "Stellar"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StellarCLI"
-               BuildableName = "StellarCLI"
-               BlueprintName = "StellarCLI"
+               BlueprintIdentifier = "StellarEnv"
+               BuildableName = "StellarEnv"
+               BlueprintName = "StellarEnv"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,20 +31,6 @@
                BlueprintIdentifier = "StellarTests"
                BuildableName = "StellarTests"
                BlueprintName = "StellarTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StellarEnv"
-               BuildableName = "StellarEnv"
-               BlueprintName = "StellarEnv"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -91,7 +63,8 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      viewDebuggingEnabled = "No">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
@@ -102,15 +75,24 @@
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "StellarCLI"
-            BuildableName = "StellarCLI"
-            BlueprintName = "StellarCLI"
-            ReferencedContainer = "container:">
-         </BuildableReference>
-      </MacroExpansion>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "install"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "0.0.4"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "local"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "list"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

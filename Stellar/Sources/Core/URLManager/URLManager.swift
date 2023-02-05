@@ -40,7 +40,11 @@ final class URLManager {
     // Default: <cwd>/Templates
     
     func templatesLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+        currentLocation().appendingPathComponent(FolderConstants.templatesFolder)
+    }
+    
+    func currentLocation() -> URL {
+        fileManager.currentLocation
     }
     
     // Default: <cwd>/Stellar/Templates/Resources/Strings/Hints
@@ -51,6 +55,33 @@ final class URLManager {
             .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
             .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
             .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
+    }
+    
+    // MARK: - Stellar System Directories
+    
+    // Default: ~/.stellar
+    
+    func systemLocation(subfolder: String? = nil) -> URL {
+        let homeStellarURL = fileManager
+            .homeDirectoryForCurrentUser
+            .appendingPathComponent(FolderConstants.dotStellarFolder)
+        guard let subfolder else {
+            return homeStellarURL
+        }
+        
+        return homeStellarURL.appendingPathComponent(subfolder)
+    }
+    
+    func systemVersionsLocation(_ version: String? = nil) throws -> URL {
+        var url = systemLocation().appendingPathComponent(FolderConstants.versionsFolder)
+        if let version {
+            url = url.appendingPathComponent(version)
+        }
+        
+        if !fileManager.fileExists(at: url) {
+            try fileManager.createFolder(at: url)
+        }
+        return url
     }
     
 }

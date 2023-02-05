@@ -10,6 +10,9 @@ let package = Package(
         .executable(
             name: "StellarCLI",
             targets: ["StellarCLI"]),
+        .executable(
+            name: "StellarEnv",
+            targets: ["StellarEnv"]),
         .library(
             name: "Stellar",
             targets: ["Stellar"]),
@@ -20,6 +23,12 @@ let package = Package(
         .package(url: "https://github.com/JohnSundell/ShellOut.git", .upToNextMajor(from: "2.3.0"))
     ],
     targets: [
+        .executableTarget(
+            name: "StellarEnv",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "Stellar")],
+            path: "Sources/Env"),
         .executableTarget(
             name: "StellarCLI",
             dependencies: [
