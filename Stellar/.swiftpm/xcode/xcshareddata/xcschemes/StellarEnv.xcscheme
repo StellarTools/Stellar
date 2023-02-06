@@ -90,6 +90,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "list"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "update"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

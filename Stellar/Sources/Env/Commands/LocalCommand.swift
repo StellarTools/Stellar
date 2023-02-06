@@ -28,11 +28,11 @@ struct LocalCommand: ParsableCommand {
     
     private func pin(path: String?, toVersion version: String) throws {
         let urlPath = (path != nil ? URL(fileURLWithPath: path!) : nil)
-        try InstallManager().pin(url: urlPath, toVersion: version)
+        try InstallerManager().pin(url: urlPath, toVersion: version)
     }
     
     private func enumerateInstalledVersions() throws {
-        let versions = try InstallManager().installedVersions()
+        let versions = try InstallerManager().installedVersions()
         guard !versions.isEmpty else {
             Logger().log("No versions of stellar are installed yet")
             return

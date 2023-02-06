@@ -9,7 +9,8 @@ struct EnvCommand: AsyncParsableCommand {
         subcommands: [
             LocalCommand.self,
             ListCommand.self,
-            InstallCommand.self
+            InstallCommand.self,
+            UpdateCommand.self
         ]
     )
     

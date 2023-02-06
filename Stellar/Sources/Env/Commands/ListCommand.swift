@@ -25,9 +25,9 @@ public struct ListCommand: AsyncParsableCommand {
     }
     
     public func run(includePreRelease preRelease: Bool) async throws {
-        let manager = InstallManager()
+        let versionsProvider = VersionProvider()
         
-        let latestReleases = try await manager.remoteVersions(includePreReleases: preRelease)
+        let latestReleases = try await versionsProvider.remoteVersions(includePreReleases: preRelease)
         guard !latestReleases.isEmpty else {
             Logger().log("Failed to evaluate remote releases on stellar project")
             return

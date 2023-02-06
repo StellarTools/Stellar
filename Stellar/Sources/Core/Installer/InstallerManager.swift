@@ -6,16 +6,16 @@ public protocol InstallManaging {
     
     func installedVersions() throws -> [LocalRelease]
     func install(version: String) async throws
-    func remoteVersions(includePreReleases: Bool) async throws -> [RemoteRelease]
     func pin(url: URL?, toVersion version: String) throws
     
 }
 
-public final class InstallManager: InstallManaging {
+public final class InstallerManager: InstallManaging {
     
     private var urlManager = URLManager()
     private let fileManager: FileManaging
     private let networkManager = NetworkManager()
+    private let versionProvider = VersionProvider()
     
     public init(fileManager: FileManaging = FileManager.default) {
         self.fileManager = fileManager
@@ -62,23 +62,6 @@ public final class InstallManager: InstallManaging {
                 
                 Logger().log("Stellar version \(version) installed")
         })
-    }
-    
-    public func remoteVersions(includePreReleases: Bool = false) async throws -> [RemoteRelease] {
-        guard let latestReleases = try await networkManager.jsonRequest(
-            model: [RemoteRelease].self,
-            url: RemoteConstants.gitHubReleasesList
-        ) else {
-            return []
-        }
-        
-        guard !includePreReleases else {
-            return latestReleases
-        }
-        
-        return latestReleases.filter {
-            return !$0.prerelease
-        }
     }
     
 }

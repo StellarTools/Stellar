@@ -1,12 +1,16 @@
 import Foundation
 
-public struct RemoteRelease: Codable, Comparable {
+public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
     
     public let url: URL
     public let name: String
     public let prerelease: Bool
     public let assets: [Asset]
     public let tag_name: String
+    
+    public var version: SemVer {
+        SemVer(stringLiteral: tag_name)
+    }
 
     public struct Asset: Codable {
         let url: URL
@@ -14,11 +18,15 @@ public struct RemoteRelease: Codable, Comparable {
     }
     
     public static func < (lhs: RemoteRelease, rhs: RemoteRelease) -> Bool {
-        SemVer(stringLiteral: lhs.tag_name) < SemVer(stringLiteral: rhs.tag_name)
+        lhs.version < rhs.version
     }
     
     public static func == (lhs: RemoteRelease, rhs: RemoteRelease) -> Bool {
-        SemVer(stringLiteral: lhs.tag_name) == SemVer(stringLiteral: rhs.tag_name)
+        lhs.version == rhs.version
+    }
+    
+    public var description: String {
+        version.description
     }
     
 }

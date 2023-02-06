@@ -31,12 +31,13 @@ public struct InstallCommand: AsyncParsableCommand {
     }
     
     public func run(version: String?) async throws {
-        let manager = InstallManager()
+        let manager = InstallerManager()
+        let versionsProvider = VersionProvider()
         
         if let version { // install specified version
             try await manager.install(version: version)
         } else { // evaluate the latest stable/pre-release version avaiable
-            guard let latestVersion = try await manager.remoteVersions(includePreReleases: preRelease).first else {
+            guard let latestVersion = try await versionsProvider.remoteVersions(includePreReleases: preRelease).first else {
                 Logger().log("Failed to evaluate latest available version on remote")
                 return
             }
