@@ -14,7 +14,7 @@ jobs:
         macos: ['macos-12']
         xcode: ['14.1.0']
         command: ['build']
-        scheme: ['StellarCLI']
+        scheme: ['StellarCLI','StellarEnv']
         destination: ['platform=macOS']
     steps:
       - name: Switch xcode to ${{ matrix.xcode }}
@@ -55,7 +55,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: true
-      - name: Upload release asset
+      - name: Upload StellarCLI
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -63,4 +63,13 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./Stellar/.build/apple/Products/Release/StellarCLI.zip
           asset_name: StellarCLI.zip
+          asset_content_type: application/zip
+      - name: Upload StellarEnv
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Stellar/.build/apple/Products/Release/StellarEnv.zip
+          asset_name: StellarEnv.zip
           asset_content_type: application/zip
