@@ -62,6 +62,34 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StellarCore"
+               BuildableName = "StellarCore"
+               BlueprintName = "StellarCore"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Stellar_StellarCoreTests"
+               BuildableName = "Stellar_StellarCoreTests"
+               BlueprintName = "Stellar_StellarCoreTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -77,6 +105,26 @@
                BlueprintIdentifier = "StellarTests"
                BuildableName = "StellarTests"
                BlueprintName = "StellarTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StellarCLITests"
+               BuildableName = "StellarCLITests"
+               BlueprintName = "StellarCLITests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StellarCoreTests"
+               BuildableName = "StellarCoreTests"
+               BlueprintName = "StellarCoreTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

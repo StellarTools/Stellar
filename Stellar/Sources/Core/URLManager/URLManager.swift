@@ -44,32 +44,18 @@ final class URLManager {
     }
     
     // Default: <cwd>/Templates/Hints
-    
-    func hintFolderLocation() -> URL {
-        
-        if let x = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] {
+    func hintsLocation() -> URL {
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
             //            print(Bundle.allBundles)
             //            let x = Bundle.module.url(forResource: template, withExtension: "stencil")
             //            let y = Bundle.module.url(forResource: "Templates/test", withExtension: "txt")
             //            let fileManager = FileManager.default
             return Bundle.module.resourceURL!.appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
                 .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-                .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
-                .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
                 .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
             //let docsArray = try? fileManager.contentsOfDirectory(atPath: Bundle.module.resourcePath! + "/Templates")
         }
         
-        
-        return fileManager.currentLocation.appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
-    }
-
-    func hintsLocation() -> URL {
-        templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
-
+        return templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
     }
 }

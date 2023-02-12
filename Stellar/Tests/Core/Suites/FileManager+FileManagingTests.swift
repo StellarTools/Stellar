@@ -1,7 +1,6 @@
 //  FileManager+FileManagingTests.swift
 
 import XCTest
-@testable import StellarCore
 
 final class FileManager_FileManagingTests: XCTestCase {
 
