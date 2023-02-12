@@ -9,7 +9,7 @@ final class StencilResourcesTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        fileManager = MockFileManager(currentLocation: Bundle.module.resourceURL!)
+        fileManager = MockFileManager(currentLocation: Bundle.module.resourceURL!.appendingPathComponent("/Resources", isDirectory: true))
     }
     
     override func tearDownWithError() throws {
