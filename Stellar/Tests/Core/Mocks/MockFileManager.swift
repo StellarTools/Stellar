@@ -12,6 +12,11 @@ class MockFileManager: FileManaging {
 
     var files = [URL: Data]()
     var folders = [URL]()
+    var currentLocation: URL
+    
+    init(currentLocation: URL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)) {
+        self.currentLocation = currentLocation
+    }
 
     func fileExists(at location: URL) -> Bool {
         files[location] != nil
@@ -53,7 +58,4 @@ class MockFileManager: FileManaging {
         FileManager.default.enumerator(at: location)
     }
     
-    var currentLocation: URL {
-        URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-    }
 }
