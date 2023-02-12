@@ -40,18 +40,18 @@ final class URLManager {
     // Default: <cwd>/Templates
     
     func templatesLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
     }
     
-    // Default: <cwd>/Stellar/Templates/Resources/Strings/Hints
+    // Default: <cwd>/Templates/Hints
     
     func hintFolderLocation() -> URL {
         
         if let x = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] {
-//            print(Bundle.allBundles)
-//            let x = Bundle.module.url(forResource: template, withExtension: "stencil")
-//            let y = Bundle.module.url(forResource: "Templates/test", withExtension: "txt")
-//            let fileManager = FileManager.default
+            //            print(Bundle.allBundles)
+            //            let x = Bundle.module.url(forResource: template, withExtension: "stencil")
+            //            let y = Bundle.module.url(forResource: "Templates/test", withExtension: "txt")
+            //            let fileManager = FileManager.default
             return Bundle.module.resourceURL!.appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
                 .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
                 .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
@@ -59,7 +59,7 @@ final class URLManager {
                 .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
             //let docsArray = try? fileManager.contentsOfDirectory(atPath: Bundle.module.resourcePath! + "/Templates")
         }
-
+        
         
         return fileManager.currentLocation.appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
             .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
@@ -67,5 +67,9 @@ final class URLManager {
             .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
             .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
     }
-    
+
+    func hintsLocation() -> URL {
+        templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
+
+    }
 }

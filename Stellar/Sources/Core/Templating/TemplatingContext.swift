@@ -2,4 +2,4 @@
 
 import Foundation
 
-typealias TemplatingContext = [String: Any]
+typealias TemplatingContext = [String: String]

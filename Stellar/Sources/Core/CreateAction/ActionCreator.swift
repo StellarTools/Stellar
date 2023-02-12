@@ -14,9 +14,9 @@ final public class ActionCreator {
         let actionLocation = location.appendingPathComponent(name, isDirectory: true)
         try fileManager.createFolder(at: actionLocation)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
-        let templatingFileManager = Templater(templatingContext: context)
+        let templater = Templater(templatingContext: context)
         do {
-            try templatingFileManager.templateFolder(source: templatesLocation, destination: actionLocation)
+            try templater.templateFolder(source: templatesLocation, destination: actionLocation)
             
             Logger().hint(try HintManager().hintForActionCreatedOnDefaultPath(with: actionLocation.relativePath, name: name))
             

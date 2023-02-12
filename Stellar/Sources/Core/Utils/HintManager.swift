@@ -4,16 +4,15 @@ import Foundation
 import PathKit
 
 class HintManager {
+
+    struct HintTemplateNames {
+        static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
+    }
     
-    /// Renders an hint with a given the template and context
-    /// - Parameters:
-    ///   - template: the template name
-    ///   - context: the template context that should replace the placeholder variables
-    /// - Returns: A rendered text or an Exception.
-    private func renderHint(using template: String, context: [String: Any]) throws -> String {
-        let hintLocation = URLManager().hintFolderLocation().appendingPathComponent(template, isDirectory: false)
-        let templateRenderer = TemplateRenderer(templatePath: hintLocation.path)
-        return try templateRenderer.renderTemplate(with: context)
+    private let fileManager: FileManaging
+    
+    init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
     }
     
     /// Renders the hint for Anctions created on the default path with a given the template and context
@@ -25,4 +24,16 @@ class HintManager {
         return try renderHint(using: HintTemplateNames.actionCreatedOnDefaultPath, context: context)
     }
     
+    /// Renders an hint with a given the template and context
+    /// - Parameters:
+    ///   - template: the template name
+    ///   - context: the template context that should replace the placeholder variables
+    /// - Returns: A rendered text or an Exception.
+    private func renderHint(using template: String, context: TemplatingContext) throws -> String {
+        let hintLocation = URLManager(fileManager: fileManager)
+            .hintsLocation()
+            .appendingPathComponent(template, isDirectory: false)
+        let templateRenderer = TemplateRenderer(templateLocation: hintLocation)
+        return try templateRenderer.renderTemplate(with: context)
+    }
 }

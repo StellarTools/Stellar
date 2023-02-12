@@ -1,9 +1,12 @@
-name: PR Build and Test
+name: Run Tests
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
-    types: [opened, reopened]
-    branches: '*'
+    branches:
+      - master
 
 jobs:
   build:
