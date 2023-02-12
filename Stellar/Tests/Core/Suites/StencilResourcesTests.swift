@@ -1,11 +1,12 @@
 //  StencilResourcesTests.swift
 
 import XCTest
-@testable import Stellar
+@testable import StellarCore
 
 final class StencilResourcesTests: XCTestCase {
+    
     func testHintForActionCreatedOnDefaultPath() throws {
-        let sut = try HintManager().hintForActionCreatedOnDefaultPath(with: "TestAction")
+        let sut = try HintManager(fileManager: MockFileManager()).hintForActionCreatedOnDefaultPath(with: "TestAction")
         let er = """
 
 

@@ -1,7 +1,7 @@
 //  URLManager.swift
 
 import Foundation
-import Stellar
+import StellarCore
 
 final class URLManager {
     

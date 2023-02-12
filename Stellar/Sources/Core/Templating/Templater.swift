@@ -12,11 +12,13 @@ struct Templater {
         case invalidTemplateFile(URL)
         case invalidTemplatesFolder(URL)
     }
-    
+
+    private let writer: Writer
     private let fileManager: FileManaging
     private let templatingContext: TemplatingContext
     
     public init(fileManager: FileManaging = FileManager.default, templatingContext: TemplatingContext) {
+        self.writer = Writer(fileManager: fileManager)
         self.fileManager = fileManager
         self.templatingContext = templatingContext
     }
@@ -38,9 +40,15 @@ struct Templater {
                 .deletingLastPathComponent()
                 .absoluteString
                 .deletingPrefix(source.absoluteString)
-            let renderLocation = destination
-                .appendingPathComponent(subPath, isDirectory: true)
-                .appendingPathComponent(filename, isDirectory: false)
+            let renderLocation: URL
+            if subPath.isEmpty {
+                renderLocation = destination
+                    .appendingPathComponent(filename, isDirectory: false)
+            } else {
+                renderLocation = destination
+                    .appendingPathComponent(subPath, isDirectory: true)
+                    .appendingPathComponent(filename, isDirectory: false)
+            }
             try templateFile(source: templateLocation, destination: renderLocation)
         }
     }
@@ -52,8 +60,8 @@ struct Templater {
             throw TemplaterError.invalidTemplateFile(source)
         }
         
-        let templater = TemplateRenderer(templatePath: source.path)
+        let templater = TemplateRenderer(templateLocation: source)
         let content = try templater.renderTemplate(with: templatingContext)
-        try Writer().write(content: content, to: destination)
+        try writer.write(content: content, to: destination)
     }
 }
