@@ -3,7 +3,7 @@ import Foundation
 import ArgumentParser
 import Stellar
 
-struct UpdateCommand: AsyncParsableCommand {
+struct UpdateCommand: ParsableCommand {
     
     static var configuration: CommandConfiguration {
         CommandConfiguration(
@@ -12,11 +12,9 @@ struct UpdateCommand: AsyncParsableCommand {
         )
     }
 
-    public func run() async throws {
+    public func run() throws {
         Logger().log("Checking for updates...")
-        
-        try await EnvInstaller().install(version: "3.15.0")
-        //try await UpdaterManager().update()
+        try EnvInstaller().install(version: "3.15.0")
     }
     
 }

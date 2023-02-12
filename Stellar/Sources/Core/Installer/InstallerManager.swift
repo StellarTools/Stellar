@@ -41,8 +41,8 @@ public final class InstallerManager: InstallManaging {
     }
     
     public func install(version: String) async throws {
-        let releasesURL = URL(string:"https://github.com/tuist/tuist/releases/download/3.15.0/tuistenv.zip")!
-        // let releasesURL = RemoteConstants.releasesURL(forVersion: version)
+        // let releasesURL = URL(string:"https://github.com/tuist/tuist/releases/download/3.15.0/tuistenv.zip")!
+        let releasesURL = RemoteConstants.releasesURL(forVersion: version)
         let installURL = try urlManager.systemVersionsLocation(version)
         
         try await fileManager.withTemporaryDirectory(

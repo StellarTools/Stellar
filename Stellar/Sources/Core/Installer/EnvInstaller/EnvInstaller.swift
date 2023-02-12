@@ -14,8 +14,7 @@ public final class EnvInstaller: EnvInstalling {
         
     }
     
-    public func install(version: String) async throws {
-
+    public func install(version: String) throws {
         let binaryPath = try shellOut(to: "which", arguments: ["tuist"])
         
         print(binaryPath)
