@@ -6,6 +6,14 @@ struct TemplatingContextFactory {
     
     private struct TemplateConstants {
         static let name = "name"
+        static let url = "url"
+    }
+    
+    func makeTemplatingContext(url: String, name: String) -> TemplatingContext {
+        [
+            TemplateConstants.url: url,
+            TemplateConstants.name: name
+        ]
     }
     
     func makeTemplatingContext(name: String) -> TemplatingContext {

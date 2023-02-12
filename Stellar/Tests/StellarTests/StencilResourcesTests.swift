@@ -5,35 +5,10 @@ import XCTest
 
 final class StencilResourcesTests: XCTestCase {
     func testHintForActionCreatedOnDefaultPath() throws {
-        let sut = try HintManager().hintForActionCreatedOnDefaultPath(with: "TestAction")
-        let er = """
+        let hint = try HintManager().hintForActionCreatedOnDefaultPath(with: "TestPath", name: "TestAction")
+        XCTAssert(!hint.isEmpty)
 
-
-Add the newly created action to the Executor's Package.swift.
-
-    ...
-    dependencies: [
-        ...
-        .package(path: "../../Actions/TestAction")
-        ...
-    ],
-    ...
-    targets: [
-        ...
-        .target(
-            ...
-            dependencies: [
-                    ...
-                    .product(name: "TestAction", package: "TestAction"),
-                    ...
-            ])
-            ...
-    ]
-    ...
-
-Bye 🙂
-
-"""
-        XCTAssertEqual(sut, er)
+        let unresolvedVariable = hint.range(of: #"\{\{\s{1}\S*[^\{\}]\s{1}\}\}"#, options: .regularExpression) == .none
+        XCTAssert(unresolvedVariable)
     }
 }

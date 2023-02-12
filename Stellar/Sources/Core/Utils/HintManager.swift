@@ -20,8 +20,8 @@ class HintManager {
     /// - Parameters:
     ///   - name: the name of the Action
     /// - Returns: The rendered text or an Exception.
-    func hintForActionCreatedOnDefaultPath(with name: String) throws -> String {
-        let context = TemplatingContextFactory().makeTemplatingContext(name: name)
+    func hintForActionCreatedOnDefaultPath(with url: String, name: String) throws -> String {
+        let context = TemplatingContextFactory().makeTemplatingContext(url: url, name: name)
         return try renderHint(using: HintTemplateNames.actionCreatedOnDefaultPath, context: context)
     }
     

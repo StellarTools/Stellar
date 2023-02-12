@@ -3,6 +3,6 @@
 import Foundation
 
 struct FolderConstants {
-    static let templatesFolder = "Templates"
     static let dotStellarActionsFolder = ".stellar/Actions"
+    static let templatesFolder = "Templates"
 }

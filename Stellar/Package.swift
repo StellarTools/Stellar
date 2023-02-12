@@ -25,16 +25,20 @@ let package = Package(
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "Stellar")],
-            path: "Sources/CLI"),
+            path: "Sources/CLI"
+        ),
         .target(
             name: "Stellar",
             dependencies: [
                 .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "StencilSwiftKit", package: "StencilSwiftKit")
             ],
-            path: "Sources/Core"),
+            path: "Sources/Core",
+            resources: [.copy("Resources")]
+        ),
         .testTarget(
             name: "StellarTests",
-            dependencies: ["Stellar"]),
+            dependencies: ["Stellar"]
+        )
     ]
 )
