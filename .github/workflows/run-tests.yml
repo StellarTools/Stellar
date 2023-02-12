@@ -17,7 +17,7 @@ jobs:
         macos: ['macos-12']
         xcode: ['14.1.0']
         command: ['test']
-        scheme: ['StellarCore', 'StellarCLI']
+        scheme: ['StellarCLI']
         destination: ['platform=macOS']
     steps:
       - name: Switch xcode to ${{ matrix.xcode }}
