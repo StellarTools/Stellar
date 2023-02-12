@@ -42,6 +42,7 @@ let package = Package(
         .testTarget(
             name: "StellarCoreTests",
             dependencies: ["StellarCore"],
+            resources: [.copy("Resources")])
             path: "Tests/Core")
     ]
 )
