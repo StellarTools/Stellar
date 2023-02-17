@@ -6,7 +6,7 @@ import PathKit
 class HintManager {
 
     struct HintTemplateNames {
-        static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
+        static let actionCreated = "ActionCreated.stencil"
     }
     
     private let hintTemplatesLocation: URL
@@ -15,20 +15,20 @@ class HintManager {
         self.hintTemplatesLocation = hintTemplatesLocation
     }
     
-    /// Renders the hint for Anctions created on the default path with a given the template and context
+    /// Renders the 'ActionCreated" hint template.
     /// - Parameters:
     ///   - name: the name of the Action
-    /// - Returns: The rendered text or an Exception.
-    func hintForActionCreatedOnDefaultPath(with name: String) throws -> String {
-        let context = TemplatingContextFactory().makeTemplatingContext(name: name)
-        return try renderHint(using: HintTemplateNames.actionCreatedOnDefaultPath, context: context)
+    /// - Returns: The rendered template
+    func hintForActionCreated(name: String, url: String) throws -> String {
+        let context = TemplatingContextFactory().makeTemplatingContext(name: name, url: url)
+        return try renderHint(using: HintTemplateNames.actionCreated, context: context)
     }
     
-    /// Renders an hint with a given the template and context
+    /// Renders a given hint template using a context.
     /// - Parameters:
     ///   - template: the template name
     ///   - context: the template context that should replace the placeholder variables
-    /// - Returns: A rendered text or an Exception.
+    /// - Returns: A rendered template
     private func renderHint(using template: String, context: TemplatingContext) throws -> String {
         let hintLocation = hintTemplatesLocation.appendingPathComponent(template, isDirectory: false)
         let templateRenderer = TemplateRenderer(templateLocation: hintLocation)

@@ -11,21 +11,18 @@ final public class ActionCreator {
     }
     
     public func createAction(name: String,
-                             at location: PathSpec,
+                             at location: URL,
                              actionTemplatesLocation: URL,
                              hintTemplatesLocation: URL) throws {
-        let actionLocation = location.url.appendingPathComponent(name, isDirectory: true)
+        let actionLocation = location.appendingPathComponent(name, isDirectory: true)
         try fileManager.createFolder(at: actionLocation)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
         let templater = Templater(templatingContext: context)
         do {
             try templater.templateFolder(source: actionTemplatesLocation, destination: actionLocation)
-            
-            if location.isDefault {
-                let hintManager = HintManager(hintTemplatesLocation: hintTemplatesLocation)
-                let hint = try hintManager.hintForActionCreatedOnDefaultPath(with: name)
-                Logger().hint(hint)
-            }
+            let hintManager = HintManager(hintTemplatesLocation: hintTemplatesLocation)
+            let hint = try hintManager.hintForActionCreated(name: name, url: actionLocation.relativePath)
+            Logger().hint(hint)
             
         } catch {
             Logger().log(error.localizedDescription)

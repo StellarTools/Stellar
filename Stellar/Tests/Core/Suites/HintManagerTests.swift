@@ -20,8 +20,8 @@ final class HintManagerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testHintForActionCreatedOnDefaultPath() throws {
-        let sut = try manager.hintForActionCreatedOnDefaultPath(with: "TestAction")
+    func testHintForActionCreated() throws {
+        let sut = try manager.hintForActionCreated(name: "TestAction", url: "../Actions/TestAction")
         let er = """
 
 
@@ -30,7 +30,7 @@ Add the newly created action to the Executor's Package.swift.
     ...
     dependencies: [
         ...
-        .package(path: "../../Actions/TestAction")
+        .package(path: "../Actions/TestAction")
         ...
     ],
     ...
