@@ -9,10 +9,10 @@ class HintManager {
         static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
     }
     
-    private let fileManager: FileManaging
+    private let hintTemplatesLocation: URL
     
-    init(fileManager: FileManaging = FileManager.default) {
-        self.fileManager = fileManager
+    init(hintTemplatesLocation: URL) {
+        self.hintTemplatesLocation = hintTemplatesLocation
     }
     
     /// Renders the hint for Anctions created on the default path with a given the template and context
@@ -30,9 +30,7 @@ class HintManager {
     ///   - context: the template context that should replace the placeholder variables
     /// - Returns: A rendered text or an Exception.
     private func renderHint(using template: String, context: TemplatingContext) throws -> String {
-        let hintLocation = URLManager(fileManager: fileManager)
-            .hintsLocation()
-            .appendingPathComponent(template, isDirectory: false)
+        let hintLocation = hintTemplatesLocation.appendingPathComponent(template, isDirectory: false)
         let templateRenderer = TemplateRenderer(templateLocation: hintLocation)
         return try templateRenderer.renderTemplate(with: context)
     }

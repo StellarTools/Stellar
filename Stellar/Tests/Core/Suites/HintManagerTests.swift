@@ -1,12 +1,27 @@
-//  StencilResourcesTests.swift
+//  HintManagerTests.swift
 
 import XCTest
 @testable import StellarCore
 
-final class StencilResourcesTests: XCTestCase {
+final class HintManagerTests: XCTestCase {
+    
+    var manager: HintManager!
+    
+    override func setUp() {
+        super.setUp()
+        let url = Bundle.stellarCore
+            .url(forResource: "Templates", withExtension: "bundle", subdirectory: "Resources")!
+            .appendingPathComponent("Hints")
+        manager = HintManager(hintTemplatesLocation: url)
+    }
+    
+    override func tearDown() {
+        manager = nil
+        super.tearDown()
+    }
     
     func testHintForActionCreatedOnDefaultPath() throws {
-        let sut = try HintManager(fileManager: MockFileManager()).hintForActionCreatedOnDefaultPath(with: "TestAction")
+        let sut = try manager.hintForActionCreatedOnDefaultPath(with: "TestAction")
         let er = """
 
 
@@ -31,8 +46,6 @@ Add the newly created action to the Executor's Package.swift.
             ...
     ]
     ...
-
-Bye 🙂
 
 """
         XCTAssertEqual(sut, er)
