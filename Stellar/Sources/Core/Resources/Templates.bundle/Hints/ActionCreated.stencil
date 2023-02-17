@@ -1,5 +1,3 @@
-{# carriage returs will be shown in the redered string #}
-
 Add the newly created action to the Executor's Package.swift.
 
     ...

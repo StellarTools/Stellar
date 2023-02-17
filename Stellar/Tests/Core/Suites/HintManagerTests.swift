@@ -5,49 +5,32 @@ import XCTest
 
 final class HintManagerTests: XCTestCase {
     
-    var manager: HintManager!
+    private var hintManager: HintManager!
+    
+    private let hintTemplatesUrl = Bundle.stellarCore
+        .url(forResource: "Templates", withExtension: "bundle", subdirectory: "Resources")!
+        .appendingPathComponent("Hints")
     
     override func setUp() {
         super.setUp()
-        let url = Bundle.stellarCore
-            .url(forResource: "Templates", withExtension: "bundle", subdirectory: "Resources")!
-            .appendingPathComponent("Hints")
-        manager = HintManager(hintTemplatesLocation: url)
+        hintManager = HintManager(hintTemplatesLocation: hintTemplatesUrl)
     }
     
     override func tearDown() {
-        manager = nil
+        hintManager = nil
         super.tearDown()
     }
     
     func testHintForActionCreated() throws {
-        let sut = try manager.hintForActionCreated(name: "TestAction", url: "../Actions/TestAction")
-        let er = """
-
-
-Add the newly created action to the Executor's Package.swift.
-
-    ...
-    dependencies: [
-        ...
-        .package(path: "../Actions/TestAction")
-        ...
-    ],
-    ...
-    targets: [
-        ...
-        .target(
-            ...
-            dependencies: [
-                    ...
-                    .product(name: "TestAction", package: "TestAction"),
-                    ...
-            ])
-            ...
-    ]
-    ...
-
-"""
-        XCTAssertEqual(sut, er)
+        let nameValue = "TestAction"
+        let urlValue = "../Actions/TestAction"
+        let hint = try hintManager.hintForActionCreated(name: nameValue, url: urlValue)
+        let createdActionHintTemplate = hintTemplatesUrl
+            .appendingPathComponent("ActionCreated")
+            .appendingPathExtension("stencil")
+        let expected = try String(contentsOf: createdActionHintTemplate)
+        .replacingOccurrences(of: "{{ name }}", with: nameValue)
+        .replacingOccurrences(of: "{{ url }}", with: urlValue)
+        XCTAssertEqual(hint, expected)
     }
 }
