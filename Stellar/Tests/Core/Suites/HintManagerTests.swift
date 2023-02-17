@@ -21,7 +21,7 @@ final class HintManagerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testHintForActionCreated() throws {
+    func test_hintForActionCreated() throws {
         let nameValue = "TestAction"
         let urlValue = "../Actions/TestAction"
         let hint = try hintManager.hintForActionCreated(name: nameValue, url: urlValue)
