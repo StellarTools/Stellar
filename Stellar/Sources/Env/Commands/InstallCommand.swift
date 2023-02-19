@@ -3,7 +3,7 @@ import Foundation
 import Stellar
 
 /// The following tool is used to install a version of stellar into the system.
-public struct InstallCommand: AsyncParsableCommand {
+public struct InstallCommand: ParsableCommand {
     
     public static var configuration: CommandConfiguration {
         CommandConfiguration(
@@ -26,25 +26,8 @@ public struct InstallCommand: AsyncParsableCommand {
     
     // MARK: - Public Functions
 
-    public func run() async throws {
-        try await run(version: version)
-    }
-    
-    public func run(version: String?) async throws {
-        let manager = InstallerManager()
-        let versionsProvider = VersionProvider()
-        
-        if let version { // install specified version
-            try await manager.install(version: version)
-        } else { // evaluate the latest stable/pre-release version avaiable
-            guard let latestVersion = try await versionsProvider.remoteVersions(includePreReleases: preRelease).first else {
-                Logger().log("Failed to evaluate latest available version on remote")
-                return
-            }
-            
-            Logger().log("Latest \(preRelease ? "prerelease" : "stable") release found is \(latestVersion.tag_name)")
-            try await manager.install(version: latestVersion.tag_name)
-        }
+    public func run() throws {
+        try InstallerManager().install(version: version, preRelease: preRelease)
     }
     
 }

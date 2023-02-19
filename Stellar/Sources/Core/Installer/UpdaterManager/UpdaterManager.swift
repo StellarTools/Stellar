@@ -39,6 +39,8 @@ public final class UpdaterManager: UpdaterManaging {
         // Update stellar env
         Logger().log("Updating stellarenv")
         try envInstaller.install(version: latestRemoteVersion.description)
+        
+        Logger().log("Stellar version \(latestRemoteVersion.description) installed")
     }
     
     

@@ -2,7 +2,7 @@ import ArgumentParser
 import Foundation
 import Stellar
 
-public struct ListCommand: AsyncParsableCommand {
+public struct ListCommand: ParsableCommand {
     
     public static var configuration: CommandConfiguration {
         CommandConfiguration(
@@ -27,7 +27,7 @@ public struct ListCommand: AsyncParsableCommand {
     public func run(includePreRelease preRelease: Bool) async throws {
         let versionsProvider = VersionProvider()
         
-        let latestReleases = try await versionsProvider.remoteVersions(includePreReleases: preRelease)
+        let latestReleases = try versionsProvider.remoteVersions(includePreReleases: preRelease)
         guard !latestReleases.isEmpty else {
             Logger().log("Failed to evaluate remote releases on stellar project")
             return

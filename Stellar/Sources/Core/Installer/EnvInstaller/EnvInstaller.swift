@@ -2,68 +2,76 @@ import Foundation
 import ShellOut
 import AppKit
 
+// MARK: - EnvInstalling
+
 protocol EnvInstalling {
 
-    func install(version: String) async throws
+    func install(version: String) throws
+    func install() throws
     
 }
 
+// MARK: - EnvInstaller
 
 public final class EnvInstaller: EnvInstalling {
     
-    private let fileManager: FileManaging
-
+    // MARK: - Public Properties
     
-    public init(fileManager: FileManaging = FileManager.default) {
-        self.fileManager = fileManager
-    }
+    /// File manager to use.
+    public var fileManager: FileManaging = FileManager.default
     
-    public func install(version: String) throws {
-        do {
-            let envRemoteURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
-            
-            // TODO: It does not work on my machine...
-            // let installationPath = try shellOut(to: "which", arguments: [RemoteConstants.stellarEnvCLI])
-            let installationPath = "/usr/local/bin/tuist"
-            
-            Logger().log("Downloading StellarEnv version \(version)")
-        
-            try fileManager.withTemporaryDirectory(
-                path: nil,
-                prefix: "stellarenv_installation",
-                autoRemove: false, { temporaryURL in
-                    
-                    print(ProcessInfo.processInfo.arguments[0])
-                    
-                    // Download bundle
-                    let downloadFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
-                    try shellOut(to: "/usr/bin/curl", arguments: ["-LSs","--output", downloadFileURL.path, envRemoteURL.absoluteString])
-                    NSWorkspace.shared.activateFileViewerSelecting([downloadFileURL])
+    /// Provider for remote versions.
+    public var versionProvider = VersionProvider()
 
-                    // Unzip
-                    Logger().log("Expading the archive…")
-                    try shellOut(to: "/usr/bin/unzip",
-                                 arguments: ["-q", downloadFileURL.path, RemoteConstants.stellarEnvCLI, "-d", temporaryURL.path])
-                 
-                    // Remove old version
-                    Logger().log("Installing…")
-                    let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
-                    try shellOut(to: "rm", arguments: [installationPath])
-                    try shellOut(to: "mv", arguments: [cliToolFileURL.path, installationPath])
+    // MARK: - Initialization
 
-                    
-                    Logger().log("StellarEnv version \(version) installed")
-                }
-            )
-            
-
-        } catch {
-            let e = error as! ShellOutError
-            print((error as? ShellOutError)?.errorDescription ?? "")
+    public init() { }
+    
+    // MARK: - Public Functions
+    
+    /// Install latest stable version of the `stellarenv`.
+    public func install() throws {
+        guard let latestRemoteVersion = try versionProvider.latestVersion() else {
+            Logger().log("No remote version found")
+            return
         }
         
+        try install(version: latestRemoteVersion.version.description)
     }
     
-    
+    /// Install specified version of the `stellarenv`.
+    ///
+    /// - Parameter version: version to install.
+    public func install(version: String) throws {
+        let packageURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
+        
+        // TODO: It does not work on my machine
+        // let installationPath = try System.shared.which("tuist")
+        let installationPath = "/usr/local/bin/tuist"
+
+        Logger().log("Downloading StellarEnv version \(version)")
+        
+        try fileManager.withTemporaryDirectory(
+            path: nil,
+            prefix: "stellarenv_installation",
+            autoRemove: true, { temporaryURL in
+                // Download release
+                let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
+                try System.shared.file(url: packageURL, at: packageDestination)
+                //NSWorkspace.shared.activateFileViewerSelecting([downloadFileURL])
+                
+                // Unzip the bundle
+                Logger().log("Expading the archive…")
+                try System.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
+
+                // Remove old version and replace with the new one
+                Logger().log("Installing…")
+                let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
+                try System.shared.copyAndReplace(source: cliToolFileURL, destination: installationPath)
+                
+                Logger().log("StellarEnv version \(version) installed")
+            }
+        )
+    }
     
 }
