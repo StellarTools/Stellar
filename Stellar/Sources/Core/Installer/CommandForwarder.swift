@@ -37,7 +37,7 @@ public final class CommandForwarder {
         switch resolvedVersion {
         case .bin(let binURL):
             Logger().log("Using stellar bundled at \(binURL.path)")
-            try runCommandsUsingBinAtPath(URL(fileURLWithPath: binURL.path), args: args)
+            try runCommandsUsingBinAtPath(URL(fileURLWithPath: binURL.path), commandArgs: args)
         
         case .versionFile(let fileURL, let pinnedVer):
             Logger().log("Using version \(pinnedVer) defined at \(fileURL.path)")
@@ -56,11 +56,11 @@ public final class CommandForwarder {
     /// - Parameters:
     ///   - path: path of the CLI tool to call.
     ///   - args: arguments to pass.
-    private func runCommandsUsingBinAtPath(_ path: URL, args: [String]) throws {
+    private func runCommandsUsingBinAtPath(_ path: URL, commandArgs: [String]) throws {
         var args: [String] = [
             path.appendingPathComponent(FileConstants.binName).path // path of the cli tool to call
         ]
-        args.append(contentsOf: Array(args.dropFirst())) // forward all params to the tool
+        args.append(contentsOf: commandArgs) // forward all params to the tool
 
         do {
             try System.shared.runAndPrint(args)
@@ -95,7 +95,7 @@ public final class CommandForwarder {
             return
         }
         
-        try runCommandsUsingBinAtPath(URL(fileURLWithPath: versionPath), args: args)
+        try runCommandsUsingBinAtPath(URL(fileURLWithPath: versionPath), commandArgs: args)
     }
     
     /// Run with highest installed version. If no versions are installed the latest will
@@ -124,8 +124,8 @@ public final class CommandForwarder {
             return
         }
         
-        let binURL = URL(fileURLWithPath: targetVersionPath).appendingPathComponent(FileConstants.binName)
-        return try runCommandsUsingBinAtPath(binURL, args: args)
+        let binURL = URL(fileURLWithPath: targetVersionPath)
+        return try runCommandsUsingBinAtPath(binURL, commandArgs: args)
     }
     
 }
