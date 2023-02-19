@@ -33,7 +33,7 @@ public final class CommandForwarder {
     public func run(args: [String]) throws {
         // We should check to what version of `stellar` in `~/.stellar/Versions` we should
         // forward requested commands.
-        let resolvedVersion = try versionResolver.resolveTraversingFromPath(urlManager.currentLocation())
+        let resolvedVersion = try versionResolver.resolveTraversingFromPath(urlManager.currentWorkingDirectory())
         switch resolvedVersion {
         case .bin(let binURL):
             Logger().log("Using stellar bundled at \(binURL.path)")

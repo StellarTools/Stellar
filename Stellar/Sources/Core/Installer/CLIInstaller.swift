@@ -46,7 +46,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
     ///   - url: url of the source folder.
     ///   - version: version to pin.
     public func pin(url: URL?, toVersion version: String) throws {
-        let destinationURL = url ?? urlManager.currentLocation()
+        let destinationURL = url ?? urlManager.currentWorkingDirectory()
         
         Logger().log("Generating \(FileConstants.versionsFile) file with version \(version)")
         let fileURL = destinationURL.appendingPathComponent(FileConstants.versionsFile)
