@@ -13,8 +13,8 @@ public final class VersionProvider: VersionProviding {
 
     public init() {}
     
-    public func remoteVersions(includePreReleases: Bool = false) async throws -> [RemoteRelease] {
-        guard let latestReleases = try await networkManager.jsonRequest(
+    public func remoteVersions(includePreReleases: Bool = false) throws -> [RemoteRelease] {
+        guard let latestReleases = try networkManager.httpRequest(
             model: [RemoteRelease].self,
             url: RemoteConstants.gitHubReleasesList
         ) else {
@@ -30,8 +30,8 @@ public final class VersionProvider: VersionProviding {
         }
     }
     
-    public func latestVersion() async throws -> RemoteRelease? {
-        try await remoteVersions(includePreReleases: false).first
+    public func latestVersion() throws -> RemoteRelease? {
+        try remoteVersions(includePreReleases: false).first
     }
     
 }

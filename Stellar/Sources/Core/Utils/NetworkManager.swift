@@ -9,7 +9,7 @@ public final class NetworkManager {
         self.fileManager = fileManager
     }
     
-    public func jsonRequest<T:Codable>(model: T.Type, url: URL) throws -> T? {
+    public func httpRequest<T:Codable>(model: T.Type, url: URL) throws -> T? {
         let semaphore = DispatchSemaphore(value: 0)
         var data: Data?, error: Error?
 
@@ -36,23 +36,39 @@ public final class NetworkManager {
     }
     
     @discardableResult
-    public func downloadFile(atURL URL: URL, saveAtURL destinationURL: URL? = nil) async throws -> URL {
+    public func getFile(atURL URL: URL, saveAtURL destinationURL: URL?) throws -> URL {
         let outputURL = destinationURL ?? fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+
+        let semaphore = DispatchSemaphore(value: 0)
+        let request = URLRequest(url: URL, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 5)
+        var tempFileURL: URL?
+        var urlResponse: URLResponse?
+        var error: Error?
+
+        session.downloadTask(with: request) {
+            tempFileURL = $0
+            urlResponse = $1
+            error = $2
+            semaphore.signal()
+        }.resume()
         
-        let urlRequest = urlRequestForFileDownload(url: URL)
-        let (data, response) = try await session.data(for: urlRequest)
-        guard let httpResponse = response.httpResponse,
+        _ = semaphore.wait(timeout: .distantFuture)
+        
+        guard let httpResponse = urlResponse?.httpResponse,
               httpResponse.isResponseOK() else {
-            throw StellarError(.internal, reason: "Server responded with HTTP \(response.httpStatusCode)")
+            throw StellarError(.internal, reason: "Server responded with HTTP \(urlResponse?.httpStatusCode ?? 0): \(error?.localizedDescription ?? "")")
         }
         
-        try data.write(to: outputURL, options: .noFileProtection)
+        if let tempFileURL {
+            try fileManager.copyFile(from: tempFileURL, to: outputURL)
+        }
+        
         return outputURL
     }
     
     private func urlRequestForFileDownload(url: URL) -> URLRequest {
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
-        request.setValue("application/octet-stream", forHTTPHeaderField: "Accept")
+        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         return request
     }
     

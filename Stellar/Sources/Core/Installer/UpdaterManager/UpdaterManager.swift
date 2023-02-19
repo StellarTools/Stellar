@@ -16,8 +16,8 @@ public final class UpdaterManager: UpdaterManaging {
         
     }
     
-    public func update() async throws {
-        guard let latestRemoteVersion = try await versionProvider.latestVersion() else {
+    public func update() throws {
+        guard let latestRemoteVersion = try versionProvider.latestVersion() else {
             Logger().log("No remote version found")
             return
         }
@@ -34,11 +34,11 @@ public final class UpdaterManager: UpdaterManaging {
         }
         
         // Install version of stellar
-        try await installManager.install(version: latestRemoteVersion.description)
+        try installManager.install(version: latestRemoteVersion.description)
         
         // Update stellar env
         Logger().log("Updating stellarenv")
-        try await envInstaller.install(version: latestRemoteVersion.description)
+        try envInstaller.install(version: latestRemoteVersion.description)
     }
     
     

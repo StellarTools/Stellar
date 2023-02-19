@@ -80,14 +80,16 @@ extension FileManager: FileManaging {
     public func withTemporaryDirectory<Result>(path: String? = nil,
                                                prefix: String = "TempDir",
                                                autoRemove: Bool = true ,
-                                               _ closure: (URL) async throws -> Result) async throws -> Result {
+                                               _ closure: (URL) throws -> Result) throws -> Result {
         // Construct path to the temporary directory.
         let folderName = "\(prefix)-\(UUID().uuidString)"
         let directoryPath = URL(fileURLWithPath: (path ?? NSTemporaryDirectory()), isDirectory: true).appendingPathComponent(folderName, isDirectory: true)
         try FileManager.default.createDirectory(atPath: directoryPath.path, withIntermediateDirectories: true)
         
-        let res = try await closure(directoryPath)
-        try? FileManager.default.removeItem(atPath: directoryPath.path)
+        let res = try closure(directoryPath)
+        if autoRemove {
+            try? FileManager.default.removeItem(atPath: directoryPath.path)
+        }
         return res
     }
     

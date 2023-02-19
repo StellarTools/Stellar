@@ -14,6 +14,6 @@ public protocol FileManaging {
     func verifyFileExisting(at location: URL) throws
     func verifyFolderExisting(at location: URL) throws
     func enumerator(at location: URL) -> FileManager.DirectoryEnumerator?
-    func withTemporaryDirectory<Result>(path: String?, prefix: String, autoRemove: Bool, _ closure: (URL) async throws -> Result) async throws -> Result
+    func withTemporaryDirectory<Result>(path: String?, prefix: String, autoRemove: Bool, _ closure: (URL) throws -> Result) throws -> Result
     func copyFile(from location: URL, to destination: URL) throws
 }

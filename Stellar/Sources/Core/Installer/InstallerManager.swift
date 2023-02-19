@@ -40,23 +40,22 @@ public final class InstallerManager: InstallManaging {
         Logger().log("File generated at path \(fileURL.path)")
     }
     
-    public func install(version: String) async throws {
+    public func install(version: String) throws {
         // let releasesURL = URL(string:"https://github.com/tuist/tuist/releases/download/3.15.0/tuistenv.zip")!
-        let releasesURL = RemoteConstants.releasesURL(forVersion: version)
+        let releasesURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarPackage)
         let installURL = try urlManager.systemVersionsLocation(version)
         
-        try await fileManager.withTemporaryDirectory(
+        try fileManager.withTemporaryDirectory(
             path: nil,
             prefix: "installation",
             autoRemove: true, { temporaryURL in
             
                 // Download the release zip file
                 Logger().log("Downloading stellar v.\(version)...")
-                let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZipFile)
-                try await networkManager.downloadFile(atURL: releasesURL, saveAtURL: remoteFileURL)
+                let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
+                try networkManager.getFile(atURL: releasesURL, saveAtURL: remoteFileURL)
                 
                 // Unzip the file
-                try fileManager.deleteFolder(at: installURL) // replace if exists
                 try shellOut(to: "unzip", arguments: ["-q", remoteFileURL.path, "-d", installURL.path])
                 // NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
