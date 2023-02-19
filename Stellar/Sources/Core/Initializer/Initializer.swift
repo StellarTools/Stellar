@@ -16,9 +16,9 @@ final public class Initializer {
         try fileManager.createFolder(at: executorLocation)
         
         let context = TemplatingContextFactory().makeTemplatingContext(name: Constants.executor)
-        let templatingFileManager = Templater(templatingContext: context)
+        let templater = Templater(templatingContext: context)
         do {
-            try templatingFileManager.templateFolder(source: templatesLocation, destination: executorLocation)
+            try templater.templateFolder(source: templatesLocation, destination: executorLocation)
         } catch {
             Logger().log(error.localizedDescription)
             try fileManager.deleteFolder(at: executorLocation)

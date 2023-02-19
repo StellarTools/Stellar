@@ -15,8 +15,8 @@ final public class TaskCreator {
         let executorSourcesUrl = urlManager.executorSourcesUrl(at: appLocation)
         try fileManager.verifyFolderExisting(at: executorSourcesUrl)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
-        let templatingFileManager = Templater(templatingContext: context)
+        let templater = Templater(templatingContext: context)
         let destination = executorSourcesUrl.appendingPathComponent("\(name).swift", isDirectory: false)
-        try templatingFileManager.templateFile(source: templateLocation, destination: destination)
+        try templater.templateFile(source: templateLocation, destination: destination)
     }
 }

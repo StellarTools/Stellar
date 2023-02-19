@@ -14,12 +14,12 @@ final public class ActionCreator {
         let actionLocation = location.url.appendingPathComponent(name, isDirectory: true)
         try fileManager.createFolder(at: actionLocation)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
-        let templatingFileManager = Templater(templatingContext: context)
+        let templater = Templater(templatingContext: context)
         do {
-            try templatingFileManager.templateFolder(source: templatesLocation, destination: actionLocation)
+            try templater.templateFolder(source: templatesLocation, destination: actionLocation)
             
             if location.isDefault {
-                Logger().hint(try HintManager().hintForActionCreatedOnDefaultPath(with: name))
+                Logger().hint(try HintManager(fileManager: fileManager).hintForActionCreatedOnDefaultPath(with: name))
             }
             
         } catch {

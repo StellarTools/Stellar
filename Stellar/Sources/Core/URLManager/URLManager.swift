@@ -43,18 +43,18 @@ final class URLManager {
         currentLocation().appendingPathComponent(FolderConstants.templatesFolder)
     }
     
-    func currentLocation() -> URL {
+    func currentWorkingDirectory() -> URL {
         fileManager.currentLocation
     }
     
-    // Default: <cwd>/Stellar/Templates/Resources/Strings/Hints
+    func currentLocation() -> URL {
+        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
+    }
     
-    func hintFolderLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.stellarFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.resourcesFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.stringsFolder, isDirectory: true)
-            .appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
+    // Default: <cwd>/Templates/Hints
+    
+    func hintsLocation() -> URL {
+        templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
     }
     
     // MARK: - Stellar System Directories

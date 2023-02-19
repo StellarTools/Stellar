@@ -14,8 +14,8 @@ let package = Package(
             name: "StellarEnv",
             targets: ["StellarEnv"]),
         .library(
-            name: "Stellar",
-            targets: ["Stellar"]),
+            name: "StellarCore",
+            targets: ["StellarCore"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
@@ -34,10 +34,10 @@ let package = Package(
             name: "StellarCLI",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .target(name: "Stellar")],
+                .target(name: "StellarCore")],
             path: "Sources/CLI"),
         .target(
-            name: "Stellar",
+            name: "StellarCore",
             dependencies: [
                 .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "TSCBasic", package: "swift-tools-support-core"),
@@ -45,7 +45,13 @@ let package = Package(
             ],
             path: "Sources/Core"),
         .testTarget(
-            name: "StellarTests",
-            dependencies: ["Stellar"]),
+            name: "StellarCLITests",
+            dependencies: ["StellarCLI"],
+            path: "Tests/CLI"),
+        .testTarget(
+            name: "StellarCoreTests",
+            dependencies: ["StellarCore"],
+            path: "Tests/Core",
+            resources: [.copy("Resources")])
     ]
 )
