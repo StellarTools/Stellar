@@ -63,7 +63,7 @@ public final class CommandForwarder {
         args.append(contentsOf: commandArgs) // forward all params to the tool
 
         do {
-            try System.shared.runAndPrint(args)
+            try Shell.shared.runAndPrint(args)
         } catch {
             exiter(1)
         }

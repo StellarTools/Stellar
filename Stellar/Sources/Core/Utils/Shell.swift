@@ -2,12 +2,12 @@ import Foundation
 import TSCBasic
 
 /// Access to system commands.
-public final class System {
+public final class Shell {
     
     // MARK: - Public Properties
     
     /// Singleton instance of the system.
-    public static var shared = System()
+    public static var shared = Shell()
     
     /// Convenience shortcut to the environment.
     public var env: [String: String] {
@@ -61,8 +61,8 @@ public final class System {
     ///   - sourceURL: source file.
     ///   - destination: destination location.
     public func copyAndReplace(source: URL, destination: String) throws {
-        try System.shared.run(["rm", "-f", destination], sudoIfNeeded: true)
-        try System.shared.run(["mv", source.path, destination], sudoIfNeeded: true)
+        try Shell.shared.run(["rm", "-f", destination], sudoIfNeeded: true)
+        try Shell.shared.run(["mv", source.path, destination], sudoIfNeeded: true)
     }
 
     /// Execute which with given target name.
@@ -75,6 +75,12 @@ public final class System {
     
     // MARK: - Private Functions
     
+    /// Run the command and redirect the output.
+    ///
+    /// - Parameters:
+    ///   - arguments: arguments to call.
+    ///   - environment: environment variables.
+    ///   - redirection: redirection model.
     private func runAndPrint(_ arguments: [String], environment: [String: String], redirection: TSCBasic.Process.OutputRedirection) throws {
         let process = Process(
             arguments: arguments,
@@ -142,11 +148,11 @@ private extension ProcessResult {
         switch exitStatus {
         case let .signalled(code):
             let data = Data(try stderrOutput.get())
-            throw SystemError.signalled(command: command(), code: code, standardError: data)
+            throw ShellError.signalled(command: command(), code: code, standardError: data)
         case let .terminated(code):
             if code != 0 {
                 let data = Data(try stderrOutput.get())
-                throw SystemError.terminated(command: command(), code: code, standardError: data)
+                throw ShellError.terminated(command: command(), code: code, standardError: data)
             }
         }
     }
@@ -165,7 +171,7 @@ private extension ProcessResult {
 
 // MARK: - SystemError
 
-public enum SystemError: Error, Equatable {
+public enum ShellError: Error, Equatable {
     case terminated(command: String, code: Int32, standardError: Data)
     case signalled(command: String, code: Int32, standardError: Data)
     case parseSwiftVersion(String)

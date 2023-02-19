@@ -13,7 +13,7 @@ public final class VersionProvider: VersionProviding {
     
     // MARK: Public Properties
     
-    public var networkManager = NetworkManager()
+    public var apiProvider = APIProvider()
 
     // MARK: - Initialization
     
@@ -26,9 +26,9 @@ public final class VersionProvider: VersionProviding {
     /// - Parameter includePreReleases: `true` to include pre-releases into the list.
     /// - Returns: list of remote releases.
     public func remoteVersions(includePreReleases: Bool = false) throws -> [RemoteRelease] {
-        guard let latestReleases = try networkManager.httpRequest(
-            model: [RemoteRelease].self,
-            url: RemoteConstants.gitHubReleasesList
+        guard let latestReleases = try apiProvider.fetch(
+            url: RemoteConstants.gitHubReleasesList,
+            decode: [RemoteRelease].self
         ) else {
             return []
         }

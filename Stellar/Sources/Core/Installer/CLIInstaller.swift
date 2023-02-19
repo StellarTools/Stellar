@@ -18,7 +18,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
     // MARK: - Public Properties
     
     public var fileManager: FileManaging = FileManager.default
-    public var networkManager = NetworkManager()
+    public var apiProvider = APIProvider()
     public var versionProvider = VersionProvider()
     
     // MARK: - Private Properties
@@ -122,10 +122,10 @@ public final class CLIInstaller: CLIInstallerProtocol {
                 // Download the release zip file
                 Logger().log("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
-                try System.shared.file(url: releasesURL, at: remoteFileURL)
+                try Shell.shared.file(url: releasesURL, at: remoteFileURL)
 
                 // Unzip the file
-                try System.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
+                try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
                 // NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
                 Logger().log("Stellar version \(version) installed")

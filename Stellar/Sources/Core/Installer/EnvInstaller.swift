@@ -58,17 +58,17 @@ public final class EnvInstaller: EnvInstallerProtocol {
             autoRemove: true, { temporaryURL in
                 // Download release
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
-                try System.shared.file(url: packageURL, at: packageDestination)
+                try Shell.shared.file(url: packageURL, at: packageDestination)
                 // NSWorkspace.shared.activateFileViewerSelecting([downloadFileURL])
                 
                 // Unzip the bundle
                 Logger().log("Expading the archive…")
-                try System.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
+                try Shell.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
 
                 // Remove old version and replace with the new one
                 Logger().log("Installing…")
                 let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
-                try System.shared.copyAndReplace(source: cliToolFileURL, destination: installationPath)
+                try Shell.shared.copyAndReplace(source: cliToolFileURL, destination: installationPath)
                 
                 Logger().log("StellarEnv version \(version) installed")
             }
