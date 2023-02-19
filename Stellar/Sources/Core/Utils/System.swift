@@ -1,6 +1,7 @@
 import Foundation
 import TSCBasic
 
+/// Access to system commands.
 public final class System {
     
     // MARK: - Public Properties
@@ -46,8 +47,8 @@ public final class System {
     ///   - fileURL: local URL of the zip file.
     ///   - name: name of file/folder(s).
     ///   - destinationURL: destination location.
-    public func unzip(fileURL: URL, name: String, destinationURL: URL) throws {
-        try run(["/usr/bin/unzip", "-q", fileURL.path, name, "-d", destinationURL.path])
+    public func unzip(fileURL: URL, name: String? = nil, destinationURL: URL) throws {
+        try run(["/usr/bin/unzip", "-q", fileURL.path, name, "-d", destinationURL.path].compactMap({ $0 }))
     }
     
     /// Copy and replace (if needed) a file at given position.
@@ -67,12 +68,14 @@ public final class System {
     public func which(_ name: String) throws -> String {
         try capture(["/usr/bin/env", "which", name]).cleanShellOutput()
     }
+    
+    // MARK: - Private Functions
 
-    public func capture(_ arguments: [String]) throws -> String {
+    private func capture(_ arguments: [String]) throws -> String {
         try capture(arguments, environment: env)
     }
 
-    public func capture(_ arguments: [String], environment: [String: String]) throws -> String {
+    private func capture(_ arguments: [String], environment: [String: String]) throws -> String {
         let process = Process(
             arguments: arguments,
             environment: environment,
@@ -92,9 +95,7 @@ public final class System {
 
         return try result.utf8Output()
     }
-    
-    // MARK: - Private Functions
-    
+        
     private func escaped(arguments: [String]) -> String {
         arguments.map { $0.spm_shellEscaped() }.joined(separator: " ")
     }

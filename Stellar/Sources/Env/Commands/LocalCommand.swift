@@ -2,6 +2,7 @@ import ArgumentParser
 import Foundation
 import Stellar
 
+/// `LocalCommand` is used to query for installed versions or pin a project to a specific stellar version.
 struct LocalCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "local",
@@ -12,11 +13,15 @@ struct LocalCommand: ParsableCommand {
         """
     )
     
+    // MARK: - Options
+
     @Option(help: "The version that you would like to pin your current directory to")
     var version: String?
     
     @Option(help: "Directory path used when pin version. If not specified the current working directory.")
     var path: String?
+    
+    // MARK: - Public Functions
     
     func run() throws {
         if let version {
@@ -26,13 +31,15 @@ struct LocalCommand: ParsableCommand {
         }
     }
     
+    // MARK: - Private Functions
+    
     private func pin(path: String?, toVersion version: String) throws {
         let urlPath = (path != nil ? URL(fileURLWithPath: path!) : nil)
-        try InstallerManager().pin(url: urlPath, toVersion: version)
+        try CLIInstaller().pin(url: urlPath, toVersion: version)
     }
     
     private func enumerateInstalledVersions() throws {
-        let versions = try InstallerManager().installedVersions()
+        let versions = try CLIInstaller().installedVersions()
         guard !versions.isEmpty else {
             Logger().log("No versions of stellar are installed yet")
             return

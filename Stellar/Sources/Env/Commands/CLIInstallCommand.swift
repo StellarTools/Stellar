@@ -3,7 +3,7 @@ import Foundation
 import Stellar
 
 /// The following tool is used to install a version of stellar into the system.
-public struct InstallCommand: ParsableCommand {
+public struct CLIInstallCommand: ParsableCommand {
     
     public static var configuration: CommandConfiguration {
         CommandConfiguration(
@@ -12,7 +12,7 @@ public struct InstallCommand: ParsableCommand {
         )
     }
     
-    // MARK: - Arguments
+    // MARK: - Options
 
     @Argument(help: "The version of stellar to be installed")
     public var version: String?
@@ -27,7 +27,7 @@ public struct InstallCommand: ParsableCommand {
     // MARK: - Public Functions
 
     public func run() throws {
-        try InstallerManager().install(version: version, preRelease: preRelease)
+        try CLIInstaller().install(version: version, preRelease: preRelease)
     }
     
 }

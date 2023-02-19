@@ -1,21 +1,29 @@
 import Foundation
 
-protocol UpdaterManaging: AnyObject {
+protocol BundleUpdaterProtocol: AnyObject {
     
     func update() async throws
     
 }
 
-public final class UpdaterManager: UpdaterManaging {
+// MARK: - BundleUpdater
+
+/// `BundleUpdater` is used to update both the `stellar` and `stellarenv` tools.
+public final class BundleUpdater: BundleUpdaterProtocol {
     
-    private var versionProvider = VersionProvider()
-    private var installManager = InstallerManager()
-    private var envInstaller = EnvInstaller()
+    // MARK: - Public Properties
     
-    public init() {
-        
-    }
+    public var versionProvider = VersionProvider()
+    public var installManager = CLIInstaller()
+    public var envInstaller = EnvInstaller()
     
+    // MARK: - Initialization
+    
+    public init() { }
+    
+    // MARK: - Public Functions
+    
+    /// Update `stellarenv` installation by obtaining the latest stable version available.
     public func update() throws {
         guard let latestRemoteVersion = try versionProvider.latestVersion() else {
             Logger().log("No remote version found")
@@ -42,6 +50,5 @@ public final class UpdaterManager: UpdaterManaging {
         
         Logger().log("Stellar version \(latestRemoteVersion.description) installed")
     }
-    
     
 }

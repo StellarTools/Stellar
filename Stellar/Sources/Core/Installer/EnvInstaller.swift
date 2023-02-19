@@ -2,9 +2,9 @@ import Foundation
 import ShellOut
 import AppKit
 
-// MARK: - EnvInstalling
+// MARK: - EnvInstallerProtocol
 
-protocol EnvInstalling {
+protocol EnvInstallerProtocol {
 
     func install(version: String) throws
     func install() throws
@@ -13,7 +13,8 @@ protocol EnvInstalling {
 
 // MARK: - EnvInstaller
 
-public final class EnvInstaller: EnvInstalling {
+/// `EnvInstaller` is used to update the `stellarenv` tool.
+public final class EnvInstaller: EnvInstallerProtocol {
     
     // MARK: - Public Properties
     
@@ -53,12 +54,12 @@ public final class EnvInstaller: EnvInstalling {
         
         try fileManager.withTemporaryDirectory(
             path: nil,
-            prefix: "stellarenv_installation",
+            prefix: "com.stellarenv",
             autoRemove: true, { temporaryURL in
                 // Download release
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
                 try System.shared.file(url: packageURL, at: packageDestination)
-                //NSWorkspace.shared.activateFileViewerSelecting([downloadFileURL])
+                // NSWorkspace.shared.activateFileViewerSelecting([downloadFileURL])
                 
                 // Unzip the bundle
                 Logger().log("Expading the archive…")

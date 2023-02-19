@@ -2,7 +2,7 @@ import Foundation
 import AppKit
 import ShellOut
 
-public protocol InstallManaging {
+public protocol CLIInstallerProtocol {
     
     func installedVersions() throws -> [LocalRelease]
     func install(version: String?, preRelease: Bool) throws
@@ -10,13 +10,16 @@ public protocol InstallManaging {
     
 }
 
-public final class InstallerManager: InstallManaging {
+// MARK: - CLIInstaller
+
+/// `CLIInstaller` is used to install or pin a project to a specific version of stellar.
+public final class CLIInstaller: CLIInstallerProtocol {
 
     // MARK: - Public Properties
     
-    public let fileManager: FileManaging = FileManager.default
-    public let networkManager = NetworkManager()
-    public let versionProvider = VersionProvider()
+    public var fileManager: FileManaging = FileManager.default
+    public var networkManager = NetworkManager()
+    public var versionProvider = VersionProvider()
     
     // MARK: - Private Properties
 
@@ -87,16 +90,15 @@ public final class InstallerManager: InstallManaging {
         
         try fileManager.withTemporaryDirectory(
             path: nil,
-            prefix: "installation",
+            prefix: "com.stellar",
             autoRemove: true, { temporaryURL in
-            
                 // Download the release zip file
                 Logger().log("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
-                try networkManager.getFile(atURL: releasesURL, saveAtURL: remoteFileURL)
+                try System.shared.file(url: releasesURL, at: remoteFileURL)
 
                 // Unzip the file
-                try shellOut(to: "unzip", arguments: ["-q", remoteFileURL.path, "-d", installURL.path])
+                try System.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
                 // NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
                 Logger().log("Stellar version \(version) installed")

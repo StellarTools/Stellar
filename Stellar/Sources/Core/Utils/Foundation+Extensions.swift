@@ -54,18 +54,19 @@ extension URL {
 
 extension URLResponse {
     
-    public var httpResponse: HTTPURLResponse? {
-        self as? HTTPURLResponse
-    }
-    
+    /// The HTTP status code received from a network response.
+    /// If not parsable, `0` is returned.
     var httpStatusCode: Int {
-        httpResponse?.statusCode ?? 0
+        (self as? HTTPURLResponse)?.statusCode ?? 0
     }
     
 }
 
 extension HTTPURLResponse {
     
+    /// Return `true` if response is not an error.
+    ///
+    /// - Returns: boolean
     func isResponseOK() -> Bool {
         (200...299).contains(self.statusCode)
     }

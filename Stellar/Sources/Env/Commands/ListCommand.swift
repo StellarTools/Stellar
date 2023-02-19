@@ -10,6 +10,8 @@ public struct ListCommand: ParsableCommand {
             abstract: "List remote versions of stellar"
         )
     }
+    
+    // MARK: - Options
         
     @Flag(help: "Include pre-releases version into the list")
     public var preRelease: Bool = false

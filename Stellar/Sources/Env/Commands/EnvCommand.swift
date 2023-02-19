@@ -2,17 +2,20 @@ import ArgumentParser
 import Foundation
 import Stellar
 
-struct EnvCommand: AsyncParsableCommand {
+struct EnvCommand: ParsableCommand {
+    
     static let configuration = CommandConfiguration(
         commandName: "stellar",
         abstract: "Manage stellar versions",
         subcommands: [
             LocalCommand.self,
             ListCommand.self,
-            InstallCommand.self,
+            CLIInstallCommand.self,
             UpdateCommand.self
         ]
     )
+    
+    // MARK: - Public Functions
     
     public static func main() {
         let processedArguments = processArguments()
