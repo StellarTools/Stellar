@@ -21,8 +21,10 @@ public final class EnvInstaller: EnvInstalling {
     public func install(version: String) throws {
         do {
             let envRemoteURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
-            // TODO: Replace with `stellar`
-            let installationPath = try shellOut(to: "which", arguments: ["ruby"]).replacingOccurrences(of: "ruby", with: "tuistenv")
+            
+            // TODO: It does not work on my machine...
+            // let installationPath = try shellOut(to: "which", arguments: [RemoteConstants.stellarEnvCLI])
+            let installationPath = "/usr/local/bin/tuist"
             
             Logger().log("Downloading StellarEnv version \(version)")
         
@@ -46,8 +48,9 @@ public final class EnvInstaller: EnvInstalling {
                     // Remove old version
                     Logger().log("Installing…")
                     let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
-                    //try shellOut(to: "sudo", arguments: ["mv", cliToolFileURL.path, installationPath])
-                    
+                    try shellOut(to: "rm", arguments: [installationPath])
+                    try shellOut(to: "mv", arguments: [cliToolFileURL.path, installationPath])
+
                     
                     Logger().log("StellarEnv version \(version) installed")
                 }
