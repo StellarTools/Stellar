@@ -16,6 +16,10 @@ public final class System {
     
     // MARK: - Public Functions
     
+    public func runAndPrint(_ arguments: [String], environment: [String: String]? = nil) throws {
+        try runAndPrint(arguments, environment: environment ?? env, redirection: .none)
+    }
+    
     /// Run system command.
     ///
     /// - Parameters:
@@ -70,6 +74,31 @@ public final class System {
     }
     
     // MARK: - Private Functions
+    
+    private func runAndPrint(_ arguments: [String], environment: [String: String], redirection: TSCBasic.Process.OutputRedirection) throws {
+        let process = Process(
+            arguments: arguments,
+            environment: environment,
+            outputRedirection: .stream(stdout: { bytes in
+                FileHandle.standardOutput.write(Data(bytes))
+                redirection.outputClosures?.stdoutClosure(bytes)
+            }, stderr: { bytes in
+                FileHandle.standardError.write(Data(bytes))
+                redirection.outputClosures?.stderrClosure(bytes)
+            }),
+            startNewProcessGroup: false
+        )
+
+        Logger().log("\(escaped(arguments: arguments))")
+
+        try process.launch()
+        let result = try process.waitUntilExit()
+        let output = try result.utf8Output()
+
+        Logger().log("\(output)")
+
+        try result.throwIfErrored()
+    }
 
     private func capture(_ arguments: [String]) throws -> String {
         try capture(arguments, environment: env)

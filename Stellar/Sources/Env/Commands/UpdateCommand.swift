@@ -16,12 +16,8 @@ struct UpdateCommand: ParsableCommand {
     // MARK: - Public Functions
 
     public func run() throws {
-        do {
-            Logger().log("Checking for updates...")
-            try EnvInstaller().install()
-        } catch {
-            Logger().log("Failed: \(error.localizedDescription)")
-        }
+        Logger().log("Checking for updates...")
+        try EnvInstaller().install()
     }
     
 }

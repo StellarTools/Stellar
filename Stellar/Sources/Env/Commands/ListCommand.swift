@@ -14,7 +14,7 @@ public struct ListCommand: ParsableCommand {
     // MARK: - Options
         
     @Flag(help: "Include pre-releases version into the list")
-    public var preRelease: Bool = false
+    public var preReleases: Bool = false
     
     // MARK: - Initialization
     
@@ -23,7 +23,7 @@ public struct ListCommand: ParsableCommand {
     // MARK: - Public Functions
 
     public func run() async throws {
-        try await run(includePreRelease: preRelease)
+        try await run(includePreRelease: preReleases)
     }
     
     public func run(includePreRelease preRelease: Bool) async throws {

@@ -13,6 +13,8 @@ struct HintTemplateNames {
 
 struct FileConstants {
     static let versionsFile = ".stellar-version"
+    static let binFolder = ".stellar-bin"
+    static let binName = ".stellar"
 }
 
 struct RemoteConstants {

@@ -79,6 +79,33 @@ public final class CLIInstaller: CLIInstallerProtocol {
         try install(version: latestVersion.tag_name)
     }
     
+    /// Return `true` if specified version is available locally.
+    ///
+    /// - Parameter version: version to check.
+    /// - Returns: boolean
+    public func isVersionInstalled(_ version: String) throws -> Bool {
+        guard let binURL = try pathForVersion(version)?.appendingPathComponent(FileConstants.binName) else {
+            return false
+        }
+        
+        return fileManager.fileExists(at: binURL)
+    }
+    
+    /// Return the path to the folder which contains `stellar` cli tool labeled with specified version.
+    ///
+    /// - Parameter version: version to get.
+    /// - Returns: path if installed, `nil` otherwise.
+    public func pathForVersion(_ version: String) throws -> URL? {
+        try urlManager.systemVersionsLocation(version)
+    }
+    
+    /// Return the latest locally installed version.
+    ///
+    /// - Returns: `nil` if no version are installed yet, otherwise the release.`
+    public func latestInstalledVersion() throws -> LocalRelease? {
+        try installedVersions().first
+    }
+    
     // MARK: - Private Functions
     
     /// Install a specific version of stellar.

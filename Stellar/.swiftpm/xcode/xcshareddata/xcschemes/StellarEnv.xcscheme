@@ -94,6 +94,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "update"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "build"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

@@ -1,3 +1,3 @@
 import Foundation
 
-EnvCommand.main()
+StellarEnvCommands.main()
