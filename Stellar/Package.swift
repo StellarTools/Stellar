@@ -28,7 +28,7 @@ let package = Package(
             name: "StellarEnv",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .target(name: "Stellar")],
+                .target(name: "StellarCore")],
             path: "Sources/Env"),
         .executableTarget(
             name: "StellarCLI",

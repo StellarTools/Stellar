@@ -1,6 +1,6 @@
 import ArgumentParser
 import Foundation
-import Stellar
+import StellarCore
 
 /// `LocalCommand` is used to query for installed versions or pin a project to a specific stellar version.
 struct LocalCommand: ParsableCommand {

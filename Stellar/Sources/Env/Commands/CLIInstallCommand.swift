@@ -1,6 +1,6 @@
 import ArgumentParser
 import Foundation
-import Stellar
+import StellarCore
 
 /// The following tool is used to install a version of stellar into the system.
 public struct CLIInstallCommand: ParsableCommand {

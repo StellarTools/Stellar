@@ -1,6 +1,6 @@
 import ArgumentParser
 import Foundation
-import Stellar
+import StellarCore
 
 public struct ListCommand: ParsableCommand {
     

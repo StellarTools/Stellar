@@ -1,7 +1,7 @@
 
 import Foundation
 import ArgumentParser
-import Stellar
+import StellarCore
 
 /// The `UpdateCommand` is used to update the currently installed binary of `stellarenv`.
 struct UpdateCommand: ParsableCommand {
