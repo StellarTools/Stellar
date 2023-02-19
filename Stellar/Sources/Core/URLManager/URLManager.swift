@@ -61,6 +61,10 @@ final class URLManager {
     
     // Default: ~/.stellar
     
+    /// Return the home of stellar in user's directory or a specified subfolder in the same root.
+    ///
+    /// - Parameter subfolder: optional subfolder.
+    /// - Returns: full path.
     func systemLocation(subfolder: String? = nil) -> URL {
         let homeStellarURL = fileManager
             .homeDirectoryForCurrentUser
@@ -72,6 +76,10 @@ final class URLManager {
         return homeStellarURL.appendingPathComponent(subfolder)
     }
     
+    /// Return the installation URL of stellar for a specified version.
+    ///
+    /// - Parameter version: version to get.
+    /// - Returns: path (it should be checked, it may not exists).
     func systemVersionsLocation(_ version: String? = nil) throws -> URL {
         var url = systemLocation().appendingPathComponent(FolderConstants.versionsFolder)
         if let version {
