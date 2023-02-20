@@ -13,7 +13,8 @@ struct Stellar: AsyncParsableCommand {
             CreateActionCommand.self,
             CreateTaskCommand.self,
             EditCommand.self,
-            InitCommand.self
+            InitCommand.self,
+            VersionCommand.self
         ]
     )
 }
