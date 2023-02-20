@@ -15,11 +15,11 @@ final class URLManager {
     
     // Default: <cwd>/.stellar/Actions
     
-    func dotStellarActionsLocation(_ actions: String? = nil) -> PathSpec {
+    func dotStellarActionsLocation(_ actions: String? = nil) -> URL {
         if let actions = actions {
-            return (URL(fileURLWithPath: actions), false)
+            return URL(fileURLWithPath: actions)
         }
-        return (fileManager.currentLocation.appendingPathComponent(FolderConstants.dotStellarActionsFolder), true)
+        return fileManager.currentLocation.appendingPathComponent(FolderConstants.dotStellarActionsFolder)
     }
     
     // Default: <cwd>/.stellar/Templates

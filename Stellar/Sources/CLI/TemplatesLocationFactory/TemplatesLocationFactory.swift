@@ -8,6 +8,7 @@ struct TemplatesLocationFactory {
         static let action = "Action"
         static let executor = "Executor"
         static let task = "Task"
+        static let hints = "Hints"
     }
     
     private let templatesLocation: URL
@@ -26,5 +27,9 @@ struct TemplatesLocationFactory {
     
     var taskTemplatesLocation: URL {
         templatesLocation.appendingPathComponent(Folder.task)
+    }
+    
+    var hintTemplatesLocation: URL {
+        templatesLocation.appendingPathComponent(Folder.hints)
     }
 }
