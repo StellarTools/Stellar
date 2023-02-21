@@ -4,12 +4,6 @@ import Foundation
 
 final class URLManager {
     
-    private let fileManager: FileManaging
-    
-    init(fileManager: FileManaging = FileManager.default) {
-        self.fileManager = fileManager
-    }
-    
     // MARK: Paths
     
     // <app_path>/.stellar
@@ -91,5 +85,5 @@ final class URLManager {
         }
         return url
     }
-    
+
 }

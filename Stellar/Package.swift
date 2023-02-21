@@ -43,7 +43,8 @@ let package = Package(
                 .product(name: "TSCBasic", package: "swift-tools-support-core"),
                 .product(name: "StencilSwiftKit", package: "StencilSwiftKit")
             ],
-            path: "Sources/Core"),
+            path: "Sources/Core",
+            resources: [.copy("Resources")]),
         .testTarget(
             name: "StellarCLITests",
             dependencies: ["StellarCLI"],
