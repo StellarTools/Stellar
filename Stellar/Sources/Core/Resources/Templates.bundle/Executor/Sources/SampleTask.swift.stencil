@@ -1,0 +1,31 @@
+//  SampleTask.swift
+
+import ArgumentParser
+import Foundation
+// import <#Some#>Action
+
+struct SampleTask: AsyncParsableCommand {
+    static let configuration = CommandConfiguration(
+        commandName: "{{ name|lowercase }}",
+        abstract: "Abstract")
+    
+    @Argument(help: "A phrase.")
+    var phrase: String
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose = false
+    
+    @Option(name: .shortAndLong, help: "The number of times to invoke `<#Some#>Action`.")
+    var count: Int = 1
+    
+    func run() async throws {
+        if verbose {
+            print("[{{ name }}] verbose log.")
+        }
+        
+        for _ in 0..<count {
+//            let action = <#Some#>Action(argument: phrase)
+//            action.call()
+        }
+    }
+}

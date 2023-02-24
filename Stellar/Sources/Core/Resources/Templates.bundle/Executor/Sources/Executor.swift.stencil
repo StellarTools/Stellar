@@ -1,0 +1,15 @@
+//  {{ name }}.swift
+
+import ArgumentParser
+import Foundation
+
+@main
+struct {{ name }}: AsyncParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "Abstract",
+        subcommands: [
+            SampleTask.self
+        ]
+    )
+}
+

@@ -2,17 +2,17 @@
 
 import ArgumentParser
 import Foundation
-import SampleAction
+import {{ name }}
 
 @main
 struct Command: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Abstract")
     
-    @Option(name: .long, help: "")
+    @Option(name: .shortAndLong, help: "")
     private var argument: String
     
     func run() throws {
-        let action = SampleAction(argument: argument)
+        let action = {{ name }}(argument: argument)
         action.call()
     }
 }

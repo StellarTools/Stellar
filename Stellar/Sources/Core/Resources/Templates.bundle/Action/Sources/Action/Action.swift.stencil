@@ -1,6 +1,6 @@
-// SampleAction.swift
+//  {{ name }}.swift
 
-public struct SampleAction {
+public struct {{ name }} {
     
     private var argument: String
     
@@ -9,6 +9,6 @@ public struct SampleAction {
     }
     
     public func call() {
-        print("Sample Action called with argument 'argument' of value '\(argument)'.")
+        print("{{ name }} called with argument 'argument' of value '\(argument)'.")
     }
 }

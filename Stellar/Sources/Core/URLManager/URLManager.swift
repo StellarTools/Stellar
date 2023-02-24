@@ -4,12 +4,6 @@ import Foundation
 
 final class URLManager {
     
-    private let fileManager: FileManaging
-    
-    init(fileManager: FileManaging = FileManager.default) {
-        self.fileManager = fileManager
-    }
-    
     // MARK: Paths
     
     // <app_path>/.stellar
@@ -36,15 +30,5 @@ final class URLManager {
     func executablesUrl(at appLocation: URL) -> URL {
         dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.executablesFolder, isDirectory: true)
     }
-    
-    // Default: <cwd>/Templates
-    
-    func templatesLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-    }
-    
-    // Default: <cwd>/Templates/Hints
-    func hintsLocation() -> URL {
-        templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
-    }
+
 }

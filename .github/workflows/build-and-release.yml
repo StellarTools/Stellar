@@ -39,12 +39,12 @@ jobs:
       - name: Archive using ${{ matrix.scheme }} for destination ${{ matrix.destination }}
         working-directory: ./Stellar
         run: swift build -c release --arch arm64 --arch x86
-      - name: Copy Templates folder
+      - name: Copy Templates.bundle
         working-directory: ./Stellar
-        run: cp -r Templates .build/apple/Products/Release/
+        run: cp -r Sources/Core/Resources/Templates.bundle .build/apple/Products/Release/
       - name: Zip executable
         working-directory: ./Stellar/.build/apple/Products/Release/
-        run: zip -r StellarCLI.zip StellarCLI Templates
+        run: zip -r StellarCLI.zip StellarCLI Templates.bundle
       - name: Create Release
         uses: actions/create-release@v1
         id: create_release
