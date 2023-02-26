@@ -16,8 +16,8 @@ public final class CommandResolver {
     // MARK: - Public Properties
     
     private var urlManager = URLManager()
-    public var versionResolver: VersionResolving
-    public var bundleUpdater: BundleUpdater
+    private var versionResolver: VersionResolving
+    private var bundleUpdater: BundleUpdater
     
     // MARK: - Private Properties
     
