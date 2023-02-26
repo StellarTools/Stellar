@@ -45,7 +45,7 @@ struct StellarEnvCommands: ParsableCommand {
                 return
             }
             
-            try CommandForwarder().run(args: Array(commandArguments().dropFirst()))
+            try CommandResolver().run(args: Array(commandArguments().dropFirst()))
             _exit(0)
         } catch { // Exit cleanly
             if exitCode(for: error).rawValue == 0 {

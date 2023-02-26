@@ -18,17 +18,14 @@ public final class EnvInstaller: EnvInstallerProtocol {
     
     // MARK: - Public Properties
     
-    /// File manager to use.
     public var fileManager: FileManaging = FileManager.default
+    public var versionProvider: VersionProviding
     
-    /// Provider for remote versions.
-    public var versionProvider = VersionProvider()
-    
-    public var urlSession: URLSession = .shared
-
     // MARK: - Initialization
 
-    public init() { }
+    public init(versionProvider: VersionProviding = VersionProvider()) {
+        self.versionProvider = versionProvider
+    }
     
     // MARK: - Public Functions
     
@@ -46,7 +43,6 @@ public final class EnvInstaller: EnvInstallerProtocol {
     ///
     /// - Parameter version: version to install.
     public func install(version: String) throws {
-        let packageURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
         let installationPath = FileConstants.envInstallDirectory
 
         Logger().log("Downloading StellarEnv version \(version)")
@@ -59,8 +55,8 @@ public final class EnvInstaller: EnvInstallerProtocol {
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
                 //try Shell.shared.file(url: packageURL, at: packageDestination)
                 
-                try urlSession.downloadFile(atURL: packageURL, saveAtURL: packageDestination)
-                 NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
+                try versionProvider.downloadEnvPackage(version: version, fileURL: packageDestination)
+                NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip the bundle
                 Logger().log("Expading the archive…")

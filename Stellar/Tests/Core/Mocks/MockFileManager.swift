@@ -5,6 +5,23 @@ import StellarCore
 
 class MockFileManager: FileManaging {
     
+    var homeDirectoryForCurrentUser: URL {
+        fatalError()
+    }
+    
+    var temporaryDirectory: URL {
+        fatalError()
+    }
+    
+    func withTemporaryDirectory<Result>(path: String?, prefix: String, autoRemove: Bool, _ closure: (URL) throws -> Result) throws -> Result {
+        fatalError()
+    }
+    
+    func copyFile(from location: URL, to destination: URL) throws {
+        fatalError()
+    }
+    
+    
     enum MockFileManagerError: Error {
         case missingFile(URL)
         case missingFolder(URL)

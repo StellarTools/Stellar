@@ -18,8 +18,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
     // MARK: - Public Properties
     
     public var fileManager: FileManaging = FileManager.default
-    public var apiProvider = APIProvider()
-    public var versionProvider = VersionProvider()
+    public let versionProvider: VersionProviding
     
     // MARK: - Private Properties
 
@@ -27,7 +26,9 @@ public final class CLIInstaller: CLIInstallerProtocol {
 
     // MARK: - Initialization
     
-    public init() {}
+    public init(versionProvider: VersionProviding = VersionProvider()) {
+        self.versionProvider = versionProvider
+    }
     
     // MARK: - Public Functions
     
@@ -70,7 +71,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
         }
         
         // Get latest version available.
-        guard let latestVersion = try versionProvider.remoteVersions(includePreReleases: preRelease).first else {
+        guard let latestVersion = try versionProvider.versions(includePreReleases: preRelease).first else {
             Logger().log("Failed to evaluate latest available version on remote")
             return
         }
@@ -112,7 +113,6 @@ public final class CLIInstaller: CLIInstallerProtocol {
     ///
     /// - Parameter version: version to install.
     private func install(version: String) throws {
-        let releasesURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarPackage)
         let installURL = try urlManager.systemVersionsLocation(version)
         
         try fileManager.withTemporaryDirectory(
@@ -122,7 +122,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
                 // Download the release zip file
                 Logger().log("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
-                try Shell.shared.file(url: releasesURL, at: remoteFileURL)
+                try versionProvider.downloadCLIPackage(version: version, fileURL: remoteFileURL)
 
                 // Unzip the file
                 try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)

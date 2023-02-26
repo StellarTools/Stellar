@@ -1,35 +1,47 @@
 import Foundation
 
-protocol VersionProviding {
+public protocol VersionProviding {
     
-    func remoteVersions(includePreReleases: Bool) async throws -> [RemoteRelease]
+    /// Return all available remote versions.
+    ///
+    /// - Parameter includePreReleases: `true` to include pre-releases into the list.
+    /// - Returns: remote releases
+    func versions(includePreReleases: Bool) throws -> [RemoteRelease]
     
+    /// Return the latest official release.
+    ///
+    /// - Returns: latest remote release.
+    func latestVersion() throws -> RemoteRelease?
+    
+    /// Download the stellar ENV package and put at given location.
+    ///
+    /// - Parameters:
+    ///   - version: version to download.
+    ///   - fileURL: destination file location
+    func downloadEnvPackage(version: String, fileURL: URL) throws
+    
+    /// Download the stellar CLI package and put at given location.
+    ///
+    /// - Parameters:
+    ///   - version: version to download
+    ///   - fileURL: destination file location
+    func downloadCLIPackage(version: String, fileURL: URL) throws
+
 }
 
 // MARK: - VersionProvider
 
-/// `VersionProvider` is used to query for remote versions of stellar available.
 public final class VersionProvider: VersionProviding {
+        
+    private var urlSession: URLSession
     
-    // MARK: Public Properties
+    public init(urlSession: URLSession = .shared) {
+        self.urlSession = urlSession
+    }
     
-    public var apiProvider = APIProvider()
-
-    // MARK: - Initialization
-    
-    public init() {}
-    
-    // MARK: - Public Functions
-    
-    /// Return the remote versions of stellar available on project's page.
-    ///
-    /// - Parameter includePreReleases: `true` to include pre-releases into the list.
-    /// - Returns: list of remote releases.
-    public func remoteVersions(includePreReleases: Bool = false) throws -> [RemoteRelease] {
-        guard let latestReleases = try apiProvider.fetch(
-            url: RemoteConstants.gitHubReleasesList,
-            decode: [RemoteRelease].self
-        ) else {
+    public func versions(includePreReleases: Bool = false) throws -> [RemoteRelease] {
+        let request = URLRequest(url: RemoteConstants.gitHubReleasesList, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
+        guard let latestReleases = try urlSession.fetch(request: request, decode: [RemoteRelease].self) else {
             return []
         }
         
@@ -42,11 +54,18 @@ public final class VersionProvider: VersionProviding {
         }
     }
     
-    /// Return the latest stable version available for install.
-    ///
-    /// - Returns: latest remove version.
     public func latestVersion() throws -> RemoteRelease? {
-        try remoteVersions(includePreReleases: false).first
+        try versions(includePreReleases: false).first
+    }
+    
+    public func downloadEnvPackage(version: String, fileURL: URL) throws {
+        let envPackageURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
+        try urlSession.downloadFile(atURL: envPackageURL, saveAtURL: fileURL)
+    }
+    
+    public func downloadCLIPackage(version: String, fileURL: URL) throws {
+        let releasesURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarPackage)
+        try urlSession.downloadFile(atURL: releasesURL, saveAtURL: fileURL)
     }
     
 }

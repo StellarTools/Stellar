@@ -13,13 +13,19 @@ public final class BundleUpdater: BundleUpdaterProtocol {
     
     // MARK: - Public Properties
     
-    public var versionProvider = VersionProvider()
-    public var installManager = CLIInstaller()
-    public var envInstaller = EnvInstaller()
+    public var cliInstaller: CLIInstaller
+    public var envInstaller: EnvInstaller
+    
+    public var versionProvider: VersionProviding {
+        cliInstaller.versionProvider
+    }
     
     // MARK: - Initialization
     
-    public init() { }
+    public init(versionProvider: VersionProviding) {
+        self.cliInstaller = .init(versionProvider: versionProvider)
+        self.envInstaller = .init(versionProvider: versionProvider)
+    }
     
     // MARK: - Public Functions
     
@@ -30,7 +36,7 @@ public final class BundleUpdater: BundleUpdaterProtocol {
             return
         }
         
-        if let latestLocalVersion = try installManager.installedVersions().first {
+        if let latestLocalVersion = try cliInstaller.installedVersions().first {
             guard latestRemoteVersion.version > latestLocalVersion.version else {
                 Logger().log("There are not updates available")
                 return
@@ -42,7 +48,7 @@ public final class BundleUpdater: BundleUpdaterProtocol {
         }
         
         // Install version of stellar
-        try installManager.install(version: latestRemoteVersion.description)
+        try cliInstaller.install(version: latestRemoteVersion.description)
         
         // Update stellar env
         Logger().log("Updating stellarenv")

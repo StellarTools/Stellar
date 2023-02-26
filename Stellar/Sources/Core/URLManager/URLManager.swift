@@ -38,11 +38,11 @@ final class URLManager {
     }
     
     func currentWorkingDirectory() -> URL {
-        fileManager.currentLocation
+        FileManager.default.currentLocation
     }
     
     func currentLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
+        FileManager.default.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
     }
     
     // Default: <cwd>/Templates/Hints
@@ -60,7 +60,7 @@ final class URLManager {
     /// - Parameter subfolder: optional subfolder.
     /// - Returns: full path.
     func systemLocation(subfolder: String? = nil) -> URL {
-        let homeStellarURL = fileManager
+        let homeStellarURL = FileManager.default
             .homeDirectoryForCurrentUser
             .appendingPathComponent(FolderConstants.dotStellarFolder)
         guard let subfolder else {
@@ -80,8 +80,8 @@ final class URLManager {
             url = url.appendingPathComponent(version)
         }
         
-        if !fileManager.fileExists(at: url) {
-            try fileManager.createFolder(at: url)
+        if !FileManager.default.fileExists(at: url) {
+            try FileManager.default.createFolder(at: url)
         }
         return url
     }

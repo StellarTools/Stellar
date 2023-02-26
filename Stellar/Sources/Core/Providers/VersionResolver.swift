@@ -1,7 +1,17 @@
 import Foundation
 
-public protocol VersionResolverProtocol {
+public protocol VersionResolving {
     
+    /// Return what version of `stellar` we should use to handle the project
+    /// at given path.
+    ///
+    /// - At the specified path we have a `.stellar-version` file which pin a specific stellar version
+    /// - Optionally we may have a `.stellar-bin` folder with the binary of tuist we should use.
+    ///
+    /// If version is not currently available we would to download it remotely before going forward.
+    ///
+    /// - Parameter path: path of the project.
+    /// - Returns: local release to use.
     func resolveTraversingFromPath(_ path: URL) throws -> ResolvedVersion
 
 }
@@ -32,39 +42,31 @@ enum VersionResolverError: Error, Equatable {
 // MARK: - VersionResolver
 
 /// Resolve `stellar` cli tool to use for executing requests.
-public final class VersionResolver: VersionResolverProtocol {
+public final class VersionResolver: VersionResolving {
     
     // MARK: - Private Properties
     
-    private let fileManager: FileManager = .default
+    private let fileManager: FileManaging
     
     // MARK: - Initialization
     
-    public init() {}
+    public init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
+    }
     
     // MARK: - Public Functiosn
     
-    /// Return what version of `stellar` we should use to handle the project
-    /// at given path.
-    ///
-    /// - At the specified path we have a `.stellar-version` file which pin a specific stellar version
-    /// - Optionally we may have a `.stellar-bin` folder with the binary of tuist we should use.
-    ///
-    /// If version is not currently available we would to download it remotely before going forward.
-    ///
-    /// - Parameter path: path of the project.
-    /// - Returns: local release to use.
     public func resolveTraversingFromPath(_ path: URL) throws -> ResolvedVersion {
         let versionFileURL = path.appendingPathComponent(FileConstants.versionsFile)
         let binFolderURL = path.appendingPathComponent(FileConstants.binFolder)
         
-        if fileManager.fileExists(atPath: binFolderURL.appendingPathComponent(FileConstants.binName).path) {
+        if fileManager.fileExists(at: binFolderURL.appendingPathComponent(FileConstants.binName)) {
             // User specified a `.stellar-bin` with the binary installation of stellar to use. (SHOULD WE INCLUDE IT IN MVP?)
             guard let binRelease = LocalRelease(path: binFolderURL.path) else {
                 return .undefined
             }
             return .bin(binRelease)
-        } else if fileManager.fileExists(atPath: versionFileURL.path) {
+        } else if fileManager.fileExists(at: versionFileURL) {
             return try resolveVersionFile(url: versionFileURL)
         }
         
