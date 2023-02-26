@@ -23,6 +23,8 @@ public final class EnvInstaller: EnvInstallerProtocol {
     
     /// Provider for remote versions.
     public var versionProvider = VersionProvider()
+    
+    public var urlSession: URLSession = .shared
 
     // MARK: - Initialization
 
@@ -45,10 +47,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
     /// - Parameter version: version to install.
     public func install(version: String) throws {
         let packageURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
-        
-        // TODO: It does not work on my machine
-        // let installationPath = try System.shared.which("tuist")
-        let installationPath = "/usr/local/bin/tuist"
+        let installationPath = FileConstants.envInstallDirectory
 
         Logger().log("Downloading StellarEnv version \(version)")
         
@@ -58,8 +57,10 @@ public final class EnvInstaller: EnvInstallerProtocol {
             autoRemove: true, { temporaryURL in
                 // Download release
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
-                try Shell.shared.file(url: packageURL, at: packageDestination)
-                // NSWorkspace.shared.activateFileViewerSelecting([downloadFileURL])
+                //try Shell.shared.file(url: packageURL, at: packageDestination)
+                
+                try urlSession.downloadFile(atURL: packageURL, saveAtURL: packageDestination)
+                 NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip the bundle
                 Logger().log("Expading the archive…")

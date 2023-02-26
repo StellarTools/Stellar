@@ -15,6 +15,7 @@ struct FileConstants {
     static let versionsFile = ".stellar-version"
     static let binFolder = ".stellar-bin"
     static let binName = ".stellar"
+    static let envInstallDirectory = "/usr/local/bin"
 }
 
 struct RemoteConstants {
