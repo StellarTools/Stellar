@@ -6,7 +6,7 @@ public protocol VersionResolving {
     /// at given path.
     ///
     /// - At the specified path we have a `.stellar-version` file which pin a specific stellar version
-    /// - Optionally we may have a `.stellar-bin` folder with the binary of tuist we should use.
+    /// - Optionally we may have a `.stellar-bin` folder with the binary of stellar we should use.
     ///
     /// If version is not currently available we would to download it remotely before going forward.
     ///
@@ -17,12 +17,12 @@ public protocol VersionResolving {
     /// Return the list of installed versions.
     ///
     /// - Returns: list of `LocalRelease` instances.
-    func installedVersions() throws -> [LocalRelease]
+    func installedVersions() throws -> [LocalVersion]
     
     /// Latest installed version.
     ///
     /// - Returns: local release.
-    func latestInstalledVersion() throws -> LocalRelease?
+    func latestInstalledVersion() throws -> LocalVersion?
     
     /// Return the path to the folder which contains `stellar` cli tool labeled with specified version.
     ///
@@ -43,7 +43,7 @@ public protocol VersionResolving {
 /// Identify what kind of version has been resolved.
 public enum ResolvedVersion: Equatable {
     // Binary version contained in `.stellar-bin` folder of the path.
-    case bin(LocalRelease)
+    case bin(LocalVersion)
     // A release pinned using the `.stellar-version` file into the path.
     case versionFile(_ url: URL, _ version: String)
     // Not resolved.
@@ -79,13 +79,13 @@ public final class VersionResolver: VersionResolving {
     
     // MARK: - Public Functiosn
 
-    public func installedVersions() throws -> [LocalRelease] {
+    public func installedVersions() throws -> [LocalVersion] {
         try urlManager.systemVersionsLocation().glob("*").compactMap {
-            LocalRelease(path: $0)
+            LocalVersion(path: $0)
         }.sorted()
     }
     
-    public func latestInstalledVersion() throws -> LocalRelease? {
+    public func latestInstalledVersion() throws -> LocalVersion? {
         try installedVersions().first
     }
     
@@ -107,7 +107,7 @@ public final class VersionResolver: VersionResolving {
         
         if fileManager.fileExists(at: binFolderURL.appendingPathComponent(FileConstants.binName)) {
             // User specified a `.stellar-bin` with the binary installation of stellar to use. (SHOULD WE INCLUDE IT IN MVP?)
-            guard let binRelease = LocalRelease(path: binFolderURL.path) else {
+            guard let binRelease = LocalVersion(path: binFolderURL.path) else {
                 return .undefined
             }
             return .bin(binRelease)

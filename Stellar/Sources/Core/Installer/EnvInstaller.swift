@@ -5,9 +5,11 @@ import AppKit
 // MARK: - EnvInstallerProtocol
 
 protocol EnvInstallerProtocol {
-
-    func install(version: String) throws
-    func install() throws
+    
+    /// Install stellar Env tool.
+    ///
+    /// - Parameter version: version to install, `nil` to install latest remote version available.
+    func install(version: String?) throws
     
 }
 
@@ -30,7 +32,17 @@ public final class EnvInstaller: EnvInstallerProtocol {
     // MARK: - Public Functions
     
     /// Install latest stable version of the `stellarenv`.
-    public func install() throws {
+    public func install(version: String? = nil) throws {
+        if let version {
+            try install(version: version)
+        } else {
+            try installLatestVersion()
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func installLatestVersion() throws {
         guard let latestRemoteVersion = try versionProvider.latestVersion() else {
             Logger().log("No remote version found")
             return
@@ -39,10 +51,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
         try install(version: latestRemoteVersion.version.description)
     }
     
-    /// Install specified version of the `stellarenv`.
-    ///
-    /// - Parameter version: version to install.
-    public func install(version: String) throws {
+    private func install(version: String) throws {
         let installationPath = FileConstants.envInstallDirectory
 
         Logger().log("Downloading StellarEnv version \(version)")
@@ -51,14 +60,12 @@ public final class EnvInstaller: EnvInstallerProtocol {
             path: nil,
             prefix: "com.stellarenv",
             autoRemove: true, { temporaryURL in
-                // Download release
+                // Download zip package
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
-                //try Shell.shared.file(url: packageURL, at: packageDestination)
-                
                 try versionProvider.downloadEnvPackage(version: version, fileURL: packageDestination)
-                NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
+                // NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
-                // Unzip the bundle
+                // Unzip
                 Logger().log("Expading the archive…")
                 try Shell.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
 

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represent an installed version of the stellar environment.
-public struct LocalRelease: Comparable, CustomStringConvertible {
+public struct LocalVersion: Comparable, CustomStringConvertible {
     
     // MARK: - Public Properties
     
@@ -40,7 +40,7 @@ public struct LocalRelease: Comparable, CustomStringConvertible {
         self.version = version
     }
     
-    public static func < (lhs: LocalRelease, rhs: LocalRelease) -> Bool {
+    public static func < (lhs: LocalVersion, rhs: LocalVersion) -> Bool {
         lhs.version < rhs.version
     }
     

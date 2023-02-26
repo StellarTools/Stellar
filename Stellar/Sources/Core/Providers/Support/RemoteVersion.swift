@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
+public struct RemoteVersion: Codable, Comparable, CustomStringConvertible {
     
     public let url: URL
     public let name: String
@@ -17,11 +17,11 @@ public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
         let name: String
     }
     
-    public static func < (lhs: RemoteRelease, rhs: RemoteRelease) -> Bool {
+    public static func < (lhs: RemoteVersion, rhs: RemoteVersion) -> Bool {
         lhs.version < rhs.version
     }
     
-    public static func == (lhs: RemoteRelease, rhs: RemoteRelease) -> Bool {
+    public static func == (lhs: RemoteVersion, rhs: RemoteVersion) -> Bool {
         lhs.version == rhs.version
     }
     

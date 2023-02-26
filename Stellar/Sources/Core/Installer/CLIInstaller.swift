@@ -76,7 +76,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
         return try install(version: latestVersion.tag_name)
     }
     
-    public func latestInstalledVersion() throws -> LocalRelease? {
+    public func latestInstalledVersion() throws -> LocalVersion? {
         try versionResolver.latestInstalledVersion()
     }
     

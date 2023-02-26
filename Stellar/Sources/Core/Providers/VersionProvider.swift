@@ -6,12 +6,12 @@ public protocol VersionProviding {
     ///
     /// - Parameter includePreReleases: `true` to include pre-releases into the list.
     /// - Returns: remote releases
-    func versions(includePreReleases: Bool) throws -> [RemoteRelease]
+    func versions(includePreReleases: Bool) throws -> [RemoteVersion]
     
     /// Return the latest official release.
     ///
     /// - Returns: latest remote release.
-    func latestVersion() throws -> RemoteRelease?
+    func latestVersion() throws -> RemoteVersion?
     
     /// Download the stellar ENV package and put at given location.
     ///
@@ -39,9 +39,9 @@ public final class VersionProvider: VersionProviding {
         self.urlSession = urlSession
     }
     
-    public func versions(includePreReleases: Bool = false) throws -> [RemoteRelease] {
+    public func versions(includePreReleases: Bool = false) throws -> [RemoteVersion] {
         let request = URLRequest(url: RemoteConstants.gitHubReleasesList, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
-        guard let latestReleases = try urlSession.fetch(request: request, decode: [RemoteRelease].self) else {
+        guard let latestReleases = try urlSession.fetch(request: request, decode: [RemoteVersion].self) else {
             return []
         }
         
@@ -54,7 +54,7 @@ public final class VersionProvider: VersionProviding {
         }
     }
     
-    public func latestVersion() throws -> RemoteRelease? {
+    public func latestVersion() throws -> RemoteVersion? {
         try versions(includePreReleases: false).first
     }
     
