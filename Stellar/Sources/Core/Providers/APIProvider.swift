@@ -5,12 +5,14 @@ public final class APIProvider {
     
     // MARK: - Public Properties
     
-    private var session = URLSession.shared
-    private let fileManager: FileManaging = FileManager.default
+    public var session: URLSession
+    public var fileManager: FileManaging = FileManager.default
     
     // MARK: - Initialization
     
-    public init() { }
+    public init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     /// Perform a json request and decode the result.
     ///
@@ -42,18 +44,6 @@ public final class APIProvider {
         }
         
         return try JSONDecoder().decode(model.self, from: data)
-    }
-    
-    // MARK: - Private Properties
-    
-    /// Return the `URLRequest` object to perform HTTP JSON request.
-    ///
-    /// - Parameter url: url.
-    /// - Returns: the request to execute
-    private func urlRequestForFileDownload(url: URL) -> URLRequest {
-        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
-        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        return request
     }
     
 }
