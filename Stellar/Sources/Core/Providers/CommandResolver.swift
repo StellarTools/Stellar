@@ -85,20 +85,13 @@ public final class CommandResolver {
             return
         }
             
-        // Version is not available locally, we would to retrive it remotely.
-        if try bundleUpdater.cliInstaller.isVersionInstalled(version) == false {
-            Logger().log("Version \(version) not found locally. Installing...")
-            try bundleUpdater.cliInstaller.install(version: version)
-        }
-        
-        // Attempt to get the path of the release.
-        guard let versionPath = try bundleUpdater.cliInstaller.pathForVersion(version)?.path else {
-            Logger().log("Failed to use version \(version). Aborting the process...")
+        // Check if version is available locally, install if necessary.
+        guard let versionURL = try bundleUpdater.update(toVersion: version) else {
             exiter(1)
             return
         }
         
-        try runCommandsUsingBinAtPath(URL(fileURLWithPath: versionPath), commandArgs: args)
+        try runCommandsUsingBinAtPath(versionURL, commandArgs: args)
     }
     
     /// Run with highest installed version. If no versions are installed the latest will
@@ -113,7 +106,7 @@ public final class CommandResolver {
             targetVersion = highgestVersion.version.description
         } else {
             // Nothing installed, we try to update all.
-            try bundleUpdater.update()
+            _ = try bundleUpdater.update(toVersion: nil)
             guard let highgestVersion = try bundleUpdater.cliInstaller.latestInstalledVersion() else {
                 throw CommandForwarderError.versionNotFound
             }
@@ -121,7 +114,7 @@ public final class CommandResolver {
             targetVersion = highgestVersion.version.description
         }
         
-        guard let targetVersionPath = try bundleUpdater.cliInstaller.pathForVersion(targetVersion)?.path else {
+        guard let targetVersionPath = try bundleUpdater.versionResolver.pathForVersion(targetVersion)?.path else {
             Logger().log("Failed to use version \(targetVersion ?? ""). Aborting the process...")
             exiter(1)
             return

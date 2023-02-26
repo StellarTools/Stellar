@@ -14,6 +14,28 @@ public protocol VersionResolving {
     /// - Returns: local release to use.
     func resolveTraversingFromPath(_ path: URL) throws -> ResolvedVersion
 
+    /// Return the list of installed versions.
+    ///
+    /// - Returns: list of `LocalRelease` instances.
+    func installedVersions() throws -> [LocalRelease]
+    
+    /// Latest installed version.
+    ///
+    /// - Returns: local release.
+    func latestInstalledVersion() throws -> LocalRelease?
+    
+    /// Return the path to the folder which contains `stellar` cli tool labeled with specified version.
+    ///
+    /// - Parameter version: version to get.
+    /// - Returns: path if installed, `nil` otherwise.
+    func pathForVersion(_ version: String) throws -> URL?
+    
+    /// Return `true` if specified version is available locally.
+    ///
+    /// - Parameter version: version to check.
+    /// - Returns: boolean
+    func isVersionInstalled(_ version: String) throws -> Bool
+    
 }
 
 // MARK: - ResolvedVersion
@@ -47,6 +69,7 @@ public final class VersionResolver: VersionResolving {
     // MARK: - Private Properties
     
     private let fileManager: FileManaging
+    private let urlManager = URLManager()
     
     // MARK: - Initialization
     
@@ -55,6 +78,28 @@ public final class VersionResolver: VersionResolving {
     }
     
     // MARK: - Public Functiosn
+
+    public func installedVersions() throws -> [LocalRelease] {
+        try urlManager.systemVersionsLocation().glob("*").compactMap {
+            LocalRelease(path: $0)
+        }.sorted()
+    }
+    
+    public func latestInstalledVersion() throws -> LocalRelease? {
+        try installedVersions().first
+    }
+    
+    public func pathForVersion(_ version: String) throws -> URL? {
+        try urlManager.systemVersionsLocation(version)
+    }
+
+    public func isVersionInstalled(_ version: String) throws -> Bool {
+        guard let binURL = try pathForVersion(version)?.appendingPathComponent(FileConstants.binName) else {
+            return false
+        }
+        
+        return fileManager.fileExists(at: binURL)
+    }
     
     public func resolveTraversingFromPath(_ path: URL) throws -> ResolvedVersion {
         let versionFileURL = path.appendingPathComponent(FileConstants.versionsFile)

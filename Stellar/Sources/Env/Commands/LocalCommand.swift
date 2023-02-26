@@ -46,7 +46,7 @@ struct LocalCommand: ParsableCommand {
     
     /// Enumerate the list of the installed versions of stellar.
     private func enumerateInstalledVersions() throws {
-        let versions = try CLIInstaller().installedVersions()
+        let versions = try VersionResolver().installedVersions()
         guard !versions.isEmpty else {
             Logger().log("No versions of stellar are installed yet")
             return

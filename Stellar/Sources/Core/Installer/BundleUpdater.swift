@@ -1,15 +1,18 @@
 import Foundation
 
-protocol BundleUpdaterProtocol: AnyObject {
-    
-    func update() async throws
+protocol BundleUpdating: AnyObject {
+        
+    /// Download and update both CLI and Env tools to the specified version.
+    ///
+    /// - Parameter version: version to update. if `nil` a check with the latest remote release is made.
+    @discardableResult
+    func update(toVersion version: String?) throws -> URL?
     
 }
 
 // MARK: - BundleUpdater
 
-/// `BundleUpdater` is used to update both the `stellar` and `stellarenv` tools.
-public final class BundleUpdater: BundleUpdaterProtocol {
+public final class BundleUpdater: BundleUpdating {
     
     // MARK: - Public Properties
     
@@ -20,41 +23,79 @@ public final class BundleUpdater: BundleUpdaterProtocol {
         cliInstaller.versionProvider
     }
     
+    public var versionResolver: VersionResolving {
+        cliInstaller.versionResolver
+    }
+        
     // MARK: - Initialization
     
-    public init(versionProvider: VersionProviding) {
-        self.cliInstaller = .init(versionProvider: versionProvider)
+    public init(versionProvider: VersionProviding = VersionProvider(),
+                versionResolver: VersionResolving = VersionResolver()) {
+        self.cliInstaller = .init(versionProvider: versionProvider, versionResolver: versionResolver)
         self.envInstaller = .init(versionProvider: versionProvider)
     }
     
     // MARK: - Public Functions
     
-    /// Update `stellarenv` installation by obtaining the latest stable version available.
-    public func update() throws {
-        guard let latestRemoteVersion = try versionProvider.latestVersion() else {
-            Logger().log("No remote version found")
-            return
+    func update(toVersion version: String?) throws -> URL? {
+        if let version {
+            return try updateBundle(toVersion: version)
+        } else {
+            return try updateBundleToLatestVersion()
+        }
+    }
+
+    // MARK: - Private Functions
+    
+    private func updateBundle(toVersion version: String) throws -> URL? {
+        // Version is not available locally, we would to retrive it remotely.
+        if try versionResolver.isVersionInstalled(version) == false {
+            Logger().log("Version \(version) not found locally. Installing...")
+            return try cliInstaller.install(version: version)
         }
         
-        if let latestLocalVersion = try cliInstaller.installedVersions().first {
-            guard latestRemoteVersion.version > latestLocalVersion.version else {
+        // Attempt to get the path of the release.
+        guard let versionPath = try versionResolver.pathForVersion(version)?.path else {
+            Logger().log("Failed to use version \(version). Aborting the process...")
+            return nil
+        }
+        
+        return URL(fileURLWithPath: versionPath)
+    }
+
+    private func updateBundleToLatestVersion() throws -> URL? {
+        guard let version = try versionProvider.latestVersion() else {
+            Logger().log("No remote version found")
+            return nil
+        }
+        
+        let versionURL = try updateCli(toRemoteVersion: version)
+        try updateEnv(toRemoteVersion: version)
+        
+        Logger().log("Stellar version \(version.description) installed")
+        
+        return versionURL
+    }
+        
+    private func updateCli(toRemoteVersion version: RemoteRelease) throws -> URL? {
+        if let latestLocalVersion = try cliInstaller.latestInstalledVersion() {
+            guard version.version > latestLocalVersion.version else {
                 Logger().log("There are not updates available")
-                return
+                return nil
             }
             
-            Logger().log("Installing new version available \(latestRemoteVersion)")
+            Logger().log("Installing new version available \(version)")
         } else {
-            Logger().log("No local version available. Installing latest version \(latestRemoteVersion)")
+            Logger().log("No local version available. Installing latest version \(version)")
         }
         
         // Install version of stellar
-        try cliInstaller.install(version: latestRemoteVersion.description)
-        
-        // Update stellar env
+        return try cliInstaller.install(version: version.description)
+    }
+    
+    private func updateEnv(toRemoteVersion version: RemoteRelease) throws {
         Logger().log("Updating stellarenv")
-        try envInstaller.install(version: latestRemoteVersion.description)
-        
-        Logger().log("Stellar version \(latestRemoteVersion.description) installed")
+        try envInstaller.install(version: version.description)
     }
     
 }
