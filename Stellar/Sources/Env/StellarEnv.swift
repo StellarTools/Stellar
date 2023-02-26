@@ -66,7 +66,7 @@ struct StellarEnvCommands: ParsableCommand {
     ///
     /// - Returns: `stellarenv` parsable command, if available.
     private static func suitableEnvCommand() throws -> ParsableCommand? {
-        guard  let parsedArguments = try parseCommands() else {
+        guard let parsedArguments = try parseCommands() else {
             return nil
         }
         
