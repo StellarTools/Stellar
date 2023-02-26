@@ -52,7 +52,8 @@ public final class EnvInstaller: EnvInstallerProtocol {
     }
     
     private func install(version: String) throws {
-        let installationPath = FileConstants.envInstallDirectory
+        let installURL = URL(fileURLWithPath: FileConstants.envInstallDirectory)
+            .appendingPathComponent(FileConstants.envBinName)
 
         Logger().log("Downloading StellarEnv version \(version)")
         
@@ -70,9 +71,9 @@ public final class EnvInstaller: EnvInstallerProtocol {
                 try Shell.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
 
                 // Remove old version and replace with the new one
-                Logger().log("Installing…")
+                Logger().log("Installing in \(installURL.path)…")
                 let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
-                try Shell.shared.copyAndReplace(source: cliToolFileURL, destination: installationPath)
+                try Shell.shared.copyAndReplace(source: cliToolFileURL, destination: installURL.path)
                 
                 Logger().log("StellarEnv version \(version) installed")
             }

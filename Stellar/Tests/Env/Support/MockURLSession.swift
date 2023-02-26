@@ -1,4 +1,5 @@
 import Foundation
+import StellarCore
 
 public class HTTPMockServer {
     
@@ -56,26 +57,41 @@ public class HTTPMockServer {
 extension HTTPMockServer {
     
     public enum Mock {
-        public typealias Response = ((URLRequest) throws -> (HTTPURLResponse, Data))
+        
+        public enum MockResponse {
+            public typealias ResponseCallback = ((URLRequest) throws -> (HTTPURLResponse, Data))
+
+            case fileData(URL)
+            case customCallback(ResponseCallback)
+            
+            static func toFileData(_ fileURL: URL) -> MockResponse {
+                return .fileData(fileURL)
+            }
+            
+            static func toEvaluation(_ callback: @escaping ResponseCallback) -> MockResponse {
+                .customCallback(callback)
+            }
+            
+        }
         
         /// Match the URL using a regular expression
-        case matchURLRegExp(String, Response)
+        case matchURLRegExp(String, MockResponse)
         /// Check if URL is equalt to passed
-        case matchURLString(String, Response)
+        case matchURLString(String, MockResponse)
         
         // MARK: - Initialixation
         
-        static func regExp(_ pattern: String, response: @escaping Response) -> Mock {
+        static func regExp(_ pattern: String, response: MockResponse) -> Mock {
             .matchURLRegExp(pattern, response)
         }
         
-        static func urlEqualTo(_ url: String, response: @escaping Response) -> Mock {
+        static func urlEqualTo(_ url: String, response: MockResponse) -> Mock {
             .matchURLString(url, response)
         }
         
         // MARK: - Private Functions
         
-        var response: Response {
+        var response: MockResponse {
             switch self {
             case .matchURLRegExp(_, let response): return response
             case .matchURLString(_, let response): return response
@@ -112,7 +128,9 @@ public class MockURLProtocol: URLProtocol {
         // Returning false we'll use any other `URLProtocol`, so basically perform an actual network call.
         let mockRequest = HTTPMockServer.shared.matchedMockForRequest(request)
         let hasMocked = mockRequest != nil
-        print("\(request.url?.absoluteString ?? "") has mock? \(hasMocked ? "YES": "NO")")
+        
+        let urlString = request.url?.absoluteString ?? ""
+        Logger().log("[\(hasMocked ? "MOCK" : "NETWORK")] <- \(urlString)")
         return hasMocked
     }
     
@@ -131,10 +149,19 @@ public class MockURLProtocol: URLProtocol {
         }
         
         do {
-            // Respond with mock.
-            let (response, data) = try mock.response(request)
+            let response: HTTPURLResponse
+            let responseData: Data
+            
+            switch mock.response {
+            case .fileData(let stubFileURL):
+                responseData = try Data(contentsOf: stubFileURL)
+                response = HTTPURLResponse.init(url: request.url!, statusCode: 200, httpVersion: "2.0", headerFields: nil)!
+            case .customCallback(let callback):
+                (response, responseData) = try callback(request)
+            }
+
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            client?.urlProtocol(self, didLoad: data)
+            client?.urlProtocol(self, didLoad: responseData)
             client?.urlProtocolDidFinishLoading(self)
         } catch  {
             client?.urlProtocol(self, didFailWithError: MockErrors.failedToPrepareMockResponse(request, error))

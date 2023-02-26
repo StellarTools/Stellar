@@ -40,8 +40,7 @@ public final class VersionProvider: VersionProviding {
     }
     
     public func versions(includePreReleases: Bool = false) throws -> [RemoteVersion] {
-        let request = URLRequest(url: RemoteConstants.gitHubReleasesList, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
-        guard let latestReleases = try urlSession.fetch(request: request, decode: [RemoteVersion].self) else {
+        guard let latestReleases = try urlSession.githubApi(url: RemoteConstants.gitHubReleasesList, decode: [RemoteVersion].self) else {
             return []
         }
         

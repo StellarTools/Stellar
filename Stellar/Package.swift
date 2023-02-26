@@ -48,7 +48,8 @@ let package = Package(
         .testTarget(
             name: "StellarEnvTests",
             dependencies: ["StellarEnv"],
-            path: "Tests/Env"),
+            path: "Tests/Env",
+            resources: [.copy("Tests")]),
         .testTarget(
             name: "StellarCLITests",
             dependencies: ["StellarCLI"],

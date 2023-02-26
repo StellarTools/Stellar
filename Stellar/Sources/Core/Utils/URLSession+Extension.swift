@@ -9,7 +9,18 @@ import Foundation
 
 extension URLSession {
     
+    public func githubApi<T:Codable>(url: URL, decode model: T.Type) throws -> T? {
+        var urlRequest = URLRequest(url: url, timeoutInterval: 5)
+        
+        urlRequest.setValue("Bearer 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", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        return try fetch(request: urlRequest, decode: model)
+    }
+    
     public func fetch<T:Codable>(request: URLRequest, decode model: T.Type) throws -> T? {
+        Logger().log("[\(request.httpMethod ?? "GET")] \(request.url?.absoluteString ?? "")")
         let semaphore = DispatchSemaphore(value: 0)
         var data: Data?, error: Error?
 
@@ -29,6 +40,8 @@ extension URLSession {
             return nil
         }
         
+        //try! data.write(to: URL(fileURLWithPath: "/Users/daniele/Desktop/latest_release.json"))
+        //print(String(data: data, encoding: .utf8))
         return try JSONDecoder().decode(model.self, from: data)
     }
     

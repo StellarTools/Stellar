@@ -16,12 +16,13 @@ struct FileConstants {
     static let binFolder = ".stellar-bin"
     static let binName = ".stellar"
     static let envInstallDirectory = "/usr/local/bin"
+    static let envBinName = "stellarenv"
 }
 
 struct RemoteConstants {
     // TODO: To replace with stellar urls *InterstellarTools/StellarPrototype.
-    static let gitHubProjectURL = URL(string: "https://github.com/InterstellarTools/StellarPrototype")!
-    static let gitHubAPIBaseURL = URL(string: "https://api.github.com/repos/InterstellarTools/StellarPrototype")!
+    static let gitHubProjectURL = URL(string: "https://github.com/StellarTools/Stellar")!
+    static let gitHubAPIBaseURL = URL(string: "https://api.github.com/repos/StellarTools/Stellar")! //URL(string: "https://api.github.com/repos/tuist/tuist")!
     static let gitHubReleasesList = gitHubAPIBaseURL.appendingPathComponent("releases")
     static let releaseZip = "release.zip"
     
