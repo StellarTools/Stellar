@@ -157,7 +157,6 @@ extension URLRequest {
     
     mutating func attachGitHubHeaders(forBinary: Bool) {
         setValue("Bearer \(GitHubAPI.gitHubToken)", forHTTPHeaderField: "Authorization")
-        //setValue("Bearer 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", forHTTPHeaderField: "Authorization")
         setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
         
         if forBinary {
