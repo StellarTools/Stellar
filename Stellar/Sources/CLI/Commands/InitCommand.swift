@@ -12,12 +12,12 @@ struct InitCommand: ParsableCommand {
     @Option(name: .shortAndLong, help: "The path to the project. Optional, defaults to the current directory.")
     private var projectPath: String = "./"
     
-    @Option(name: .shortAndLong, help: "The path to a Templates.bundle. Optional, defaults to the templates shipped with the release.")
-    private var templates: String?
+    @Option(name: .shortAndLong, help: "The path to the templates. Optional, defaults to the templates shipped with the release.")
+    private var templatesPath: String?
     
     func run() throws {
         let appLocation = URL(fileURLWithPath: projectPath)
-        let executorTemplatesLocation = TemplatesLocationFactory(templatesPath: templates).executorTemplatesLocation
+        let executorTemplatesLocation = TemplatesLocationFactory(templatesPath: templatesPath).executorTemplatesLocation
         try Initializer().install(at: appLocation, templatesLocation: executorTemplatesLocation)
     }
 }

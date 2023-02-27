@@ -58,7 +58,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--project-path TestApp"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

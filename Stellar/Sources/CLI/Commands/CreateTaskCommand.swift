@@ -15,12 +15,12 @@ struct CreateTaskCommand: ParsableCommand {
     @Option(name: .shortAndLong, help: "The path to the project. Optional, defaults to the current directory.")
     private var projectPath: String = "./"
     
-    @Option(name: .shortAndLong, help: "The path to a Templates.bundle. Optional, defaults to the templates shipped with the release.")
-    private var templates: String?
+    @Option(name: .shortAndLong, help: "The path to the templates. Optional, defaults to the templates shipped with the release.")
+    private var templatesPath: String?
     
     func run() throws {
         let location = URL(fileURLWithPath: projectPath)
-        let taskTemplateLocation = TemplatesLocationFactory(templatesPath: templates).taskTemplatesLocation
+        let taskTemplateLocation = TemplatesLocationFactory(templatesPath: templatesPath).taskTemplatesLocation
             .appendingPathComponent("Task.stencil", isDirectory: false)
         try TaskCreator().createTask(name: name, at: location, templateLocation: taskTemplateLocation)
     }
