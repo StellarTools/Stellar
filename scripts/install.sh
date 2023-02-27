@@ -77,4 +77,8 @@ sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/StellarEnv\""
 rm -rf /tmp/StellarEnv
 rm /tmp/StellarEnv.zip
 
-ohai "StellarEnv v.$TAG installed! Try running 'stellar'"
+# Also install the CLI environment for this version.
+ohai "Installing latest version of CLI..."
+stellarenv install
+
+ohai "StellarEnv v.$TAG installed! Try running 'stellarenv'"
