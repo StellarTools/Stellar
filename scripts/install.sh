@@ -20,11 +20,34 @@ warn() {
   printf "${tty_red}Warning${tty_reset}: %s\n" "$(chomp "$1")"
 }
 
-LATEST_VERSION=$(git ls-remote -t --sort=v:refname https://github.com/InterstellarTools/StellarPrototype.git | sed -ne '$s/.*tags\/\(.*\)/\1/p')
-ohai "Downloading StellarEnv..."
-[ -f /tmp/StellarEnv.zip ] && rm /tmp/StellarEnv.zip
-[ -f /tmp/StellarEnv ] && rm /tmp/StellarEnv
-curl -LSsf --output /tmp/StellarEnv.zip https://github.com/InterstellarTools/StellarPrototype/releases/download/${LATEST_VERSION}/StellarEnv.zip
+# Check the existence of the GITHUB-TOKEN file.
+# This is necessary until the repo became public.
+GITHUB_TOKEN_FILE=~/.stellar/.GITHUB-TOKEN
+if [ ! -f "$GITHUB_TOKEN_FILE" ]; then
+    ohai "Create a .GITHUB-TOKEN in your ~/.stellar directory before using this script"
+    exit
+fi
+
+# Prepare headers for GitHub autentication.
+GITHUB_TOKEN=`cat ${GITHUB_TOKEN_FILE}`
+declare -a GITHUB_HEADERS=('-H' "X-GitHub-Api-Version: 2022-11-28" '-H' "Accept: application/json" '-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+
+JSON=$(curl --silent -L -s "${GITHUB_HEADERS[@]}" https://api.github.com/repos/StellarTools/Stellar/releases/latest)
+TAG=$(echo "${JSON}" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+
+#TAG=$(get_latest_release)
+ohai "Latest release of stellar is $TAG"
+
+# This is not available for private repos.
+# ARTIFACT_URL="https://github.com/StellarTools/Stellar/releases/download/$TAG/StellarEnv.zip"
+# curl --verbose -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ARTIFACT_URL}"
+
+# Fix for authenticated request. We need to get the assets URL which is private. Public URL does not work, of course.
+ASSET_URL=$(ruby ./assets_url.rb "${JSON}")
+ohai "Downloading stellarenv [$ASSET_URL]"
+declare -a GITHUB_BIN_HEADERS=('-H' "Accept: application/octet-stream" '-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+curl -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ASSET_URL}"
+
 ohai "Unzipping StellarEnv..."
 unzip -o /tmp/StellarEnv.zip -d /tmp/StellarEnv > /dev/null
 ohai "Installing StellarEnv..."
@@ -54,4 +77,4 @@ sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/StellarEnv\""
 rm -rf /tmp/StellarEnv
 rm /tmp/StellarEnv.zip
 
-ohai "StellarEnv installed. Try running 'stellar'"
+ohai "StellarEnv v.$TAG installed! Try running 'stellar'"

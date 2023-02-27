@@ -1,0 +1,1 @@
+require 'json'; assetURL = JSON.parse(ARGV[0])["assets"].select {|a| a["name"] == "StellarEnv.zip"}.first["url"]; puts "#{assetURL}"
