@@ -11,6 +11,7 @@ public protocol CLIInstallerProtocol {
     ///   - version: version to install, if `nil` the latest available version will be installed.
     ///   - preRelease: used when `version` is `nil` to also check pre-release versions.
     /// - Returns: installed URL
+    @discardableResult
     func install(version: String?, preRelease: Bool) throws -> URL?
     
     
@@ -31,7 +32,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
     // MARK: - Public Properties
     
     public var fileManager: FileManaging = FileManager.default
-    public let versionProvider: VersionProviding
+    public let releaseProvider: ReleaseProviding
     public let versionResolver: VersionResolving
     
     // MARK: - Private Properties
@@ -40,9 +41,9 @@ public final class CLIInstaller: CLIInstallerProtocol {
 
     // MARK: - Initialization
     
-    public init(versionProvider: VersionProviding = VersionProvider(),
+    public init(releaseProvider: ReleaseProviding = ReleaseProvider(),
                 versionResolver: VersionResolving = VersionResolver()) {
-        self.versionProvider = versionProvider
+        self.releaseProvider = releaseProvider
         self.versionResolver = versionResolver
     }
     
@@ -67,7 +68,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
         }
         
         // Get latest version available.
-        guard let latestVersion = try versionProvider.versions(includePreReleases: preRelease).first else {
+        guard let latestVersion = try releaseProvider.availableReleases(preReleases: preRelease).first else {
             Logger().log("Failed to evaluate latest available version on remote")
             return nil
         }
@@ -86,9 +87,9 @@ public final class CLIInstaller: CLIInstallerProtocol {
     ///
     /// - Parameter version: version to install.
     private func install(version: String) throws -> URL {
-        guard let taggedRelease = try versionProvider.versionByTag(version) else {
+        guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
             Logger().log("Failed to get tagged release \(version)")
-            throw VersionProviderErrors.cannotFoundRelease(version)
+            throw ReleaseProviderErrors.cannotFoundRelease(version)
         }
         
         let installURL = try urlManager.systemVersionsLocation(version)
@@ -100,11 +101,11 @@ public final class CLIInstaller: CLIInstallerProtocol {
                 // Download the release zip file
                 Logger().log("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
-                try versionProvider.downloadPackage(type: .cli, ofRelease: taggedRelease, toURL: remoteFileURL)
+                try releaseProvider.downloadAsset(type: .cli, ofRelease: taggedRelease, toURL: remoteFileURL)
 
                 // Unzip the file
                 try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
-                // NSWorkspace.shared.activateFileViewerSelecting([installURL])
+                NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
                 Logger().log("Stellar version \(version) installed")
         })

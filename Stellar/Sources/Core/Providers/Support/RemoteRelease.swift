@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RemoteVersion: Codable, Comparable, CustomStringConvertible {
+public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
     
     public enum AssetKind {
         case env
@@ -8,8 +8,8 @@ public struct RemoteVersion: Codable, Comparable, CustomStringConvertible {
         
         var name: String {
             switch self {
-            case .env: return "StellarEnv.zip"
-            case .cli: return "StellarCLI.zip"
+            case .env: return RemoteConstants.stellarEnvPackage
+            case .cli: return RemoteConstants.stellarPackage
             }
         }
     }
@@ -29,11 +29,11 @@ public struct RemoteVersion: Codable, Comparable, CustomStringConvertible {
         let name: String
     }
     
-    public static func < (lhs: RemoteVersion, rhs: RemoteVersion) -> Bool {
+    public static func < (lhs: RemoteRelease, rhs: RemoteRelease) -> Bool {
         lhs.version < rhs.version
     }
     
-    public static func == (lhs: RemoteVersion, rhs: RemoteVersion) -> Bool {
+    public static func == (lhs: RemoteRelease, rhs: RemoteRelease) -> Bool {
         lhs.version == rhs.version
     }
     

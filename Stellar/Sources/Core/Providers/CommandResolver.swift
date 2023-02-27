@@ -25,9 +25,9 @@ public final class CommandResolver {
 
     // MARK: - Initialization
     
-    public init(versionProvider: VersionProviding = VersionProvider(),
+    public init(releaseProvider: ReleaseProviding = ReleaseProvider(),
                 versionResolver: VersionResolving = VersionResolver()) {
-        self.bundleUpdater = .init(versionProvider: versionProvider)
+        self.bundleUpdater = .init(releaseProvider: releaseProvider)
         self.versionResolver = versionResolver
     }
     

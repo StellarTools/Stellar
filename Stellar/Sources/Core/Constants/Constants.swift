@@ -25,6 +25,22 @@ struct GitHubAPI {
     static let apiReleases = apiBaseURL.appendingPathComponent("releases")
     static let apiReleaseTag = apiReleases.appendingPathComponent("tags")
     static let apiLatestRelease = apiReleases.appendingPathComponent("latest")
+    
+    static let tokenFile = ".GITHUB-TOKEN"
+    
+    static var gitHubToken: String = {
+        let tokenFileURL = URLManager().systemLocation()
+            .appendingPathComponent(GitHubAPI.tokenFile)
+        
+        guard FileManager.default.fileExists(at: tokenFileURL) else {
+            print(tokenFileURL.path)
+            fatalError("Missing \(GitHubAPI.tokenFile) in \(FileConstants.binName) directory")
+        }
+        
+        let token = try? String(contentsOf: tokenFileURL)
+        return token ?? ""
+    }()
+    
 }
 
 struct RemoteConstants {

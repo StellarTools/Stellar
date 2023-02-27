@@ -30,8 +30,8 @@ final class StellarEnvInstallerTests: XCTestCase {
             )
         )
         
-        let mockVersionProvider = VersionProvider(urlSession: urlSession)
-        let envInstaller = EnvInstaller(versionProvider: mockVersionProvider)
+        let mockReleaseProvider = ReleaseProvider(urlSession: urlSession)
+        let envInstaller = EnvInstaller(releaseProvider: mockReleaseProvider)
         try envInstaller.install()
                 
         wait(for: [expectation], timeout: 100.0)

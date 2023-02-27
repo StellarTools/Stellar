@@ -19,8 +19,8 @@ public final class BundleUpdater: BundleUpdating {
     public var cliInstaller: CLIInstaller
     public var envInstaller: EnvInstaller
     
-    public var versionProvider: VersionProviding {
-        cliInstaller.versionProvider
+    public var releaseProvider: ReleaseProviding {
+        cliInstaller.releaseProvider
     }
     
     public var versionResolver: VersionResolving {
@@ -29,10 +29,10 @@ public final class BundleUpdater: BundleUpdating {
         
     // MARK: - Initialization
     
-    public init(versionProvider: VersionProviding = VersionProvider(),
+    public init(releaseProvider: ReleaseProviding = ReleaseProvider(),
                 versionResolver: VersionResolving = VersionResolver()) {
-        self.cliInstaller = .init(versionProvider: versionProvider, versionResolver: versionResolver)
-        self.envInstaller = .init(versionProvider: versionProvider)
+        self.cliInstaller = .init(releaseProvider: releaseProvider, versionResolver: versionResolver)
+        self.envInstaller = .init(releaseProvider: releaseProvider)
     }
     
     // MARK: - Public Functions
@@ -64,20 +64,20 @@ public final class BundleUpdater: BundleUpdating {
     }
 
     private func updateBundleToLatestVersion() throws -> URL? {
-        guard let version = try versionProvider.latestVersion() else {
+        guard let release = try releaseProvider.latestRelease() else {
             Logger().log("No remote version found")
             return nil
         }
         
-        let versionURL = try updateCli(toRemoteVersion: version)
-        try updateEnv(toRemoteVersion: version)
+        let versionURL = try updateCLI(toRemoteVersion: release)
+        try updateENV(toRemoteVersion: release)
         
-        Logger().log("Stellar version \(version.description) installed")
+        Logger().log("Stellar version \(release.description) installed")
         
         return versionURL
     }
         
-    private func updateCli(toRemoteVersion version: RemoteVersion) throws -> URL? {
+    private func updateCLI(toRemoteVersion version: RemoteRelease) throws -> URL? {
         if let latestLocalVersion = try cliInstaller.latestInstalledVersion() {
             guard version.version > latestLocalVersion.version else {
                 Logger().log("There are not updates available")
@@ -93,7 +93,7 @@ public final class BundleUpdater: BundleUpdating {
         return try cliInstaller.install(version: version.description)
     }
     
-    private func updateEnv(toRemoteVersion version: RemoteVersion) throws {
+    private func updateENV(toRemoteVersion version: RemoteRelease) throws {
         Logger().log("Updating stellarenv")
         try envInstaller.install(version: version.description)
     }

@@ -1,20 +1,25 @@
-//
-//  File.swift
-//  
-//
-//  Created by daniele on 26/02/23.
-//
-
 import Foundation
 
 extension URLSession {
     
-    public func githubApi<T:Codable>(url: URL, decode model: T.Type) throws -> T? {
+    /// Perform a call to GitHub APIs service.
+    ///
+    /// - Parameters:
+    ///   - url: url to the api.
+    ///   - model: model to decode.
+    /// - Returns: decoded object or exception if something fails.
+    public func gitHubAPI<T:Codable>(url: URL, decode model: T.Type) throws -> T? {
         var urlRequest = URLRequest(url: url, timeoutInterval: 5)
         urlRequest.attachGitHubHeaders(forBinary: false)
         return try fetch(request: urlRequest, decode: model)
     }
     
+    /// Perform a network request and decode the result with Codable conform object.
+    ///
+    /// - Parameters:
+    ///   - request: request to execute.
+    ///   - model: decoded object.
+    /// - Returns: decoded model or exception if something fails.
     public func fetch<T:Codable>(request: URLRequest, decode model: T.Type) throws -> T? {
         Logger().log("[\(request.httpMethod ?? "GET")] \(request.url?.absoluteString ?? "")")
         let semaphore = DispatchSemaphore(value: 0)
@@ -36,8 +41,6 @@ extension URLSession {
             return nil
         }
         
-        //try! data.write(to: URL(fileURLWithPath: "/Users/daniele/Desktop/latest_release.json"))
-        //print(String(data: data, encoding: .utf8))
         return try JSONDecoder().decode(model.self, from: data)
     }
     
@@ -153,7 +156,8 @@ extension OutputStream {
 extension URLRequest {
     
     mutating func attachGitHubHeaders(forBinary: Bool) {
-        setValue("Bearer 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", forHTTPHeaderField: "Authorization")
+        setValue("Bearer \(GitHubAPI.gitHubToken)", forHTTPHeaderField: "Authorization")
+        //setValue("Bearer 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", forHTTPHeaderField: "Authorization")
         setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
         
         if forBinary {

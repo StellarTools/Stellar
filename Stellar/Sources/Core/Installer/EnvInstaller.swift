@@ -21,12 +21,12 @@ public final class EnvInstaller: EnvInstallerProtocol {
     // MARK: - Public Properties
     
     public var fileManager: FileManaging = FileManager.default
-    public var versionProvider: VersionProviding
+    public var releaseProvider: ReleaseProviding
     
     // MARK: - Initialization
 
-    public init(versionProvider: VersionProviding = VersionProvider()) {
-        self.versionProvider = versionProvider
+    public init(releaseProvider: ReleaseProviding = ReleaseProvider()) {
+        self.releaseProvider = releaseProvider
     }
     
     // MARK: - Public Functions
@@ -43,7 +43,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
     // MARK: - Private Functions
     
     private func install(version: String) throws {
-        guard let taggedRelease = try versionProvider.versionByTag(version) else {
+        guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
             Logger().log("Tagged release \(version) not found.")
             return
         }
@@ -52,7 +52,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
     }
     
     private func installLatestVersion() throws {
-        guard let latestRemoteVersion = try versionProvider.latestVersion() else {
+        guard let latestRemoteVersion = try releaseProvider.latestRelease() else {
             Logger().log("No remote version found.")
             return
         }
@@ -60,7 +60,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
         try install(release: latestRemoteVersion)
     }
     
-    private func install(release: RemoteVersion) throws {
+    private func install(release: RemoteRelease) throws {
         let installURL = URL(fileURLWithPath: FileConstants.envInstallDirectory)
             .appendingPathComponent(FileConstants.envBinName)
 
@@ -72,7 +72,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
             autoRemove: false, { temporaryURL in
                 // Download zip package
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
-                try versionProvider.downloadPackage(type: .env, ofRelease: release, toURL: packageDestination)
+                try releaseProvider.downloadAsset(type: .env, ofRelease: release, toURL: packageDestination)
                 NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip
