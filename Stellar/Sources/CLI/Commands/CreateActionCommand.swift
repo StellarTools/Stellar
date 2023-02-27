@@ -7,15 +7,15 @@ import StellarCore
 struct CreateActionCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "create-action",
-        abstract: "Abstract")
+        abstract: "Create an action that can be used by the tasks.")
     
-    @Option(name: .shortAndLong, help: "The name of the Action. Must have the \"Action\" suffix")
+    @Option(name: .shortAndLong, help: "The name of the Action. Must have the 'Action' suffix.")
     private var name: String
     
-    @Option(name: .shortAndLong, help: "The path in which create the action. Default <cwd>.stellar/Actions")
+    @Option(name: .shortAndLong, help: "The path in which to create the action. Optional, defaults to .stellar/Actions")
     private var path: String?
     
-    @Option(name: .shortAndLong, help: "The path with the action templates. Default <cwd>/Templates")
+    @Option(name: .shortAndLong, help: "The path to a Templates.bundle. Optional, defaults to the templates shipped with the release.")
     private var templates: String?
     
     func run() throws {
