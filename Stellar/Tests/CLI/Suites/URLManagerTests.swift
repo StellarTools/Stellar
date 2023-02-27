@@ -14,7 +14,7 @@ final class URLManagerTests: XCTestCase {
     
     func test_templatesLocation() throws {
         let url = urlManager.templatesLocation(nil)
-        let expected = fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+        let expected = fileManager.executableLocation.appendingPathComponent(PathConstants.templatesBundle)
         XCTAssertEqual(url, expected)
     }
     

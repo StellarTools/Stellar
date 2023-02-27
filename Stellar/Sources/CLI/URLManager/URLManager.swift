@@ -28,6 +28,6 @@ final class URLManager {
         if let templates = templates {
             return URL(fileURLWithPath: templates)
         }
-        return fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+        return fileManager.executableLocation.appendingPathComponent(PathConstants.templatesBundle)
     }
 }
