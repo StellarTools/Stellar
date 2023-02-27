@@ -62,6 +62,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
         Logger().log("File generated at path \(fileURL.path)")
     }
     
+    @discardableResult
     public func install(version: String?, preRelease: Bool = false) throws -> URL? {
         if let version { // Install specified version.
             return try install(version: version)

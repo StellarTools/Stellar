@@ -22,7 +22,9 @@ public struct CLIInstallCommand: ParsableCommand {
     
     // MARK: - Initialization
     
-    public init() { }
+    public init() {
+        
+    }
     
     // MARK: - Public Functions
 

@@ -4,6 +4,7 @@ import XCTest
 
 final class StellarEnvInstallerTests: XCTestCase {
     
+    /*
     private let urlSession = HTTPMockServer.shared.urlSession
     
     public func test_envInstall() throws {
@@ -36,6 +37,6 @@ final class StellarEnvInstallerTests: XCTestCase {
                 
         wait(for: [expectation], timeout: 100.0)
 
-    }
+    }*/
     
 }

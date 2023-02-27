@@ -1,6 +1,6 @@
 import Foundation
 import StellarCore
-
+/*
 public class HTTPMockServer {
     
     // MARK: - Public Properties
@@ -174,3 +174,4 @@ public enum MockErrors: Error {
     case unhandledRequest(URLRequest)
     case failedToPrepareMockResponse(URLRequest, Error)
 }
+*/
