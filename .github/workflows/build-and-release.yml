@@ -56,8 +56,8 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true
+          draft: false # just for testing
+          prerelease: false # just for testing
       - name: Upload StellarCLI
         uses: actions/upload-release-asset@v1
         env:
