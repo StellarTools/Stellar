@@ -28,7 +28,7 @@ struct StellarEnvCommand: ParsableCommand {
     public static func main(_: [String]? = nil) {
         let cmdsList = commandArguments().dropFirst()
         if cmdsList.isEmpty {
-            exit(withError: nil)
+            _exit(0)
         }
         
         // PARSE RECEIVED COMMAND
@@ -108,4 +108,3 @@ struct StellarEnvCommand: ParsableCommand {
     }
     
 }
-
