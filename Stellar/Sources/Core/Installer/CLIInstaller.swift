@@ -86,6 +86,11 @@ public final class CLIInstaller: CLIInstallerProtocol {
     ///
     /// - Parameter version: version to install.
     private func install(version: String) throws -> URL {
+        guard let taggedRelease = try versionProvider.versionByTag(version) else {
+            Logger().log("Failed to get tagged release \(version)")
+            throw VersionProviderErrors.cannotFoundRelease(version)
+        }
+        
         let installURL = try urlManager.systemVersionsLocation(version)
         
         try fileManager.withTemporaryDirectory(
@@ -95,7 +100,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
                 // Download the release zip file
                 Logger().log("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
-                try versionProvider.downloadCLIPackage(version: version, fileURL: remoteFileURL)
+                try versionProvider.downloadPackage(type: .cli, ofRelease: taggedRelease, toURL: remoteFileURL)
 
                 // Unzip the file
                 try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)

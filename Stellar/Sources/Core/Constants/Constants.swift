@@ -19,22 +19,19 @@ struct FileConstants {
     static let envBinName = "stellarenv"
 }
 
+struct GitHubAPI {
+    static let projectURL = URL(string: "https://github.com/StellarTools/Stellar")!
+    static let apiBaseURL = URL(string: "https://api.github.com/repos/StellarTools/Stellar")!
+    static let apiReleases = apiBaseURL.appendingPathComponent("releases")
+    static let apiReleaseTag = apiReleases.appendingPathComponent("tags")
+    static let apiLatestRelease = apiReleases.appendingPathComponent("latest")
+}
+
 struct RemoteConstants {
-    // TODO: To replace with stellar urls *InterstellarTools/StellarPrototype.
-    static let gitHubProjectURL = URL(string: "https://github.com/StellarTools/Stellar")!
-    static let gitHubAPIBaseURL = URL(string: "https://api.github.com/repos/StellarTools/Stellar")! //URL(string: "https://api.github.com/repos/tuist/tuist")!
-    static let gitHubReleasesList = gitHubAPIBaseURL.appendingPathComponent("releases")
     static let releaseZip = "release.zip"
-    
-    // TODO: To replace with Stellar* counterparts
     static let stellarPackage = "\(stellarCLI).zip"
     static let stellarCLI = "StellarCLI"
 
     static let stellarEnvCLI = "StellarEnv"
     static let stellarEnvPackage = "\(stellarEnvCLI).zip"
-    
-    static func releasesURL(forVersion version: String, assetsName: String) -> URL {
-        RemoteConstants.gitHubProjectURL.appendingPathComponent("releases/download/\(version)/\(assetsName)")
-    }
-    
 }

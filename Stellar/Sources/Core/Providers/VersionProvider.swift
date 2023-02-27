@@ -8,39 +8,39 @@ public protocol VersionProviding {
     /// - Returns: remote releases
     func versions(includePreReleases: Bool) throws -> [RemoteVersion]
     
+    /// Return release by tag name.
+    ///
+    /// - Parameter tagName: tag name.
+    /// - Returns: remote version
+    func versionByTag(_ tagName: String) throws -> RemoteVersion?
+    
     /// Return the latest official release.
     ///
     /// - Returns: latest remote release.
     func latestVersion() throws -> RemoteVersion?
     
-    /// Download the stellar ENV package and put at given location.
-    ///
-    /// - Parameters:
-    ///   - version: version to download.
-    ///   - fileURL: destination file location
-    func downloadEnvPackage(version: String, fileURL: URL) throws
-    
-    /// Download the stellar CLI package and put at given location.
-    ///
-    /// - Parameters:
-    ///   - version: version to download
-    ///   - fileURL: destination file location
-    func downloadCLIPackage(version: String, fileURL: URL) throws
+    func downloadPackage(type: RemoteVersion.AssetKind, ofRelease release: RemoteVersion, toURL: URL) throws
 
+}
+
+public enum VersionProviderErrors: Error {
+    case cannotFoundRelease(String)
+    case failedToIdentifyReleaseURL(RemoteVersion)
 }
 
 // MARK: - VersionProvider
 
 public final class VersionProvider: VersionProviding {
         
-    private var urlSession: URLSession
+    public let urlSession: URLSession
     
     public init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
     }
     
     public func versions(includePreReleases: Bool = false) throws -> [RemoteVersion] {
-        guard let latestReleases = try urlSession.githubApi(url: RemoteConstants.gitHubReleasesList, decode: [RemoteVersion].self) else {
+        guard let latestReleases = try urlSession.githubApi(url: GitHubAPI.apiReleases,
+                                                            decode: [RemoteVersion].self) else {
             return []
         }
         
@@ -53,18 +53,23 @@ public final class VersionProvider: VersionProviding {
         }
     }
     
+    public func versionByTag(_ tagName: String) throws -> RemoteVersion? {
+        try urlSession.githubApi(url: GitHubAPI.apiReleaseTag.appendingPathComponent(tagName),
+                                 decode: RemoteVersion.self)
+    }
+    
     public func latestVersion() throws -> RemoteVersion? {
-        try versions(includePreReleases: false).first
+        try urlSession.githubApi(url: GitHubAPI.apiLatestRelease,
+                                 decode: RemoteVersion.self)
     }
     
-    public func downloadEnvPackage(version: String, fileURL: URL) throws {
-        let envPackageURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarEnvPackage)
-        try urlSession.downloadFile(atURL: envPackageURL, saveAtURL: fileURL)
-    }
-    
-    public func downloadCLIPackage(version: String, fileURL: URL) throws {
-        let releasesURL = RemoteConstants.releasesURL(forVersion: version, assetsName: RemoteConstants.stellarPackage)
-        try urlSession.downloadFile(atURL: releasesURL, saveAtURL: fileURL)
+    public func downloadPackage(type: RemoteVersion.AssetKind, ofRelease release: RemoteVersion, toURL: URL) throws {
+        guard let url = release.assetURL(type: type) else {
+            throw VersionProviderErrors.failedToIdentifyReleaseURL(release)
+        }
+        
+        Logger().log("Downloading package at \(url.absoluteString)...")
+        try urlSession.downloadFile(atURL: url, saveAtURL: toURL)
     }
     
 }

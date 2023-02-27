@@ -11,11 +11,7 @@ extension URLSession {
     
     public func githubApi<T:Codable>(url: URL, decode model: T.Type) throws -> T? {
         var urlRequest = URLRequest(url: url, timeoutInterval: 5)
-        
-        urlRequest.setValue("Bearer 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", forHTTPHeaderField: "Authorization")
-        urlRequest.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-        
+        urlRequest.attachGitHubHeaders(forBinary: false)
         return try fetch(request: urlRequest, decode: model)
     }
     
@@ -60,9 +56,11 @@ extension URLSession {
         let fileURL = saveAtURL ?? URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
 
         let semaphore = DispatchSemaphore(value: 0)
-        let urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
+        
         Task {
-            _  = try await download(request: urlRequest, fileURL: fileURL)
+            var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 5)
+            urlRequest.attachGitHubHeaders(forBinary: true)
+            _  = try await download(request: urlRequest, delegate: Redirect.shared, fileURL: fileURL)
             semaphore.signal()
         }
         
@@ -150,4 +148,29 @@ extension OutputStream {
             }
         }
     }
+}
+
+extension URLRequest {
+    
+    mutating func attachGitHubHeaders(forBinary: Bool) {
+        setValue("Bearer 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", forHTTPHeaderField: "Authorization")
+        setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        
+        if forBinary {
+            setValue("application/octet-stream", forHTTPHeaderField: "Accept")
+        } else {
+            setValue("application/json", forHTTPHeaderField: "Accept")
+        }
+    }
+    
+}
+
+private class Redirect: NSObject, URLSessionTaskDelegate, URLSessionDelegate {
+    
+    public static let shared = Redirect()
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+        completionHandler(request)
+    }
+    
 }
