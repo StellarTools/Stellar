@@ -16,7 +16,7 @@ struct UpdateCommand: ParsableCommand {
     // MARK: - Public Functions
 
     public func run() throws {
-        Logger().log("Checking for updates...")
+        Logger().log("Checking for stellarenv updates...")
         try EnvInstaller().install()
     }
     

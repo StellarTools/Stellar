@@ -2,23 +2,35 @@ import ArgumentParser
 import Foundation
 import StellarCore
 
-@main
-struct StellarEnvCommands: ParsableCommand {
+struct StellarEnvCommand: ParsableCommand {
     
-    static let configuration = CommandConfiguration(
-        commandName: "stellar",
-        abstract: "Manage stellar versions",
-        subcommands: [
-            LocalCommand.self,
-            ListCommand.self,
-            CLIInstallCommand.self,
-            UpdateCommand.self
-        ]
-    )
+    public static var configuration: CommandConfiguration {
+        CommandConfiguration(
+            commandName: "stellar",
+            abstract: "Manage the environment stellar versions",
+            subcommands: [
+                LocalCommand.self,
+                ListCommand.self,
+                CLIInstallCommand.self,
+                UpdateCommand.self
+            ]
+        )
+    }
+    
+    // MARK: - Initialization
+    
+    public init() {
+        
+    }
     
     // MARK: - Public Functions
     
-    public static func main() {
+    public static func main(_: [String]? = nil) {
+        let cmdsList = commandArguments().dropFirst()
+        if cmdsList.isEmpty {
+            exit(withError: nil)
+        }
+        
         // PARSE RECEIVED COMMAND
         // Check if the command (along with its args) is one of the commands
         // exposed by `stellarenv` (this) or should be redirect to one of the `stellar` cli
@@ -41,6 +53,7 @@ struct StellarEnvCommands: ParsableCommand {
         // to call `stellar` cli tool with the same arguments.
         do {
             if var command {
+                Logger().log("Commands will be executed by stellarenv")
                 try command.run()
                 return
             }

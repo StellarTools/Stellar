@@ -32,8 +32,8 @@ public protocol ReleaseProviding {
 // MARK: - ReleaseProviderErrors
 
 public enum ReleaseProviderErrors: Error {
-    case cannotFoundRelease(String)
-    case failedToIdentifyReleaseURL(RemoteRelease)
+    case releaseNotAvailable(String)
+    case releaseURLNotAvailable(RemoteRelease)
 }
 
 // MARK: - ReleaseProvider
@@ -73,10 +73,10 @@ public final class ReleaseProvider: ReleaseProviding {
     
     public func downloadAsset(type: RemoteRelease.AssetKind, ofRelease release: RemoteRelease, toURL: URL) throws {
         guard let url = release.assetURL(type: type) else {
-            throw ReleaseProviderErrors.failedToIdentifyReleaseURL(release)
+            throw ReleaseProviderErrors.releaseURLNotAvailable(release)
         }
         
-        Logger().log("Downloading package at \(url.absoluteString)...")
+        Logger().log("Downloading package \(type.name) at \(url.absoluteString)...")
         try urlSession.downloadFile(atURL: url, saveAtURL: toURL)
     }
     

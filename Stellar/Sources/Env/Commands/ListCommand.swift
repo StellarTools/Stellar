@@ -22,11 +22,11 @@ public struct ListCommand: ParsableCommand {
     
     // MARK: - Public Functions
 
-    public func run() async throws {
-        try await run(includePreRelease: preReleases)
+    public func run() throws {
+        try run(includePreRelease: preReleases)
     }
     
-    public func run(includePreRelease preRelease: Bool) async throws {
+    public func run(includePreRelease preRelease: Bool) throws {
         let versionsProvider = ReleaseProvider()
         
         let latestReleases = try versionsProvider.availableReleases(preReleases: preRelease)

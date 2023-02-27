@@ -90,7 +90,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
     private func install(version: String) throws -> URL {
         guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
             Logger().log("Failed to get tagged release \(version)")
-            throw ReleaseProviderErrors.cannotFoundRelease(version)
+            throw ReleaseProviderErrors.releaseNotAvailable(version)
         }
         
         let installURL = try urlManager.systemVersionsLocation(version)
