@@ -57,7 +57,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--path Actions"
+            argument = "--output-path Actions"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

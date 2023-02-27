@@ -13,14 +13,14 @@ struct CreateActionCommand: ParsableCommand {
     private var name: String
     
     @Option(name: .shortAndLong, help: "The path in which to create the action. Optional, defaults to .stellar/Actions")
-    private var path: String?
+    private var outputPath: String?
     
     @Option(name: .shortAndLong, help: "The path to a Templates.bundle. Optional, defaults to the templates shipped with the release.")
     private var templates: String?
     
     func run() throws {
         try validate()
-        let location = URLManager().dotStellarActionsLocation(path)
+        let location = URLManager().dotStellarActionsLocation(outputPath)
         let templatesLocationFactory = TemplatesLocationFactory(templatesPath: templates)
         let actionTemplatesLocation = templatesLocationFactory.actionTemplatesLocation
         let hintTemplatesLocation = templatesLocationFactory.hintTemplatesLocation
