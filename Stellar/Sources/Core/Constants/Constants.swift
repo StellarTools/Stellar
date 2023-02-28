@@ -11,6 +11,7 @@ struct FileConstants {
     static let versionsFile = ".stellar-version"
     static let binFolder = ".stellar-bin"
     static let binName = ".stellar"
+    static let toolFolder = ".stellar"
     static let envInstallDirectory = "/usr/local/bin"
     static let envBinName = "stellarenv"
 }
@@ -30,7 +31,7 @@ struct GitHubAPI {
         
         guard FileManager.default.fileExists(at: tokenFileURL) else {
             print(tokenFileURL.path)
-            fatalError("Missing \(GitHubAPI.tokenFile) in \(FileConstants.binName) directory")
+            fatalError("Missing \(GitHubAPI.tokenFile) in ~/\(FileConstants.toolFolder) directory.")
         }
         
         let token = try? String(contentsOf: tokenFileURL)
