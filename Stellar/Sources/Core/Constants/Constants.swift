@@ -42,9 +42,8 @@ struct GitHubAPI {
 
 struct RemoteConstants {
     static let releaseZip = "release.zip"
-    static let stellarPackage = "\(stellarCLI).zip"
     static let stellarCLI = "StellarCLI"
-
+    static let stellarCLIZipAsset = "\(stellarCLI).zip"
     static let stellarEnvCLI = "StellarEnv"
-    static let stellarEnvPackage = "\(stellarEnvCLI).zip"
+    static let stellarEnvZipAsset = "\(stellarEnvCLI).zip"
 }

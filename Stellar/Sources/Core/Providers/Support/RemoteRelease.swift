@@ -3,13 +3,13 @@ import Foundation
 public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
     
     public enum AssetKind {
-        case env
         case cli
+        case env
         
         var name: String {
             switch self {
-            case .env: return RemoteConstants.stellarEnvPackage
-            case .cli: return RemoteConstants.stellarPackage
+            case .cli: return RemoteConstants.stellarCLIZipAsset
+            case .env: return RemoteConstants.stellarEnvZipAsset
             }
         }
     }

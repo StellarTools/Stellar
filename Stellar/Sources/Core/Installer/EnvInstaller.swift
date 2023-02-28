@@ -71,7 +71,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
             prefix: "com.stellarenv",
             autoRemove: false, { temporaryURL in
                 // Download zip package
-                let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
+                let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvZipAsset)
                 try releaseProvider.downloadAsset(type: .env, ofRelease: release, toURL: packageDestination)
                 NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
