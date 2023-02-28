@@ -21,7 +21,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.8.0")),
         .package(url: "https://github.com/JohnSundell/ShellOut.git", .upToNextMajor(from: "2.3.0")),
-        .package(url: "https://github.com/apple/swift-tools-support-core.git", from: "0.3.0")
+        .package(url: "https://github.com/apple/swift-tools-support-core.git", from: "0.5.2")
     ],
     targets: [
         .executableTarget(
