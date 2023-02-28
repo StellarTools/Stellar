@@ -25,12 +25,6 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "StellarEnv",
-            dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .target(name: "StellarCore")],
-            path: "Sources/Env"),
-        .executableTarget(
             name: "StellarCLI",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
@@ -46,11 +40,12 @@ let package = Package(
             ],
             path: "Sources/Core",
             resources: [.copy("Resources")]),
-        .testTarget(
-            name: "StellarEnvTests",
-            dependencies: ["StellarEnv"],
-            path: "Tests/Env",
-            resources: [.copy("Tests")]),
+        .executableTarget(
+            name: "StellarEnv",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "StellarCore")],
+            path: "Sources/Env"),
         .testTarget(
             name: "StellarCLITests",
             dependencies: ["StellarCLI"],
@@ -59,6 +54,11 @@ let package = Package(
             name: "StellarCoreTests",
             dependencies: ["StellarCore"],
             path: "Tests/Core",
-            resources: [.copy("Resources")])
+            resources: [.copy("Resources")]),
+        .testTarget(
+            name: "StellarEnvTests",
+            dependencies: ["StellarEnv"],
+            path: "Tests/Env",
+            resources: [.copy("Tests")])
     ]
 )
