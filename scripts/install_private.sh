@@ -21,7 +21,7 @@ warn() {
 }
 
 # Check the existence of the GITHUB-TOKEN file.
-# This is necessary until the repo became public.
+# This is necessary until the repo becomes public.
 GITHUB_TOKEN_FILE=~/.stellar/.GITHUB-TOKEN
 if [ ! -f "$GITHUB_TOKEN_FILE" ]; then
     ohai "Create a .GITHUB-TOKEN in your ~/.stellar directory before using this script"
@@ -43,11 +43,11 @@ ohai "Latest release of stellar is $TAG"
 # curl --verbose -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ARTIFACT_URL}"
 
 # Fix for authenticated request. We need to get the assets URL which is private. Public URL does not work, of course.
-ASSET_URL=$(ruby ./assets_url.rb "${JSON}")
-
-ohai "Downloading stellarenv [$ASSET_URL]"
+ASSETS_URL=$(ruby ./assets_url.rb "${JSON}")
+ohai $ASSETS_URL
+ohai "Downloading stellarenv [$ASSETS_URL]"
 declare -a GITHUB_BIN_HEADERS=('-H' "Accept: application/octet-stream" '-H' "Authorization: Bearer ${GITHUB_TOKEN}")
-curl -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ASSET_URL}"
+curl -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ASSETS_URL}"
 
 ohai "Unzipping StellarEnv..."
 unzip -o /tmp/StellarEnv.zip -d /tmp/StellarEnv > /dev/null
