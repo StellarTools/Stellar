@@ -7,10 +7,6 @@ struct Constants {
     static let executor = "Executor"
 }
 
-struct HintTemplateNames {
-    static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
-}
-
 struct FileConstants {
     static let versionsFile = ".stellar-version"
     static let binFolder = ".stellar-bin"
