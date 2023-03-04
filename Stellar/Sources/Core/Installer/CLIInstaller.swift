@@ -15,10 +15,10 @@ public protocol CLIInstallerProtocol {
     func install(version: String?, preRelease: Bool) throws -> URL?
     
     
-    /// Pin given [project at] location to a specified version of stellar.
+    /// Pin a project at a given location to a specified version of stellar.
     ///
     /// - Parameters:
-    ///   - url: url of the source folder.
+    ///   - url: url of the project folder.
     ///   - version: version to pin.
     func pin(url: URL?, toVersion version: String) throws
     
@@ -31,13 +31,14 @@ public final class CLIInstaller: CLIInstallerProtocol {
 
     // MARK: - Public Properties
     
-    public var fileManager: FileManaging = FileManager.default
+    public let fileManager: FileManaging = FileManager.default
     public let releaseProvider: ReleaseProviding
     public let versionResolver: VersionResolving
     
     // MARK: - Private Properties
 
-    private var urlManager = URLManager()
+    private let urlManager = URLManager()
+    private let logger = Logger()
 
     // MARK: - Initialization
     
@@ -52,14 +53,14 @@ public final class CLIInstaller: CLIInstallerProtocol {
     public func pin(url: URL?, toVersion version: String) throws {
         let destinationURL = url ?? urlManager.currentWorkingDirectory()
         
-        Logger().log("Generating \(FileConstants.versionsFile) file with version \(version)")
+        logger.log("Generating \(FileConstants.versionsFile) file with version \(version)")
         let fileURL = destinationURL.appendingPathComponent(FileConstants.versionsFile)
-        try "\(version)".write(
+        try version.write(
             to: fileURL,
             atomically: true,
             encoding: .utf8
         )
-        Logger().log("File generated at path \(fileURL.path)")
+        logger.log("File generated at path \(fileURL.path)")
     }
     
     @discardableResult
@@ -70,12 +71,12 @@ public final class CLIInstaller: CLIInstallerProtocol {
         
         // Get latest version available.
         guard let latestVersion = try releaseProvider.availableReleases(preReleases: preRelease).first else {
-            Logger().log("Failed to evaluate latest available version on remote")
+            logger.log("Failed to evaluate latest available version on remote")
             return nil
         }
         
-        Logger().log("Latest \(preRelease ? "prerelease" : "stable") release found is \(latestVersion.tag_name)")
-        return try install(version: latestVersion.tag_name)
+        logger.log("Latest \(preRelease ? "prerelease" : "stable") release found is \(latestVersion.tagName)")
+        return try install(version: latestVersion.tagName)
     }
     
     public func latestInstalledVersion() throws -> LocalVersion? {
@@ -89,18 +90,18 @@ public final class CLIInstaller: CLIInstallerProtocol {
     /// - Parameter version: version to install.
     private func install(version: String) throws -> URL {
         guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
-            Logger().log("Failed to get tagged release \(version)")
+            logger.log("Failed to get tagged release \(version)")
             throw ReleaseProviderErrors.releaseNotAvailable(version)
         }
         
-        let installURL = try urlManager.systemVersionsLocation(version)
+        let installURL = try urlManager.systemVersionLocation(version)
         
         try fileManager.withTemporaryDirectory(
             path: nil,
             prefix: "com.stellar",
             autoRemove: true, { temporaryURL in
                 // Download the release zip file
-                Logger().log("Downloading stellar v.\(version)...")
+                logger.log("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
                 try releaseProvider.downloadAsset(type: .cli, ofRelease: taggedRelease, toURL: remoteFileURL)
 
@@ -108,7 +109,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
                 try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
                 NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
-                Logger().log("Stellar version \(version) installed")
+                logger.log("Stellar version \(version) installed")
         })
         
         return installURL
