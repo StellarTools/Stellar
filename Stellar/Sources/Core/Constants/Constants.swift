@@ -10,7 +10,7 @@ struct Constants {
 struct FileConstants {
     static let versionsFile = ".stellar-version"
     static let binFolder = ".stellar-bin"
-    static let binName = ".stellar"
+    static let binName = "stellar"
     static let toolFolder = ".stellar"
     static let envInstallDirectory = "/usr/local/bin"
     static let envBinName = "stellarenv"
