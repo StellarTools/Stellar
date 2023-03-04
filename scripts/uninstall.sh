@@ -31,7 +31,7 @@ sudo_if_install_dir_not_writeable() {
   fi
 }
 
-sudo_if_install_dir_not_writeable "rm -rf /usr/local/bin/StellarCLI"
-# rm -rf ~/.stellar
+sudo_if_install_dir_not_writeable "rm -rf /usr/local/bin/stellarenv"
+rm -rf ~/.stellar
 
 ohai "Stellar uninstalled"
