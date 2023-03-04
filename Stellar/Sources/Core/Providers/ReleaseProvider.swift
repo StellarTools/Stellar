@@ -59,7 +59,7 @@ public final class ReleaseProvider: ReleaseProviding {
         }
         
         return latestReleases.filter {
-            return !$0.prerelease
+            return !$0.preRelease
         }
     }
     
