@@ -1,23 +1,25 @@
 import Foundation
 
-enum CommandForwarderError: Error {
-    case versionNotFound
-
-    var description: String {
-        switch self {
-        case .versionNotFound:
-            return "No valid version has been found locally"
-        }
-    }
-}
-
 public final class CommandResolver {
     
+    enum CommandForwarderError: Error {
+        case versionNotFound
+
+        var description: String {
+            switch self {
+            case .versionNotFound:
+                return "No valid version has been found locally"
+            }
+        }
+    }
+
     // MARK: - Public Properties
     
-    private var urlManager = URLManager()
-    private var versionResolver: VersionResolving
-    private var bundleUpdater: BundleUpdater
+    private let urlManager = URLManager()
+    private let versionResolver: VersionResolving
+    private let bundleUpdater: BundleUpdater
+    
+    private let logger = Logger()
     
     // MARK: - Private Properties
     
@@ -36,14 +38,14 @@ public final class CommandResolver {
     public func run(args: [String]) throws {
         // We should check to what version of `stellar` in `~/.stellar/Versions` we should
         // forward requested commands.
-        let resolvedVersion = try versionResolver.resolveTraversingFromPath(urlManager.currentWorkingDirectory())
+        let resolvedVersion = try versionResolver.resolveVersionForPath(urlManager.currentWorkingDirectory())
         switch resolvedVersion {
         case .bin(let binURL):
-            Logger().log("Using stellar bundled at \(binURL.path)")
+            logger.log("Using stellar bundled at \(binURL.path)")
             try runCommandsUsingBinAtPath(URL(fileURLWithPath: binURL.path), commandArgs: args)
         
         case .versionFile(let fileURL, let pinnedVer):
-            Logger().log("Using version \(pinnedVer) defined at \(fileURL.path)")
+            logger.log("Using version \(pinnedVer) defined at \(fileURL.path)")
             try runCommandsUsingVersion(pinnedVer, args: args)
         
         default:
@@ -65,7 +67,7 @@ public final class CommandResolver {
         ]
         args.append(contentsOf: commandArgs) // forward all params to the tool
 
-        Logger().log("Commands will be resolved to stellar version \(path.lastPathComponent)")
+        logger.log("Commands will be resolved to stellar version \(path.lastPathComponent)")
         
         do {
             try Shell.shared.runAndPrint(args)
@@ -82,7 +84,7 @@ public final class CommandResolver {
     private func runCommandsUsingVersion(_ version: String, args: [String]) throws {
         // Validate the format of the version
         guard SemVer(version) != nil else {
-            Logger().log("\(version) is not a valid version to use")
+            logger.log("\(version) is not a valid version to use")
             exiter(1)
             return
         }
@@ -117,7 +119,7 @@ public final class CommandResolver {
         }
         
         guard let targetVersionPath = try bundleUpdater.versionResolver.pathForVersion(targetVersion)?.path else {
-            Logger().log("Failed to use version \(targetVersion ?? ""). Aborting the process...")
+            logger.log("Failed to use version \(targetVersion ?? ""). Aborting the process...")
             exiter(1)
             return
         }
