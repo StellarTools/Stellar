@@ -7,13 +7,13 @@ public struct ListCommand: ParsableCommand {
     public static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "list",
-            abstract: "List remote versions of stellar"
+            abstract: "List the remote versions of stellar."
         )
     }
     
     // MARK: - Options
         
-    @Flag(help: "Include pre-releases version into the list")
+    @Flag(help: "Include pre-release versions in the list.")
     public var preReleases: Bool = false
     
     // MARK: - Initialization
@@ -37,7 +37,7 @@ public struct ListCommand: ParsableCommand {
             
         Logger().log("Latest \(latestReleases.count) release found:")
         latestReleases.forEach {
-            Logger().log("  - \($0.tag_name) \($0.prerelease ? "[pre-release]" : "")".trimmingCharacters(in: .whitespaces))
+            Logger().log("  - \($0.tagName) \($0.preRelease ? "[pre-release]" : "")".trimmingCharacters(in: .whitespaces))
         }
     }
     

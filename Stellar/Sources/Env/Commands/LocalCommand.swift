@@ -8,7 +8,7 @@ struct LocalCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "local",
         abstract: """
-            Creates a .stellar-version file to pin the stellar version that
+            Create a .stellar-version file to pin the stellar version that
             should be used in the current directory.
             If the version is not specified, it prints the local versions.
         """
@@ -16,10 +16,10 @@ struct LocalCommand: ParsableCommand {
     
     // MARK: - Options
 
-    @Option(help: "The version that you would like to pin your current directory to")
+    @Option(help: "The version that you would like to pin your current directory to.")
     var version: String?
     
-    @Option(help: "Directory path used when pin version. If not specified the current working directory.")
+    @Option(help: "Directory path used when pinning the version. Optional, defaults to the current directory. (default: ./)")
     var path: String?
     
     // MARK: - Public Functions
