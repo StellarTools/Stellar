@@ -2,38 +2,35 @@ import Foundation
 
 public protocol VersionResolving {
     
-    /// Return what version of `stellar` we should use to handle the project
-    /// at given path.
+    /// Return what version of `stellar` we should use at given path.
     ///
-    /// - At the specified path we have a `.stellar-version` file which pin a specific stellar version
-    /// - Optionally we may have a `.stellar-bin` folder with the binary of stellar we should use.
-    ///
-    /// If version is not currently available we would to download it remotely before going forward.
+    /// - At the specified path we have a `.stellar-version` file which pins a specific stellar version
+    /// - Optionally, we may have a `.stellar-bin` folder with the binary of stellar we should use.
     ///
     /// - Parameter path: path of the project.
     /// - Returns: local release to use.
-    func resolveTraversingFromPath(_ path: URL) throws -> ResolvedVersion
+    func resolveVersionForPath(_ path: URL) throws -> ResolvedVersion
 
-    /// Return the list of installed versions.
+    /// Get a list of the installed versions.
     ///
     /// - Returns: list of `LocalRelease` instances.
     func installedVersions() throws -> [LocalVersion]
     
-    /// Latest installed version.
+    /// Get the latest installed version.
     ///
-    /// - Returns: local release.
+    /// - Returns: the latest installed version, if existing.
     func latestInstalledVersion() throws -> LocalVersion?
     
-    /// Return the path to the folder which contains `stellar` cli tool labeled with specified version.
+    /// Return the path to the folder that contains a `stellar` CLI tool for the specified version.
     ///
     /// - Parameter version: version to get.
     /// - Returns: path if installed, `nil` otherwise.
     func pathForVersion(_ version: String) throws -> URL?
     
-    /// Return `true` if specified version is available locally.
+    /// Checks if a version is installed.
     ///
     /// - Parameter version: version to check.
-    /// - Returns: boolean
+    /// - Returns: `true` if the specified version is available locally.
     func isVersionInstalled(_ version: String) throws -> Bool
     
 }
@@ -90,7 +87,7 @@ public final class VersionResolver: VersionResolving {
     }
     
     public func pathForVersion(_ version: String) throws -> URL? {
-        try urlManager.systemVersionsLocation(version)
+        try urlManager.systemVersionLocation(version)
     }
 
     public func isVersionInstalled(_ version: String) throws -> Bool {
@@ -101,7 +98,7 @@ public final class VersionResolver: VersionResolving {
         return fileManager.fileExists(at: binURL)
     }
     
-    public func resolveTraversingFromPath(_ path: URL) throws -> ResolvedVersion {
+    public func resolveVersionForPath(_ path: URL) throws -> ResolvedVersion {
         let versionFileURL = path.appendingPathComponent(FileConstants.versionsFile)
         let binFolderURL = path.appendingPathComponent(FileConstants.binFolder)
         
@@ -120,7 +117,7 @@ public final class VersionResolver: VersionResolving {
     
     // MARK: - Private Functions
     
-    /// Return the version specified at `stellar-version` file at given path.
+    /// The version specified at `stellar-version` file at given path.
     ///
     /// - Parameter path: path of the project.
     /// - Returns: return the pinned version or, if not set, `nil`.
