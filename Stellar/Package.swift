@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Stellar",
-    platforms: [.macOS(.v13)],
+    platforms: [.macOS(.v12)],
     products: [
         .executable(
             name: "StellarCLI",
