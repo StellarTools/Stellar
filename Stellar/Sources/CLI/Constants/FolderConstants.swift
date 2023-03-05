@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct FolderConstants {
+enum FolderConstants {
     static let templatesFolder = "Templates"
     static let dotStellarActionsFolder = ".stellar/Actions"
 }
