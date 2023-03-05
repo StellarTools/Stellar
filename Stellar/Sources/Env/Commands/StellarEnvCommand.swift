@@ -2,6 +2,7 @@ import ArgumentParser
 import Foundation
 import StellarCore
 
+@main
 struct StellarEnvCommand: ParsableCommand {
     
     public static var configuration: CommandConfiguration {
@@ -17,15 +18,9 @@ struct StellarEnvCommand: ParsableCommand {
         )
     }
     
-    // MARK: - Initialization
-    
-    public init() {
-        
-    }
-    
     // MARK: - Public Functions
     
-    public static func main(_: [String]? = nil) {
+    static func run() throws {
         let cmdsList = commandArguments().dropFirst()
         if cmdsList.isEmpty {
             _exit(0)
@@ -104,7 +99,7 @@ struct StellarEnvCommand: ParsableCommand {
     /// 
     /// - Returns: list of args.
     static func commandArguments() -> [String] {
-        Array(ProcessInfo.processInfo.arguments).filter { $0 != "--verbose" }
+        CommandLine.arguments.filter { $0 != "--verbose" }
     }
     
 }
