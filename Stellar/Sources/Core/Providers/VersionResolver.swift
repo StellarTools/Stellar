@@ -77,7 +77,7 @@ public final class VersionResolver: VersionResolving {
     // MARK: - Public Functiosn
 
     public func installedVersions() throws -> [LocalVersion] {
-        try urlManager.systemVersionsLocation().glob("*").compactMap {
+        try urlManager.cliVersionsLocation().glob("*").compactMap {
             LocalVersion(path: $0)
         }.sorted()
     }
@@ -87,7 +87,7 @@ public final class VersionResolver: VersionResolving {
     }
     
     public func pathForVersion(_ version: String) throws -> URL? {
-        try urlManager.systemVersionLocation(version)
+        try urlManager.cliLocation(version)
     }
 
     public func isVersionInstalled(_ version: String) throws -> Bool {

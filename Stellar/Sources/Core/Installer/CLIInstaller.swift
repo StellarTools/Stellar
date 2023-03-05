@@ -94,7 +94,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
             throw ReleaseProviderErrors.releaseNotAvailable(version)
         }
         
-        let installURL = try urlManager.systemVersionLocation(version)
+        let installURL = try urlManager.cliLocation(version)
         
         try fileManager.withTemporaryDirectory(
             path: nil,

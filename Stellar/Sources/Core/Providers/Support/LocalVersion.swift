@@ -18,7 +18,7 @@ public struct LocalVersion: Comparable, CustomStringConvertible {
     ///
     /// - Parameter version: version to locate.
     init?(version: SemVer) throws {
-        let folderPath = try URLManager().systemVersionLocation(version.description).path
+        let folderPath = try URLManager().cliLocation(version.description).path
         var isDirectory = ObjCBool(false)
         guard FileManager.default.fileExists(atPath: folderPath, isDirectory: &isDirectory), isDirectory.boolValue else {
             return nil

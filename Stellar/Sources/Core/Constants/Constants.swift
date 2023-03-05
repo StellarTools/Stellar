@@ -26,7 +26,7 @@ struct GitHubAPI {
     static let tokenFile = ".GITHUB-TOKEN"
     
     static var gitHubToken: String = {
-        let tokenFileURL = URLManager().systemLocation()
+        let tokenFileURL = URLManager().homeStellarLocation()
             .appendingPathComponent(GitHubAPI.tokenFile)
         
         guard FileManager.default.fileExists(at: tokenFileURL) else {

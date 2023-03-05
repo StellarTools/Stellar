@@ -65,7 +65,7 @@ final class URLManager {
     ///
     /// - Parameter subfolder: optional subfolder.
     /// - Returns: full path.
-    func systemLocation(subfolder: String? = nil) -> URL {
+    func homeStellarLocation(subfolder: String? = nil) -> URL {
         let homeStellarURL = fileManager
             .homeDirectoryForCurrentUser
             .appendingPathComponent(FolderConstants.dotStellarFolder)
@@ -79,8 +79,8 @@ final class URLManager {
     /// Return the location to the installed versions.
     ///
     /// - Returns: a URL to the folder containing the installed versions
-    func systemVersionsLocation() throws -> URL {
-        let url = systemLocation(subfolder: FolderConstants.versionsFolder)
+    func cliVersionsLocation() throws -> URL {
+        let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
         // not sure if we should create the folder
         if !fileManager.folderExists(at: url) {
             try fileManager.createFolder(at: url)
@@ -92,8 +92,8 @@ final class URLManager {
     ///
     /// - Parameter version: version to get.
     /// - Returns: a URL to the installed version
-    func systemVersionLocation(_ version: String) throws -> URL {
-        let url = systemLocation(subfolder: FolderConstants.versionsFolder)
+    func cliLocation(_ version: String) throws -> URL {
+        let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
             .appendingPathComponent(version)
         // not sure if we should create the folder
         if !fileManager.folderExists(at: url) {
