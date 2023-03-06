@@ -19,7 +19,9 @@ final class URLManager {
         if let actions = actions {
             return URL(fileURLWithPath: actions)
         }
-        return fileManager.currentLocation.appendingPathComponent(FolderConstants.dotStellarActionsFolder)
+        return fileManager.currentLocation
+            .appendingPathComponent(PathConstants.dotStellarFolder)
+            .appendingPathComponent(PathConstants.actionsFolder)
     }
     
     // Default: <cwd>/.stellar/Templates
@@ -28,6 +30,6 @@ final class URLManager {
         if let templates = templates {
             return URL(fileURLWithPath: templates)
         }
-        return fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder)
+        return fileManager.executableLocation.appendingPathComponent(PathConstants.templatesBundle)
     }
 }

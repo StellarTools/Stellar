@@ -57,11 +57,11 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--app-path TestApp/"
+            argument = "--project-path TestApp/"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--templates Stellar/Sources/Core/Resources/Templates.bundle"
+            argument = "--templates-path Stellar/Sources/Core/Resources/Templates.bundle"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

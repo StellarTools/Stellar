@@ -7,7 +7,7 @@ import StellarCore
 @main
 struct Stellar: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
-        abstract: "Abstract",
+        abstract: "Manage the infrastructure that allows the execution of common Swift projects tasks.",
         subcommands: [
             BuildCommand.self,
             CreateActionCommand.self,
