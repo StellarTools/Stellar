@@ -87,7 +87,7 @@ public final class VersionResolver: VersionResolving {
     }
     
     public func pathForVersion(_ version: String) throws -> URL? {
-        try urlManager.cliLocation(version)
+        try urlManager.cliLocation(for: version)
     }
 
     public func isVersionInstalled(_ version: String) throws -> Bool {

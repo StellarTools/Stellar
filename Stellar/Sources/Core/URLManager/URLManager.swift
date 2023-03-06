@@ -92,7 +92,7 @@ final class URLManager {
     ///
     /// - Parameter version: version to get.
     /// - Returns: a URL to the installed version
-    func cliLocation(_ version: String) throws -> URL {
+    func cliLocation(for version: String) throws -> URL {
         let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
             .appendingPathComponent(version)
         // not sure if we should create the folder
