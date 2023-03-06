@@ -43,11 +43,11 @@ ohai "Latest release of stellar is $TAG"
 # curl --verbose -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ARTIFACT_URL}"
 
 # Fix for authenticated request. We need to get the assets URL which is private. Public URL does not work, of course.
-ASSETS_URL=$(ruby ./assets_url.rb "${JSON}")
-ohai $ASSETS_URL
-ohai "Downloading stellarenv [$ASSETS_URL]"
+ASSET_URL=$(ruby ./asset_url.rb "${JSON}")
+ohai $ASSET_URL
+ohai "Downloading stellarenv [$ASSET_URL]"
 declare -a GITHUB_BIN_HEADERS=('-H' "Accept: application/octet-stream" '-H' "Authorization: Bearer ${GITHUB_TOKEN}")
-curl -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ASSETS_URL}"
+curl -LSsf "${GITHUB_BIN_HEADERS[@]}" --output /tmp/StellarEnv.zip "${ASSET_URL}"
 
 ohai "Unzipping StellarEnv..."
 unzip -o /tmp/StellarEnv.zip -d /tmp/StellarEnv > /dev/null
