@@ -7,14 +7,11 @@ struct Constants {
     static let executor = "Executor"
 }
 
-struct HintTemplateNames {
-    static let actionCreatedOnDefaultPath = "ActionCreatedOnDefaultPath.stencil"
-}
-
 struct FileConstants {
     static let versionsFile = ".stellar-version"
     static let binFolder = ".stellar-bin"
-    static let binName = ".stellar"
+    static let binName = "stellar"
+    static let toolFolder = ".stellar"
     static let envInstallDirectory = "/usr/local/bin"
     static let envBinName = "stellarenv"
 }
@@ -29,15 +26,16 @@ struct GitHubAPI {
     static let tokenFile = ".GITHUB-TOKEN"
     
     static var gitHubToken: String = {
-        let tokenFileURL = URLManager().systemLocation()
+        let tokenFileURL = URLManager().homeStellarLocation()
             .appendingPathComponent(GitHubAPI.tokenFile)
         
         guard FileManager.default.fileExists(at: tokenFileURL) else {
             print(tokenFileURL.path)
-            fatalError("Missing \(GitHubAPI.tokenFile) in \(FileConstants.binName) directory")
+            fatalError("Missing \(GitHubAPI.tokenFile) in ~/\(FileConstants.toolFolder) directory.")
         }
         
         let token = try? String(contentsOf: tokenFileURL)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         return token ?? ""
     }()
     
@@ -45,9 +43,8 @@ struct GitHubAPI {
 
 struct RemoteConstants {
     static let releaseZip = "release.zip"
-    static let stellarPackage = "\(stellarCLI).zip"
     static let stellarCLI = "StellarCLI"
-
+    static let stellarCLIZipAsset = "\(stellarCLI).zip"
     static let stellarEnvCLI = "StellarEnv"
-    static let stellarEnvPackage = "\(stellarEnvCLI).zip"
+    static let stellarEnvZipAsset = "\(stellarEnvCLI).zip"
 }

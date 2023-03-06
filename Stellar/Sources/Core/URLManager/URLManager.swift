@@ -4,6 +4,12 @@ import Foundation
 
 final class URLManager {
     
+    private let fileManager: FileManaging
+    
+    init(fileManager: FileManaging = FileManager.default) {
+        self.fileManager = fileManager
+    }
+    
     // MARK: Paths
     
     // <app_path>/.stellar
@@ -38,11 +44,11 @@ final class URLManager {
     }
     
     func currentWorkingDirectory() -> URL {
-        FileManager.default.currentLocation
+        fileManager.currentLocation
     }
     
     func currentLocation() -> URL {
-        FileManager.default.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
+        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
     }
     
     // Default: <cwd>/Templates/Hints
@@ -59,8 +65,8 @@ final class URLManager {
     ///
     /// - Parameter subfolder: optional subfolder.
     /// - Returns: full path.
-    func systemLocation(subfolder: String? = nil) -> URL {
-        let homeStellarURL = FileManager.default
+    func homeStellarLocation(subfolder: String? = nil) -> URL {
+        let homeStellarURL = fileManager
             .homeDirectoryForCurrentUser
             .appendingPathComponent(FolderConstants.dotStellarFolder)
         guard let subfolder else {
@@ -70,18 +76,28 @@ final class URLManager {
         return homeStellarURL.appendingPathComponent(subfolder)
     }
     
-    /// Return the installation URL of stellar for a specified version.
+    /// Return the location to the installed versions.
+    ///
+    /// - Returns: a URL to the folder containing the installed versions
+    func cliVersionsLocation() throws -> URL {
+        let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
+        // not sure if we should create the folder
+        if !fileManager.folderExists(at: url) {
+            try fileManager.createFolder(at: url)
+        }
+        return url
+    }
+    
+    /// Return the location of a specified installed version.
     ///
     /// - Parameter version: version to get.
-    /// - Returns: path (it should be checked, it may not exists).
-    func systemVersionsLocation(_ version: String? = nil) throws -> URL {
-        var url = systemLocation().appendingPathComponent(FolderConstants.versionsFolder)
-        if let version {
-            url = url.appendingPathComponent(version)
-        }
-        
-        if !FileManager.default.fileExists(at: url) {
-            try FileManager.default.createFolder(at: url)
+    /// - Returns: a URL to the installed version
+    func cliLocation(for version: String) throws -> URL {
+        let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
+            .appendingPathComponent(version)
+        // not sure if we should create the folder
+        if !fileManager.folderExists(at: url) {
+            try fileManager.createFolder(at: url)
         }
         return url
     }

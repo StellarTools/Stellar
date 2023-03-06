@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Stellar",
-    platforms: [.macOS(.v13)],
+    platforms: [.macOS(.v12)],
     products: [
         .executable(
             name: "StellarCLI",
@@ -19,17 +19,11 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/apple/swift-tools-support-core.git", .upToNextMajor(from: "0.5.2")),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.8.0")),
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", .upToNextMajor(from: "2.3.0")),
-        .package(url: "https://github.com/apple/swift-tools-support-core.git", from: "0.3.0")
+        .package(url: "https://github.com/JohnSundell/ShellOut.git", .upToNextMajor(from: "2.3.0"))
     ],
     targets: [
-        .executableTarget(
-            name: "StellarEnv",
-            dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .target(name: "StellarCore")],
-            path: "Sources/Env"),
         .executableTarget(
             name: "StellarCLI",
             dependencies: [
@@ -40,16 +34,18 @@ let package = Package(
             name: "StellarCore",
             dependencies: [
                 .product(name: "ShellOut", package: "ShellOut"),
-                .product(name: "TSCBasic", package: "swift-tools-support-core"),
-                .product(name: "StencilSwiftKit", package: "StencilSwiftKit")
+                .product(name: "StencilSwiftKit", package: "StencilSwiftKit"),
+                .product(name: "TSCBasic", package: "swift-tools-support-core")
+                
             ],
             path: "Sources/Core",
             resources: [.copy("Resources")]),
-        .testTarget(
-            name: "StellarEnvTests",
-            dependencies: ["StellarEnv"],
-            path: "Tests/Env",
-            resources: [.copy("Tests")]),
+        .executableTarget(
+            name: "StellarEnv",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "StellarCore")],
+            path: "Sources/Env"),
         .testTarget(
             name: "StellarCLITests",
             dependencies: ["StellarCLI"],
@@ -58,6 +54,10 @@ let package = Package(
             name: "StellarCoreTests",
             dependencies: ["StellarCore"],
             path: "Tests/Core",
-            resources: [.copy("Resources")])
+            resources: [.copy("Resources")]),
+        .testTarget(
+            name: "StellarEnvTests",
+            dependencies: ["StellarEnv"],
+            path: "Tests/Env")
     ]
 )

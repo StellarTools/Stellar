@@ -43,7 +43,7 @@ extension URL {
     /// Shortcut to create a glob patter to the specified url directory.
     ///
     /// - Parameter pattern: pattern to construct the glob.
-    /// - Returns: contents at the path with the pattern set.
+    /// - Returns: content at the path with the pattern set.
     func glob(_ pattern: String) -> [String] {
         Glob(pattern: appendingPathComponent(pattern).path).paths
     }

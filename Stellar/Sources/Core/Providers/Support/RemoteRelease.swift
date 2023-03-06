@@ -1,27 +1,27 @@
 import Foundation
 
-public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
+public struct RemoteRelease: Comparable, CustomStringConvertible {
     
     public enum AssetKind {
-        case env
         case cli
+        case env
         
         var name: String {
             switch self {
-            case .env: return RemoteConstants.stellarEnvPackage
-            case .cli: return RemoteConstants.stellarPackage
+            case .cli: return RemoteConstants.stellarCLIZipAsset
+            case .env: return RemoteConstants.stellarEnvZipAsset
             }
         }
     }
     
     public let url: URL
     public let name: String
-    public let prerelease: Bool
+    public let preRelease: Bool
     public let assets: [Asset]
-    public let tag_name: String
+    public let tagName: String
     
     public var version: SemVer {
-        SemVer(stringLiteral: tag_name)
+        SemVer(stringLiteral: tagName)
     }
 
     public struct Asset: Codable {
@@ -43,6 +43,18 @@ public struct RemoteRelease: Codable, Comparable, CustomStringConvertible {
     
     public func assetURL(type: AssetKind) -> URL? {
         assets.first(where: { $0.name == type.name })?.url
+    }
+    
+}
+
+extension RemoteRelease: Codable {
+    
+    enum CodingKeys: String, CodingKey {
+        case url
+        case name
+        case preRelease = "prerelease"
+        case assets
+        case tagName = "tag_name"
     }
     
 }

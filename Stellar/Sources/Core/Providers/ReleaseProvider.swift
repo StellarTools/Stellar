@@ -42,6 +42,8 @@ public final class ReleaseProvider: ReleaseProviding {
         
     public let urlSession: URLSession
     
+    private let logger = Logger()
+    
     public init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
     }
@@ -57,7 +59,7 @@ public final class ReleaseProvider: ReleaseProviding {
         }
         
         return latestReleases.filter {
-            return !$0.prerelease
+            return !$0.preRelease
         }
     }
     
@@ -76,7 +78,7 @@ public final class ReleaseProvider: ReleaseProviding {
             throw ReleaseProviderErrors.releaseURLNotAvailable(release)
         }
         
-        Logger().log("Downloading package \(type.name) at \(url.absoluteString)...")
+        logger.log("Downloading package \(type.name) at \(url.absoluteString)...")
         try urlSession.downloadFile(atURL: url, saveAtURL: toURL)
     }
     

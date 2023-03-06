@@ -14,11 +14,11 @@ public struct LocalVersion: Comparable, CustomStringConvertible {
     // MARK: - Initialization
     
     /// Create a new instance starting from a version identifier.
-    /// If version does not exists yet it will return `nil`.
+    /// If version does not exist yet it will return `nil`.
     ///
     /// - Parameter version: version to locate.
     init?(version: SemVer) throws {
-        let folderPath = try URLManager().systemVersionsLocation(version.description).path
+        let folderPath = try URLManager().cliLocation(for: version.description).path
         var isDirectory = ObjCBool(false)
         guard FileManager.default.fileExists(atPath: folderPath, isDirectory: &isDirectory), isDirectory.boolValue else {
             return nil
@@ -29,7 +29,7 @@ public struct LocalVersion: Comparable, CustomStringConvertible {
     }
     
     /// Create a new instance from a valid path with a version.
-    /// If
+    ///
     /// - Parameter path: proposed installation directory.
     init?(path: String) {
         guard let version = SemVer(path.lastPathComponent) else {

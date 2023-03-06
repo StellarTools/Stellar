@@ -4,6 +4,8 @@ import TSCBasic
 /// Access to system commands.
 public final class Shell {
     
+    private let logger = Logger()
+    
     // MARK: - Public Properties
     
     /// Singleton instance of the system.
@@ -95,13 +97,13 @@ public final class Shell {
             startNewProcessGroup: false
         )
 
-        Logger().log("\(escaped(arguments: arguments))")
+        logger.log("\(escaped(arguments: arguments))")
 
         try process.launch()
         let result = try process.waitUntilExit()
         let output = try result.utf8Output()
 
-        Logger().log("\(output)")
+        logger.log("\(output)")
 
         try result.throwIfErrored()
     }
@@ -118,13 +120,13 @@ public final class Shell {
             startNewProcessGroup: false
         )
 
-        Logger().log("\(escaped(arguments: arguments))")
+        logger.log("\(escaped(arguments: arguments))")
 
         try process.launch()
         let result = try process.waitUntilExit()
         let output = try result.utf8Output()
 
-        Logger().log("\(output)")
+        logger.log("\(output)")
 
         try result.throwIfErrored()
 

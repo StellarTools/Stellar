@@ -7,7 +7,7 @@ struct StellarEnvCommand: ParsableCommand {
     public static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "stellar",
-            abstract: "Manage the environment stellar versions",
+            abstract: "Manage multiple stellar versions.",
             subcommands: [
                 LocalCommand.self,
                 ListCommand.self,
@@ -34,7 +34,7 @@ struct StellarEnvCommand: ParsableCommand {
         // PARSE RECEIVED COMMAND
         // Check if the command (along with its args) is one of the commands
         // exposed by `stellarenv` (this) or should be redirect to one of the `stellar` cli
-        // versions installed in `~/.stellar` home directory.
+        // versions installed at `~/.stellar`.
         var command: ParsableCommand?
         do {
             command = try suitableEnvCommand()
@@ -49,8 +49,8 @@ struct StellarEnvCommand: ParsableCommand {
         }
         
         // EXECUTE OR FORWARD COMMAND
-        // If parsed command is not a stellar command (`command == nil`) we would
-        // to call `stellar` cli tool with the same arguments.
+        // If parsed command is not a stellar command (`command == nil`) we
+        // call `stellar` CLI tool with the same arguments.
         do {
             if var command {
                 Logger().log("Commands will be executed by stellarenv")
@@ -71,10 +71,10 @@ struct StellarEnvCommand: ParsableCommand {
     
     // MARK: - Private Functions
     
-    /// Check if received command is one of the command available in `stellarenv`.
+    /// Check if the received command is one of the command available in `stellarenv`.
     /// In this case return the appropriate `ParsableCommand` instance to execute.
     ///
-    /// If the result is `nil` command is probably one of the commands available
+    /// If the result is `nil`, the command is probably one of the commands available
     /// in `stellar` cli tool.
     ///
     /// - Returns: `stellarenv` parsable command, if available.

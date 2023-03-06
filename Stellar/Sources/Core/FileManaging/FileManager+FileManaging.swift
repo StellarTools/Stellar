@@ -80,29 +80,27 @@ extension FileManager: FileManaging {
         try moveItem(atPath: location.path, toPath: destination.path)
     }
     
-    /// Creates a temporary directory and evaluates a closure with the directory path as an argument.
+    /// Create a temporary directory and evaluates a closure with the directory path as an argument.
     ///
     ///
     /// - Parameters:
     ///   - path: when specified this path is used as root of the temporary directory.
     ///           If not the system temporary directory path is used.
-    ///   - prefix: The prefix to the temporary file name.
-    ///   - autoRemove: If enabled try to delete the whole directory tree otherwise remove only if its empty.
+    ///   - prefix: The prefix of the temporary directory.
+    ///   - autoRemove: If true, it tries to delete the temporary directory after executing the closure.
     ///   - closure: A closure to execute that receives the absolute path of the directory as an argument.
-    ///              If `body` has a return value, that value is also used as the return value of the function.
-    /// - Returns: `Result` specified
+    /// - Returns: The value returned by the closure.
     public func withTemporaryDirectory<Result>(path: String? = nil,
                                                prefix: String = "TempDir",
-                                               autoRemove: Bool = true ,
+                                               autoRemove: Bool = true,
                                                _ closure: (URL) throws -> Result) throws -> Result {
-        // Construct path to the temporary directory.
         let folderName = "\(prefix)-\(UUID().uuidString)"
-        let directoryPath = URL(fileURLWithPath: (path ?? NSTemporaryDirectory()), isDirectory: true).appendingPathComponent(folderName, isDirectory: true)
-        try FileManager.default.createDirectory(atPath: directoryPath.path, withIntermediateDirectories: true)
+        let location = URL(fileURLWithPath: (path ?? NSTemporaryDirectory()), isDirectory: true).appendingPathComponent(folderName, isDirectory: true)
+        try createDirectory(at: location, withIntermediateDirectories: true)
         
-        let res = try closure(directoryPath)
+        let res = try closure(location)
         if autoRemove {
-            try? FileManager.default.removeItem(atPath: directoryPath.path)
+            try? removeItem(at: location)
         }
         return res
     }

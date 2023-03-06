@@ -9,7 +9,7 @@ struct UpdateCommand: ParsableCommand {
     static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "update",
-            abstract: "Installs the latest version if it's not already installed"
+            abstract: "Install the latest version if not already installed."
         )
     }
     

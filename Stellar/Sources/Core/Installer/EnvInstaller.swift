@@ -6,7 +6,7 @@ import AppKit
 
 protocol EnvInstallerProtocol {
     
-    /// Install stellar Env tool.
+    /// Install StellarEnv tool.
     ///
     /// - Parameter version: version to install, `nil` to install latest remote version available.
     func install(version: String?) throws
@@ -20,8 +20,10 @@ public final class EnvInstaller: EnvInstallerProtocol {
     
     // MARK: - Public Properties
     
-    public var fileManager: FileManaging = FileManager.default
-    public var releaseProvider: ReleaseProviding
+    public let fileManager: FileManaging = FileManager.default
+    public let releaseProvider: ReleaseProviding
+    
+    private let logger = Logger()
     
     // MARK: - Initialization
 
@@ -44,7 +46,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
     
     private func install(version: String) throws {
         guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
-            Logger().log("Tagged release \(version) not found.")
+            logger.log("Tagged release \(version) not found.")
             return
         }
         
@@ -53,7 +55,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
     
     private func installLatestVersion() throws {
         guard let latestRemoteVersion = try releaseProvider.latestRelease() else {
-            Logger().log("No remote version found.")
+            logger.log("No remote version found.")
             return
         }
         
@@ -64,27 +66,27 @@ public final class EnvInstaller: EnvInstallerProtocol {
         let installURL = URL(fileURLWithPath: FileConstants.envInstallDirectory)
             .appendingPathComponent(FileConstants.envBinName)
 
-        Logger().log("Downloading StellarEnv version \(release)")
+        logger.log("Downloading StellarEnv version \(release)")
         
         try fileManager.withTemporaryDirectory(
             path: nil,
             prefix: "com.stellarenv",
             autoRemove: false, { temporaryURL in
                 // Download zip package
-                let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvPackage)
+                let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvZipAsset)
                 try releaseProvider.downloadAsset(type: .env, ofRelease: release, toURL: packageDestination)
                 NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip
-                Logger().log("Expading the archive…")
+                logger.log("Expading the archive…")
                 try Shell.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
 
                 // Remove old version and replace with the new one
-                Logger().log("Installing in \(installURL.path)…")
+                logger.log("Installing at \(installURL.path)…")
                 let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
                 try Shell.shared.copyAndReplace(source: cliToolFileURL, destination: installURL.path)
                 
-                Logger().log("StellarEnv version \(release) installed")
+                logger.log("StellarEnv version \(release) installed")
             }
         )
     }
