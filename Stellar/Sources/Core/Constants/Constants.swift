@@ -35,6 +35,7 @@ struct GitHubAPI {
         }
         
         let token = try? String(contentsOf: tokenFileURL)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         return token ?? ""
     }()
     
