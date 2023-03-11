@@ -12,7 +12,8 @@ struct StellarEnvCommand: ParsableCommand {
                 LocalCommand.self,
                 ListCommand.self,
                 CLIInstallCommand.self,
-                UpdateCommand.self
+                UpdateCommand.self,
+                BundleCommand.self
             ]
         )
     }
@@ -61,6 +62,7 @@ struct StellarEnvCommand: ParsableCommand {
             try CommandResolver().run(args: Array(commandArguments().dropFirst()))
             _exit(0)
         } catch { // Exit cleanly
+            Logger().log(error.localizedDescription)
             if exitCode(for: error).rawValue == 0 {
                 exit(withError: error)
             } else {
