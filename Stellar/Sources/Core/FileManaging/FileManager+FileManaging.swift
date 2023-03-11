@@ -77,7 +77,7 @@ extension FileManager: FileManaging {
             try removeItem(atPath: destination.path)
         }
         
-        try moveItem(atPath: location.path, toPath: destination.path)
+        try copyItem(atPath: location.path, toPath: destination.path)
     }
     
     /// Create a temporary directory and evaluates a closure with the directory path as an argument.
