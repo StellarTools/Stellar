@@ -1,6 +1,5 @@
 import Foundation
 import AppKit
-import ShellOut
 
 public protocol CLIServiceProtocol {
     

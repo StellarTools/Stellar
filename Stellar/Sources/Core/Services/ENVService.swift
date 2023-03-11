@@ -1,5 +1,4 @@
 import Foundation
-import ShellOut
 import AppKit
 
 // MARK: - ENVServiceProtocol
