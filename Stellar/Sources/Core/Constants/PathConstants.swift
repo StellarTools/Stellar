@@ -1,8 +1,8 @@
-//  FolderConstants.swift
+//  PathConstants.swift
 
 import Foundation
 
-struct FolderConstants {
+enum PathConstants {
     static let dotStellarFolder = ".stellar"
     static let executablesFolder = "Executables"
     static let executorFolder = "Executor"
@@ -12,6 +12,5 @@ struct FolderConstants {
     static let sourcesFolder = "Sources"
     static let stellarFolder = "Stellar"
     static let stringsFolder = "Strings"
-    static let templatesFolder = "Templates"
     static let versionsFolder = "Versions"
 }

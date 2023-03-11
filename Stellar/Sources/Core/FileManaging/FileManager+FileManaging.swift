@@ -24,7 +24,7 @@ extension FileManager: FileManaging {
         var objcTrue: ObjCBool = true
         return fileExists(atPath: location.path, isDirectory: &objcTrue)
     }
-
+    
     public func createFile(at location: URL, content data: Data) throws {
         guard createFile(atPath: location.path, contents: data) else {
             throw FileManagerError.cannotCreateFile(location)
@@ -36,6 +36,10 @@ extension FileManager: FileManaging {
             throw FileManagerError.existingFolder(location)
         }
         try createDirectory(at: location, withIntermediateDirectories: true)
+    }
+    
+    public func copyFile(at sourceLocation: URL, to destinationLocation: URL) throws {
+        try copyItem(at: sourceLocation, to: destinationLocation)
     }
 
     public func deleteFile(at location: URL) throws {

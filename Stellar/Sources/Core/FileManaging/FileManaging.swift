@@ -11,6 +11,7 @@ public protocol FileManaging {
     func folderExists(at location: URL) -> Bool
     func createFile(at location: URL, content data: Data) throws
     func createFolder(at location: URL) throws
+    func copyFile(at sourceLocation: URL, to destinationLocation: URL) throws
     func deleteFile(at location: URL) throws
     func deleteFolder(at location: URL) throws
     func verifyFileExisting(at location: URL) throws

@@ -7,21 +7,21 @@ import StellarCore
 struct CreateActionCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "create-action",
-        abstract: "Abstract")
+        abstract: "Create an action that can be used by the tasks.")
     
-    @Option(name: .shortAndLong, help: "The name of the Action. Must have the \"Action\" suffix")
+    @Option(name: .shortAndLong, help: "The name of the Action. Must have the 'Action' suffix.")
     private var name: String
     
-    @Option(name: .shortAndLong, help: "The path in which create the action. Default <cwd>.stellar/Actions")
-    private var path: String?
+    @Option(name: .shortAndLong, help: "The path in which to create the action. Optional, defaults to .stellar/Actions")
+    private var outputPath: String?
     
-    @Option(name: .shortAndLong, help: "The path with the action templates. Default <cwd>/Templates")
-    private var templates: String?
+    @Option(name: .shortAndLong, help: "The path to the templates. Optional, defaults to the templates shipped with the release.")
+    private var templatesPath: String?
     
     func run() throws {
         try validate()
-        let location = URLManager().dotStellarActionsLocation(path)
-        let templatesLocationFactory = TemplatesLocationFactory(templatesPath: templates)
+        let location = URLManager().dotStellarActionsLocation(outputPath)
+        let templatesLocationFactory = TemplatesLocationFactory(templatesPath: templatesPath)
         let actionTemplatesLocation = templatesLocationFactory.actionTemplatesLocation
         let hintTemplatesLocation = templatesLocationFactory.hintTemplatesLocation
         try ActionCreator().createAction(name: name,

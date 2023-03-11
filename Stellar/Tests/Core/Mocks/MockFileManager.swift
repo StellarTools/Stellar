@@ -45,6 +45,10 @@ class MockFileManager: FileManaging {
     func createFolder(at location: URL) throws {
         folders.append(location)
     }
+    
+    func copyFile(at sourceLocation: URL, to destinationLocation: URL) throws {
+        files[destinationLocation] = files[sourceLocation]
+    }
 
     func deleteFile(at location: URL) throws {
         files[location] = nil

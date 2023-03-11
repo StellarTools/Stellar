@@ -33,12 +33,6 @@ final public class Builder {
         
         let executablesLocation = urlManager.executablesUrl(at: location)
         try? fileManager.createFolder(at: executablesLocation)
-        
-        try shellOut(
-            to: "mv",
-            arguments: ["\(binaryLocation.path)", "\(executablesLocation.path)"],
-            at: executorLocation.path,
-            outputHandle: .standardOutput,
-            errorHandle: .standardError)
-    }
+        try fileManager.copyFile(at: binaryLocation,
+                                 to: executablesLocation.appendingPathComponent(Constants.executor))    }
 }

@@ -57,7 +57,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--path Actions"
+            argument = "--output-path Actions"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -65,7 +65,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--templates Stellar/Sources/Core/Resources/Templates.bundle"
+            argument = "--templates-path Stellar/Sources/Core/Resources/Templates.bundle"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

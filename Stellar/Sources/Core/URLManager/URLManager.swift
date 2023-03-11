@@ -14,47 +14,31 @@ final class URLManager {
     
     // <app_path>/.stellar
     func dotStellarUrl(at appLocation: URL) -> URL {
-        appLocation.appendingPathComponent(FolderConstants.dotStellarFolder, isDirectory: true)
+        appLocation.appendingPathComponent(PathConstants.dotStellarFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages
     func packagesUrl(at appLocation: URL) -> URL {
-        dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.packagesFolder, isDirectory: true)
+        dotStellarUrl(at: appLocation).appendingPathComponent(PathConstants.packagesFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages/Executor
     func executorUrl(at appLocation: URL) -> URL {
-        packagesUrl(at: appLocation).appendingPathComponent(FolderConstants.executorFolder, isDirectory: true)
+        packagesUrl(at: appLocation).appendingPathComponent(PathConstants.executorFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages/Executor/Sources
     func executorSourcesUrl(at appLocation: URL) -> URL {
-        executorUrl(at: appLocation).appendingPathComponent(FolderConstants.sourcesFolder, isDirectory: true)
+        executorUrl(at: appLocation).appendingPathComponent(PathConstants.sourcesFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Executables/
     func executablesUrl(at appLocation: URL) -> URL {
-        dotStellarUrl(at: appLocation).appendingPathComponent(FolderConstants.executablesFolder, isDirectory: true)
-    }
-    
-    // Default: <cwd>/Templates
-    
-    func templatesLocation() -> URL {
-        currentLocation().appendingPathComponent(FolderConstants.templatesFolder)
+        dotStellarUrl(at: appLocation).appendingPathComponent(PathConstants.executablesFolder, isDirectory: true)
     }
     
     func currentWorkingDirectory() -> URL {
         fileManager.currentLocation
-    }
-    
-    func currentLocation() -> URL {
-        fileManager.currentLocation.appendingPathComponent(FolderConstants.templatesFolder, isDirectory: true)
-    }
-    
-    // Default: <cwd>/Templates/Hints
-    
-    func hintsLocation() -> URL {
-        templatesLocation().appendingPathComponent(FolderConstants.hintsFolder, isDirectory: true)
     }
     
     // MARK: - Stellar System Directories
@@ -68,7 +52,7 @@ final class URLManager {
     func homeStellarLocation(subfolder: String? = nil) -> URL {
         let homeStellarURL = fileManager
             .homeDirectoryForCurrentUser
-            .appendingPathComponent(FolderConstants.dotStellarFolder)
+            .appendingPathComponent(PathConstants.dotStellarFolder)
         guard let subfolder else {
             return homeStellarURL
         }
@@ -80,7 +64,7 @@ final class URLManager {
     ///
     /// - Returns: a URL to the folder containing the installed versions
     func cliVersionsLocation() throws -> URL {
-        let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
+        let url = homeStellarLocation(subfolder: PathConstants.versionsFolder)
         // not sure if we should create the folder
         if !fileManager.folderExists(at: url) {
             try fileManager.createFolder(at: url)
@@ -93,7 +77,7 @@ final class URLManager {
     /// - Parameter version: version to get.
     /// - Returns: a URL to the installed version
     func cliLocation(for version: String) throws -> URL {
-        let url = homeStellarLocation(subfolder: FolderConstants.versionsFolder)
+        let url = homeStellarLocation(subfolder: PathConstants.versionsFolder)
             .appendingPathComponent(version)
         // not sure if we should create the folder
         if !fileManager.folderExists(at: url) {

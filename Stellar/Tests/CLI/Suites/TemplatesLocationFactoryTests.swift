@@ -19,8 +19,8 @@ final class TemplatesLocationFactoryTests: XCTestCase {
     func test_actionTemplatesLocation_defaultTemplatesLocation() throws {
         let templatesLocationFactory = TemplatesLocationFactory(fileManager: fileManager)
         let result = templatesLocationFactory.actionTemplatesLocation
-        let expected = fileManager.currentLocation
-            .appendingPathComponent(FolderConstants.templatesFolder)
+        let expected = fileManager.executableLocation
+            .appendingPathComponent(PathConstants.templatesBundle)
             .appendingPathComponent(TemplatesLocationFactory.Folder.action)
         XCTAssertEqual(result, expected)
     }
@@ -36,8 +36,8 @@ final class TemplatesLocationFactoryTests: XCTestCase {
     func test_executorTemplatesLocation_defaultTemplatesLocation() throws {
         let templatesLocationFactory = TemplatesLocationFactory(fileManager: fileManager)
         let result = templatesLocationFactory.executorTemplatesLocation
-        let expected = fileManager.currentLocation
-            .appendingPathComponent(FolderConstants.templatesFolder)
+        let expected = fileManager.executableLocation
+            .appendingPathComponent(PathConstants.templatesBundle)
             .appendingPathComponent(TemplatesLocationFactory.Folder.executor)
         XCTAssertEqual(result, expected)
     }
@@ -53,8 +53,8 @@ final class TemplatesLocationFactoryTests: XCTestCase {
     func test_taskTemplatesLocation_defaultTemplatesLocation() throws {
         let templatesLocationFactory = TemplatesLocationFactory(fileManager: fileManager)
         let result = templatesLocationFactory.taskTemplatesLocation
-        let expected = fileManager.currentLocation
-            .appendingPathComponent(FolderConstants.templatesFolder)
+        let expected = fileManager.executableLocation
+            .appendingPathComponent(PathConstants.templatesBundle)
             .appendingPathComponent(TemplatesLocationFactory.Folder.task)
         XCTAssertEqual(result, expected)
     }
