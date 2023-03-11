@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StellarCLI"
-               BuildableName = "StellarCLI"
-               BlueprintName = "StellarCLI"
+               BlueprintIdentifier = "StellarCore"
+               BuildableName = "StellarCore"
+               BlueprintName = "StellarCore"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,46 +26,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "YES">
-      <CodeCoverageTargets>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "StellarCLI"
-            BuildableName = "StellarCLI"
-            BlueprintName = "StellarCLI"
-            ReferencedContainer = "container:">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "StellarCLITests"
-            BuildableName = "StellarCLITests"
-            BlueprintName = "StellarCLITests"
-            ReferencedContainer = "container:">
-         </BuildableReference>
-      </CodeCoverageTargets>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StellarCLITests"
-               BuildableName = "StellarCLITests"
-               BlueprintName = "StellarCLITests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StellarCoreTests"
-               BuildableName = "StellarCoreTests"
-               BlueprintName = "StellarCoreTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -88,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "StellarCLI"
-            BuildableName = "StellarCLI"
-            BlueprintName = "StellarCLI"
+            BlueprintIdentifier = "StellarCore"
+            BuildableName = "StellarCore"
+            BlueprintName = "StellarCore"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

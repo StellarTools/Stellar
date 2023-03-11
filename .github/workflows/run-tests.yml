@@ -6,7 +6,7 @@ on:
       - master
   pull_request:
     branches:
-      - master
+      - '**'
 
 jobs:
   build:
@@ -15,9 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         macos: ['macos-12']
-        xcode: ['14.1.0']
+        xcode: ['14.2.0']
         command: ['test']
-        scheme: ['StellarCLI']
+        scheme: ['StellarCLI', 'StellarEnv']
         destination: ['platform=macOS']
     steps:
       - name: Switch xcode to ${{ matrix.xcode }}

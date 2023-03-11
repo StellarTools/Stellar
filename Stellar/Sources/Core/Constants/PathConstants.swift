@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct PathConstants {
+enum PathConstants {
     static let dotStellarFolder = ".stellar"
     static let executablesFolder = "Executables"
     static let executorFolder = "Executor"
@@ -12,4 +12,5 @@ struct PathConstants {
     static let sourcesFolder = "Sources"
     static let stellarFolder = "Stellar"
     static let stringsFolder = "Strings"
+    static let versionsFolder = "Versions"
 }

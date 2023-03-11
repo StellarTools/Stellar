@@ -12,10 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         macos: ['macos-12']
-        xcode: ['14.1.0']
-        command: ['build']
-        scheme: ['StellarCLI']
-        destination: ['platform=macOS']
+        xcode: ['14.2.0']
     steps:
       - name: Switch xcode to ${{ matrix.xcode }}
         run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
@@ -30,13 +27,7 @@ jobs:
       - name: Show buildable schemes
         working-directory: ./Stellar
         run: xcodebuild -list
-      - name: Show eligible build destinations for ${{ matrix.scheme }}
-        working-directory: ./Stellar
-        run: xcodebuild -showdestinations -scheme ${{ matrix.scheme }}
-      - name: Run command ${{ matrix.command }} on ${{ matrix.scheme }} for destination ${{ matrix.destination }}
-        working-directory: ./Stellar
-        run: xcodebuild ${{ matrix.command }} -scheme ${{ matrix.scheme }} -destination "${{ matrix.destination }}"
-      - name: Archive using ${{ matrix.scheme }} for destination ${{ matrix.destination }}
+      - name: Build products for release
         working-directory: ./Stellar
         run: swift build -c release --arch arm64 --arch x86
       - name: Copy Templates.bundle
@@ -45,6 +36,9 @@ jobs:
       - name: Zip executable
         working-directory: ./Stellar/.build/apple/Products/Release/
         run: zip -r StellarCLI.zip StellarCLI Templates.bundle
+      - name: Zip StellarEnv Executable
+        working-directory: ./Stellar/.build/apple/Products/Release/
+        run: zip -r StellarEnv.zip StellarEnv
       - name: Create Release
         uses: actions/create-release@v1
         id: create_release
@@ -53,9 +47,9 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true
-      - name: Upload release asset
+          draft: false # just for testing
+          prerelease: false # just for testing
+      - name: Upload StellarCLI release asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -63,4 +57,13 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./Stellar/.build/apple/Products/Release/StellarCLI.zip
           asset_name: StellarCLI.zip
+          asset_content_type: application/zip
+      - name: Upload StellarEnv release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Stellar/.build/apple/Products/Release/StellarEnv.zip
+          asset_name: StellarEnv.zip
           asset_content_type: application/zip

@@ -32,4 +32,5 @@ final class URLManager {
         }
         return fileManager.executableLocation.appendingPathComponent(PathConstants.templatesBundle)
     }
+    
 }

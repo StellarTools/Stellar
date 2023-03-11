@@ -71,4 +71,42 @@ extension FileManager: FileManaging {
     public func enumerator(at location: URL) -> FileManager.DirectoryEnumerator? {
         enumerator(at: location, includingPropertiesForKeys: [], options: [])
     }
+    
+    public func copyFile(from location: URL, to destination: URL) throws {
+        guard fileExists(atPath: location.path) else {
+            return
+        }
+        
+        if fileExists(atPath: destination.path) {
+            try removeItem(atPath: destination.path)
+        }
+        
+        try copyItem(atPath: location.path, toPath: destination.path)
+    }
+    
+    /// Create a temporary directory and evaluates a closure with the directory path as an argument.
+    ///
+    ///
+    /// - Parameters:
+    ///   - path: when specified this path is used as root of the temporary directory.
+    ///           If not the system temporary directory path is used.
+    ///   - prefix: The prefix of the temporary directory.
+    ///   - autoRemove: If true, it tries to delete the temporary directory after executing the closure.
+    ///   - closure: A closure to execute that receives the absolute path of the directory as an argument.
+    /// - Returns: The value returned by the closure.
+    public func withTemporaryDirectory<Result>(path: String? = nil,
+                                               prefix: String = "TempDir",
+                                               autoRemove: Bool = true,
+                                               _ closure: (URL) throws -> Result) throws -> Result {
+        let folderName = "\(prefix)-\(UUID().uuidString)"
+        let location = URL(fileURLWithPath: (path ?? NSTemporaryDirectory()), isDirectory: true).appendingPathComponent(folderName, isDirectory: true)
+        try createDirectory(at: location, withIntermediateDirectories: true)
+        
+        let res = try closure(location)
+        if autoRemove {
+            try? removeItem(at: location)
+        }
+        return res
+    }
+    
 }

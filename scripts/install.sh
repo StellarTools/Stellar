@@ -20,14 +20,14 @@ warn() {
   printf "${tty_red}Warning${tty_reset}: %s\n" "$(chomp "$1")"
 }
 
-LATEST_VERSION=$(git ls-remote -t --sort=v:refname https://github.com/InterstellarTools/StellarPrototype.git | sed -ne '$s/.*tags\/\(.*\)/\1/p')
-ohai "Downloading StellarCLI..."
-[ -f /tmp/StellarCLI.zip ] && rm /tmp/StellarCLI.zip
-[ -f /tmp/StellarCLI ] && rm /tmp/StellarCLI
+LATEST_VERSION=$(git ls-remote -t --sort=v:refname https://github.com/StellarTools/Stellar.git | sed -ne '$s/.*tags\/\(.*\)/\1/p')
+ohai "Downloading StellarEnv..."
+[ -f /tmp/StellarEnv.zip ] && rm /tmp/StellarEnv.zip
+[ -f /tmp/StellarEnv ] && rm /tmp/StellarEnv
 curl -LSsf --output /tmp/StellarCLI.zip https://github.com/InterstellarTools/StellarPrototype/releases/download/${LATEST_VERSION}/StellarCLI.zip
-ohai "Unzipping StellarCLI..."
-unzip -o /tmp/StellarCLI.zip -d /tmp/StellarCLI > /dev/null
-ohai "Installing StellarCLI..."
+ohai "Unzipping StellarEnv..."
+unzip -o /tmp/StellarEnv.zip -d /tmp/StellarEnv > /dev/null
+ohai "Installing StellarEnv..."
 
 INSTALL_DIR="/usr/local/bin"
 
@@ -44,14 +44,18 @@ if [[ ! -d $INSTALL_DIR ]]; then
   sudo_if_install_dir_not_writeable "mkdir -p ${INSTALL_DIR}"
 fi
 
-if [[ -f "${INSTALL_DIR}/StellarCLI" ]]; then
-  sudo_if_install_dir_not_writeable "rm ${INSTALL_DIR}/StellarCLI"
+if [[ -f "${INSTALL_DIR}/StellarEnv" ]]; then
+  sudo_if_install_dir_not_writeable "rm ${INSTALL_DIR}/StellarEnv"
 fi
 
-sudo_if_install_dir_not_writeable "mv /tmp/StellarCLI/StellarCLI \"${INSTALL_DIR}/StellarCLI\""
-sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/StellarCLI\""
+sudo_if_install_dir_not_writeable "mv /tmp/StellarEnv/StellarEnv \"${INSTALL_DIR}/StellarEnv\""
+sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/StellarEnv\""
 
-rm -rf /tmp/StellarCLI
-rm /tmp/StellarCLI.zip
+rm -rf /tmp/StellarEnv
+rm /tmp/StellarEnv.zip
 
-ohai "StellarCLI installed. Try running 'StellarCLI'"
+# Also install the CLI environment for this version.
+ohai "Installing latest version of CLI..."
+stellarenv install
+
+ohai "StellarEnv v.$TAG installed! Try running 'stellarenv'"
