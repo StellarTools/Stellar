@@ -20,20 +20,6 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StellarCLITests"
-               BuildableName = "StellarCLITests"
-               BlueprintName = "StellarCLITests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -102,9 +88,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "StellarCLITests"
-            BuildableName = "StellarCLITests"
-            BlueprintName = "StellarCLITests"
+            BlueprintIdentifier = "StellarCLI"
+            BuildableName = "StellarCLI"
+            BlueprintName = "StellarCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
