@@ -79,7 +79,7 @@ public final class VersionResolver: VersionResolving {
     public func installedVersions() throws -> [LocalVersion] {
         try urlManager.cliVersionsLocation().glob("*").compactMap {
             LocalVersion(path: $0)
-        }.sorted()
+        }.sorted().reversed()
     }
     
     public func latestInstalledVersion() throws -> LocalVersion? {
