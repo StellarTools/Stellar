@@ -29,7 +29,7 @@ public struct CLIInstallCommand: ParsableCommand {
     // MARK: - Public Functions
 
     public func run() throws {
-        try CLIInstaller().install(version: version, preRelease: preRelease)
+        try CLIService().install(version: version, preRelease: preRelease)
     }
     
 }

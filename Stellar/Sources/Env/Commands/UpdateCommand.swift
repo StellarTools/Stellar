@@ -3,7 +3,7 @@ import Foundation
 import ArgumentParser
 import StellarCore
 
-/// The `UpdateCommand` is used to update the currently installed binary of `stellarenv`.
+/// The `UpdateCommand` is used to update both the Stellar CLI and Stellar Env.
 struct UpdateCommand: ParsableCommand {
     
     static var configuration: CommandConfiguration {
@@ -16,8 +16,8 @@ struct UpdateCommand: ParsableCommand {
     // MARK: - Public Functions
 
     public func run() throws {
-        Logger().log("Checking for stellarenv updates...")
-        try EnvInstaller().install()
+        Logger().log("Checking for updates...")
+        try UpdaterService().update()
     }
     
 }

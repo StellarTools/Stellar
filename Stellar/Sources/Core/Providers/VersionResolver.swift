@@ -47,17 +47,6 @@ public enum ResolvedVersion: Equatable {
     case undefined
 }
 
-enum VersionResolverError: Error, Equatable {
-    case readError(_ versionFileURL: URL)
-
-    var description: String {
-        switch self {
-        case let .readError(versionFileURL):
-            return "Cannot read the version file at path \(versionFileURL.path)"
-        }
-    }
-}
-
 // MARK: - VersionResolver
 
 /// Resolve `stellar` cli tool to use for executing requests.
@@ -127,9 +116,31 @@ public final class VersionResolver: VersionResolving {
             pinnedVer = try String(contentsOf: URL(fileURLWithPath: url.path))
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         } catch {
-            throw VersionResolverError.readError(url)
+            throw Errors.readError(url)
         }
         return ResolvedVersion.versionFile(url, pinnedVer)
+    }
+    
+}
+
+// MARK: - Errors
+
+extension VersionResolver {
+    
+    public enum Errors: FatalError, Equatable {
+        case readError(_ versionFileURL: URL)
+        
+        public var description: String {
+            switch self {
+            case let .readError(versionFileURL):
+                return "Cannot read the version file at path \(versionFileURL.path)"
+            }
+        }
+        
+        public var type: ErrorType {
+            .abort
+        }
+        
     }
     
 }

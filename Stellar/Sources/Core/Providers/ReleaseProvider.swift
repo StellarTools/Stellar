@@ -29,13 +29,6 @@ public protocol ReleaseProviding {
 
 }
 
-// MARK: - ReleaseProviderErrors
-
-public enum ReleaseProviderErrors: Error {
-    case releaseNotAvailable(String)
-    case releaseURLNotAvailable(RemoteRelease)
-}
-
 // MARK: - ReleaseProvider
 
 public final class ReleaseProvider: ReleaseProviding {
@@ -64,8 +57,8 @@ public final class ReleaseProvider: ReleaseProviding {
     }
     
     public func releaseWithTag(_ tagName: String) throws -> RemoteRelease? {
-        try urlSession.gitHubAPI(url: GitHubAPI.apiReleaseTag.appendingPathComponent(tagName),
-                                 decode: RemoteRelease.self)
+        try? urlSession.gitHubAPI(url: GitHubAPI.apiReleaseTag.appendingPathComponent(tagName),
+                                  decode: RemoteRelease.self)
     }
     
     public func latestRelease() throws -> RemoteRelease? {
@@ -75,11 +68,34 @@ public final class ReleaseProvider: ReleaseProviding {
     
     public func downloadAsset(type: RemoteRelease.AssetKind, ofRelease release: RemoteRelease, toURL: URL) throws {
         guard let url = release.assetURL(type: type) else {
-            throw ReleaseProviderErrors.releaseURLNotAvailable(release)
+            throw Errors.releaseURLNotAvailable(release)
         }
         
         logger.log("Downloading package \(type.name) at \(url.absoluteString)...")
         try urlSession.downloadFile(atURL: url, saveAtURL: toURL)
+    }
+    
+}
+
+extension ReleaseProvider {
+
+    public enum Errors: FatalError {
+        case releaseNotAvailable(String)
+        case releaseURLNotAvailable(RemoteRelease)
+        
+        public var type: ErrorType {
+            .abort
+        }
+        
+        public var description: String {
+            switch self {
+            case .releaseNotAvailable(let version):
+                return "Failed to find version \(version) on remote side"
+            case .releaseURLNotAvailable(let url):
+                return "Failed to find the release asset for\(url.version)"
+            }
+        }
+        
     }
     
 }

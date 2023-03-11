@@ -2,7 +2,7 @@ import Foundation
 import AppKit
 import ShellOut
 
-public protocol CLIInstallerProtocol {
+public protocol CLIServiceProtocol {
     
     
     /// Install a new version of the stellar's CLI tool.
@@ -24,10 +24,10 @@ public protocol CLIInstallerProtocol {
     
 }
 
-// MARK: - CLIInstaller
+// MARK: - CLIService
 
-/// `CLIInstaller` is used to install or pin a project to a specific version of stellar.
-public final class CLIInstaller: CLIInstallerProtocol {
+/// `CLIService` is used to install or pin a project to a specific version of stellar.
+public final class CLIService: CLIServiceProtocol {
 
     // MARK: - Public Properties
     
@@ -90,8 +90,8 @@ public final class CLIInstaller: CLIInstallerProtocol {
     /// - Parameter version: version to install.
     private func install(version: String) throws -> URL {
         guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
-            logger.log("Failed to get tagged release \(version)")
-            throw ReleaseProviderErrors.releaseNotAvailable(version)
+            logger.log("Cannot found release \(version) to install from remote")
+            throw ReleaseProvider.Errors.releaseNotAvailable(version)
         }
         
         let installURL = try urlManager.cliLocation(for: version)
@@ -107,7 +107,7 @@ public final class CLIInstaller: CLIInstallerProtocol {
 
                 // Unzip the file
                 try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
-                NSWorkspace.shared.activateFileViewerSelecting([installURL])
+                // NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
                 logger.log("Stellar version \(version) installed")
         })

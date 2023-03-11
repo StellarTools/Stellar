@@ -21,7 +21,7 @@ extension URLSession {
     ///   - model: decoded object.
     /// - Returns: decoded model or exception if something fails.
     public func fetch<T:Codable>(request: URLRequest, decode model: T.Type) throws -> T? {
-        Logger().log("[\(request.httpMethod ?? "GET")] \(request.url?.absoluteString ?? "")")
+        Logger().log("  [\(request.httpMethod ?? "GET")] \(request.url?.absoluteString ?? "")")
         let semaphore = DispatchSemaphore(value: 0)
         var data: Data?, error: Error?
 

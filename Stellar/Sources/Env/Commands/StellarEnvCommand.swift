@@ -62,10 +62,10 @@ struct StellarEnvCommand: ParsableCommand {
             try CommandResolver().run(args: Array(commandArguments().dropFirst()))
             _exit(0)
         } catch { // Exit cleanly
-            Logger().log(error.localizedDescription)
             if exitCode(for: error).rawValue == 0 {
                 exit(withError: error)
             } else {
+                Logger().log("Exited with error: \(error.localizedDescription)")
                 _exit(exitCode(for: error).rawValue)
             }
         }

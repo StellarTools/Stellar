@@ -1,7 +1,8 @@
 import Foundation
 
-// MARK: - BundleServer
+// MARK: - BundleService
 
+/// `BundleService` is used to bundle a particular version of the stellar cli into a project.
 public final class BundleService {
     
     // MARK: - Public Properties
@@ -9,22 +10,26 @@ public final class BundleService {
     public let fileManager: FileManaging = FileManager.default
     
     public var versionResolver: VersionResolving {
-        cliInstaller.versionResolver
+        cliService.versionResolver
     }
     
-    public let cliInstaller: CLIInstaller
+    public let cliService: CLIService
 
     // MARK: - Private Properties
     
     private let urlManager = URLManager()
     private let logger = Logger()
     
-    
     // MARK: - Initialization
-
+    
+    /// Initialize bundle service.
+    ///
+    /// - Parameters:
+    ///   - releaseProvider: releases provider.
+    ///   - versionResolver: versions resolver.
     public init(releaseProvider: ReleaseProviding = ReleaseProvider(),
                 versionResolver: VersionResolving = VersionResolver()) {
-        self.cliInstaller = .init(releaseProvider: releaseProvider, versionResolver: versionResolver)
+        self.cliService = .init(releaseProvider: releaseProvider, versionResolver: versionResolver)
     }
     
     // MARK: - Public Methods
@@ -44,7 +49,7 @@ public final class BundleService {
         
         if try !versionResolver.isVersionInstalled(targetVersion) {
             logger.log("Version \(targetVersion) not available locally. Installing...")
-            try cliInstaller.install(version: targetVersion)
+            try cliService.install(version: targetVersion)
         }
         
         guard let versionPath = try versionResolver.pathForVersion(targetVersion) else {
@@ -61,15 +66,28 @@ public final class BundleService {
     
 }
 
-// MARK: - BundleServer + Errors
+// MARK: - Errors
 
 extension BundleService {
     
-    public enum Errors: Error {
+    public enum Errors: FatalError {
         /// Specified path does not contains the .stellar-version with the version to bundle.
         case missingVersionFile(URL)
         /// Failed to identify local version
         case failedToIdentifyVersion(String)
+        
+        public var type: ErrorType {
+            .abort
+        }
+        
+        public var description: String {
+            switch self {
+            case .missingVersionFile(let versionFileURL):
+                return "Couldn't find a .stellar-version file in the directory \(versionFileURL.path)"
+            case .failedToIdentifyVersion(let version):
+                return "Failed to get local installed version \(version)"
+            }
+        }
     }
     
 }

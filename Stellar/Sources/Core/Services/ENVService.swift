@@ -2,9 +2,9 @@ import Foundation
 import ShellOut
 import AppKit
 
-// MARK: - EnvInstallerProtocol
+// MARK: - ENVServiceProtocol
 
-protocol EnvInstallerProtocol {
+protocol ENVServiceProtocol {
     
     /// Install StellarEnv tool.
     ///
@@ -13,10 +13,10 @@ protocol EnvInstallerProtocol {
     
 }
 
-// MARK: - EnvInstaller
+// MARK: - ENVService
 
-/// `EnvInstaller` is used to update the `stellarenv` tool.
-public final class EnvInstaller: EnvInstallerProtocol {
+/// `ENVService` is used to update the `stellarenv` tool.
+public final class ENVService: ENVServiceProtocol {
     
     // MARK: - Public Properties
     
@@ -75,7 +75,7 @@ public final class EnvInstaller: EnvInstallerProtocol {
                 // Download zip package
                 let packageDestination = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvZipAsset)
                 try releaseProvider.downloadAsset(type: .env, ofRelease: release, toURL: packageDestination)
-                NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
+                // NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip
                 logger.log("Expading the archive…")

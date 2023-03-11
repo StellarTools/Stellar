@@ -1,59 +1,60 @@
 import Foundation
 
-protocol BundleUpdating: AnyObject {
+protocol Updating: AnyObject {
         
     /// Download and update both CLI and Env tools to the specified version.
     ///
     /// - Parameter version: version to update. if `nil` a check with the latest remote release is made.
     @discardableResult
-    func update(toVersion version: String?) throws -> URL?
+    func update(_ version: String?) throws -> URL?
     
 }
 
-// MARK: - BundleUpdater
+// MARK: - UpdaterService
 
-public final class BundleUpdater: BundleUpdating {
+public final class UpdaterService: Updating {
     
     // MARK: - Public Properties
     
-    public let cliInstaller: CLIInstaller
-    public let envInstaller: EnvInstaller
+    public let cliService: CLIService
+    public let envService: ENVService
     
     private let logger = Logger()
     
     public var releaseProvider: ReleaseProviding {
-        cliInstaller.releaseProvider
+        cliService.releaseProvider
     }
     
     public var versionResolver: VersionResolving {
-        cliInstaller.versionResolver
+        cliService.versionResolver
     }
         
     // MARK: - Initialization
     
     public init(releaseProvider: ReleaseProviding = ReleaseProvider(),
                 versionResolver: VersionResolving = VersionResolver()) {
-        self.cliInstaller = .init(releaseProvider: releaseProvider, versionResolver: versionResolver)
-        self.envInstaller = .init(releaseProvider: releaseProvider)
+        self.cliService = .init(releaseProvider: releaseProvider, versionResolver: versionResolver)
+        self.envService = .init(releaseProvider: releaseProvider)
     }
     
     // MARK: - Public Functions
     
-    func update(toVersion version: String?) throws -> URL? {
+    @discardableResult
+    public func update(_ version: String? = nil) throws -> URL? {
         if let version {
-            return try updateBundle(toVersion: version)
+            return try update(toVersion: version)
         } else {
-            return try updateBundleToLatestVersion()
+            return try updateToLatestVersion()
         }
     }
 
     // MARK: - Private Functions
     
-    private func updateBundle(toVersion version: String) throws -> URL? {
+    private func update(toVersion version: String) throws -> URL? {
         // Version is not available locally, we retrive it remotely.
         if try versionResolver.isVersionInstalled(version) == false {
             logger.log("Version \(version) not found locally. Installing...")
-            return try cliInstaller.install(version: version)
+            return try cliService.install(version: version)
         }
         
         // Attempt to get the path of the release.
@@ -65,7 +66,7 @@ public final class BundleUpdater: BundleUpdating {
         return URL(fileURLWithPath: versionPath)
     }
 
-    private func updateBundleToLatestVersion() throws -> URL? {
+    private func updateToLatestVersion() throws -> URL? {
         guard let release = try releaseProvider.latestRelease() else {
             logger.log("No remote version found")
             return nil
@@ -80,7 +81,7 @@ public final class BundleUpdater: BundleUpdating {
     }
         
     private func updateCLIToLatestVersion(_ version: SemVer) throws -> URL? {
-        if let latestLocalVersion = try cliInstaller.latestInstalledVersion() {
+        if let latestLocalVersion = try cliService.latestInstalledVersion() {
             guard version > latestLocalVersion.version else {
                 logger.log("Version \(latestLocalVersion) is installed and greater than latest available \(version)")
                 return nil
@@ -92,12 +93,12 @@ public final class BundleUpdater: BundleUpdating {
         }
         
         // Install version of stellar
-        return try cliInstaller.install(version: version.description)
+        return try cliService.install(version: version.description)
     }
     
     private func updateENVToLatestVersion(_ version: SemVer) throws {
         logger.log("Updating stellarenv")
-        try envInstaller.install(version: version.description)
+        try envService.install(version: version.description)
     }
     
 }

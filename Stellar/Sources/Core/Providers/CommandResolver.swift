@@ -1,23 +1,12 @@
 import Foundation
 
 public final class CommandResolver {
-    
-    enum CommandForwarderError: Error {
-        case versionNotFound
-
-        var description: String {
-            switch self {
-            case .versionNotFound:
-                return "No valid version has been found locally"
-            }
-        }
-    }
 
     // MARK: - Public Properties
     
     private let urlManager = URLManager()
     private let versionResolver: VersionResolving
-    private let bundleUpdater: BundleUpdater
+    private let bundleUpdater: UpdaterService
     
     private let logger = Logger()
     
@@ -90,7 +79,7 @@ public final class CommandResolver {
         }
             
         // Check if version is available locally, install if necessary.
-        guard let versionURL = try bundleUpdater.update(toVersion: version) else {
+        guard let versionURL = try bundleUpdater.update(version) else {
             exiter(1)
             return
         }
@@ -105,14 +94,14 @@ public final class CommandResolver {
     private func runCommandsUsingLatestInstalledVersion(args: [String]) throws {
         var targetVersion: String!
         
-        if let highgestVersion = try bundleUpdater.cliInstaller.latestInstalledVersion() {
+        if let highgestVersion = try bundleUpdater.cliService.latestInstalledVersion() {
             // Get the latest version installed locally.
             targetVersion = highgestVersion.version.description
         } else {
             // Nothing installed, we try to update all.
-            _ = try bundleUpdater.update(toVersion: nil)
-            guard let highgestVersion = try bundleUpdater.cliInstaller.latestInstalledVersion() else {
-                throw CommandForwarderError.versionNotFound
+            _ = try bundleUpdater.update()
+            guard let highgestVersion = try bundleUpdater.cliService.latestInstalledVersion() else {
+                throw Errors.versionNotFound
             }
             
             targetVersion = highgestVersion.version.description
@@ -126,6 +115,27 @@ public final class CommandResolver {
         
         let binURL = URL(fileURLWithPath: targetVersionPath)
         return try runCommandsUsingBinAtPath(binURL, commandArgs: args)
+    }
+    
+}
+
+// MARK: - Errors
+
+extension CommandResolver {
+    
+    enum Errors: FatalError {
+        case versionNotFound
+        
+        var type: ErrorType {
+            .abort
+        }
+
+        var description: String {
+            switch self {
+            case .versionNotFound:
+                return "No valid version has been found locally"
+            }
+        }
     }
     
 }

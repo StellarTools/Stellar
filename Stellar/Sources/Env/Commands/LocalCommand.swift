@@ -41,7 +41,7 @@ struct LocalCommand: ParsableCommand {
     ///   - version: version to pin.
     private func pin(path: String?, toVersion version: String) throws {
         let urlPath = (path != nil ? URL(fileURLWithPath: path!) : nil)
-        try CLIInstaller().pin(url: urlPath, toVersion: version)
+        try CLIService().pin(url: urlPath, toVersion: version)
     }
     
     /// Enumerate the list of the installed versions of stellar.
