@@ -56,7 +56,7 @@ public final class CommandResolver {
         ]
         args.append(contentsOf: commandArgs) // forward all params to the tool
 
-        logger.log("Commands will be resolved to stellar version \(path.lastPathComponent)")
+        logger.log("  [Commands will be resolved by stellarCLI v\(path.lastPathComponent)]")
         
         do {
             try Shell.shared.runAndPrint(args)

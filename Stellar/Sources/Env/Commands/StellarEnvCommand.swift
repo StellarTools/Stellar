@@ -54,7 +54,7 @@ struct StellarEnvCommand: ParsableCommand {
         // call `stellar` CLI tool with the same arguments.
         do {
             if var command {
-                Logger().log("Commands will be executed by stellarenv")
+                Logger().log("  [Commands will be executed by StellarEnv]")
                 try command.run()
                 return
             }
