@@ -36,7 +36,6 @@ let package = Package(
                 .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "StencilSwiftKit", package: "StencilSwiftKit"),
                 .product(name: "TSCBasic", package: "swift-tools-support-core")
-                
             ],
             path: "Sources/Core",
             resources: [.copy("Resources")]),
