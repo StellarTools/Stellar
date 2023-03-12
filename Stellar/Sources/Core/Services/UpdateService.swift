@@ -1,8 +1,8 @@
 import Foundation
 
-// MARK: - UpdaterServiceProtocol
+// MARK: - UpdateServiceProtocol
 
-protocol UpdaterServiceProtocol: AnyObject {
+protocol UpdateServiceProtocol: AnyObject {
         
     /// Download and update both CLI and Env tools to the specified version.
     ///
@@ -12,9 +12,9 @@ protocol UpdaterServiceProtocol: AnyObject {
     
 }
 
-// MARK: - UpdaterService
+// MARK: - UpdateService
 
-public final class UpdaterService: UpdaterServiceProtocol {
+public final class UpdateService: UpdateServiceProtocol {
     
     // MARK: - Public Properties
     
