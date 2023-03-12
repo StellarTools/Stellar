@@ -12,7 +12,7 @@ struct CreateActionCommand: ParsableCommand {
     @Option(name: .shortAndLong, help: "The name of the Action. Must have the 'Action' suffix.")
     private var name: String
     
-    @Option(name: .shortAndLong, help: "The path in which to create the action. Optional, defaults to .stellar/Actions")
+    @Option(name: .shortAndLong, help: "The path in which to create the action. Optional, defaults to .stellar/Actions.")
     private var outputPath: String?
     
     @Option(name: .shortAndLong, help: "The path to the templates. Optional, defaults to the templates shipped with the release.")

@@ -1,11 +1,12 @@
+//  InstallCommand.swift
+
 import ArgumentParser
 import Foundation
 import StellarCore
 
-/// The following tool is used to install a version of stellar into the system.
-public struct CLIInstallCommand: ParsableCommand {
+struct InstallCommand: ParsableCommand {
     
-    public static var configuration: CommandConfiguration {
+    static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "install",
             abstract: "Install a version of stellar."
@@ -15,20 +16,14 @@ public struct CLIInstallCommand: ParsableCommand {
     // MARK: - Options
 
     @Argument(help: "The version of stellar to be installed.")
-    public var version: String?
+    var version: String?
     
     @Flag(help: "When no version is specified, set this tag to install latest stable/pre-release.")
-    public var preRelease: Bool = false
+    var preRelease: Bool = false
     
-    // MARK: - Initialization
-    
-    public init() {
-        
-    }
-    
-    // MARK: - Public Functions
+    // MARK: - Functions
 
-    public func run() throws {
+    func run() throws {
         try CLIService().install(version: version, preRelease: preRelease)
     }
     

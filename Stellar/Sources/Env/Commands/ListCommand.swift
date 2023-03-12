@@ -1,13 +1,15 @@
+//  ListCommand.swift
+
 import ArgumentParser
 import Foundation
 import StellarCore
 
-public struct ListCommand: ParsableCommand {
+struct ListCommand: ParsableCommand {
     
     public static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "list",
-            abstract: "List the remote versions of stellar."
+            abstract: "List the released versions of stellar."
         )
     }
     
@@ -16,15 +18,13 @@ public struct ListCommand: ParsableCommand {
     @Flag(help: "Include pre-release versions in the list.")
     public var preReleases: Bool = false
     
-    // MARK: - Initialization
-    
-    public init() { }
-    
-    // MARK: - Public Functions
+    // MARK: - Functions
 
     public func run() throws {
         try run(includePreRelease: preReleases)
     }
+    
+    // MARK: - Private Functions
     
     public func run(includePreRelease preRelease: Bool) throws {
         let versionsProvider = ReleaseProvider()
