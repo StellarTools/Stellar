@@ -79,7 +79,7 @@ public final class CommandResolver {
         }
             
         // Check if version is available locally, install if necessary.
-        guard let versionURL = try updateService.update(version) else {
+        guard let versionURL = try updateService.update(to: version) else {
             exiter(1)
             return
         }

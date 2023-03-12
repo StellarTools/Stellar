@@ -8,7 +8,7 @@ protocol UpdateServiceProtocol: AnyObject {
     ///
     /// - Parameter version: version to update. if `nil` a check with the latest remote release is made.
     @discardableResult
-    func update(_ version: String?) throws -> URL?
+    func update(to version: String?) throws -> URL?
     
 }
 
@@ -42,7 +42,7 @@ public final class UpdateService: UpdateServiceProtocol {
     // MARK: - Public Functions
     
     @discardableResult
-    public func update(_ version: String? = nil) throws -> URL? {
+    public func update(to version: String? = nil) throws -> URL? {
         if let version {
             return try update(toVersion: version)
         } else {
