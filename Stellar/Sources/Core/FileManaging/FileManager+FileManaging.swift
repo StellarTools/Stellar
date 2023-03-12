@@ -4,11 +4,28 @@ import Foundation
 
 extension FileManager: FileManaging {
     
-    enum FileManagerError: Error {
+    enum FileManagerError: FatalError {
         case cannotCreateFile(URL)
         case existingFolder(URL)
         case missingFile(URL)
         case missingFolder(URL)
+        
+        var description: String {
+            switch self {
+            case .cannotCreateFile(let url):
+                return "Could not create file at \(url.path)."
+            case .existingFolder(let url):
+                return "Folder already existing at \(url.path)."
+            case .missingFile(let url):
+                return "File missing at \(url.path)."
+            case .missingFolder(let url):
+                return "Folder missing at \(url.path)."
+            }
+        }
+        
+        var type: ErrorType {
+            .abort
+        }
     }
     
     public var currentLocation: URL {
