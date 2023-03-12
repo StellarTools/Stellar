@@ -21,7 +21,7 @@ public final class UpdateService: UpdateServiceProtocol {
     // MARK: - Public Properties
     
     public let cliService: CLIService
-    public let envService: ENVService
+    public let envService: EnvService
     
     private let logger = Logger()
     
@@ -77,7 +77,7 @@ public final class UpdateService: UpdateServiceProtocol {
         }
         
         let versionURL = try updateCLIToLatestVersion(release.version)
-        try updateENVToLatestVersion(release.version)
+        try updateEnvToLatestVersion(release.version)
         
         logger.log("Stellar version \(release.description) installed")
         
@@ -100,7 +100,7 @@ public final class UpdateService: UpdateServiceProtocol {
         return try cliService.install(version: version.description)
     }
     
-    private func updateENVToLatestVersion(_ version: SemVer) throws {
+    private func updateEnvToLatestVersion(_ version: SemVer) throws {
         logger.log("Updating stellarenv")
         try envService.install(version: version.description)
     }
