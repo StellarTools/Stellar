@@ -59,7 +59,8 @@ public final class BundleService {
         if fileManager.folderExists(at: binFolderURL) {
             try fileManager.deleteFolder(at: binFolderURL) // remove any other bundled version
         }
-        try fileManager.copyFile(from: versionPath, to: binFolderURL)
+        
+        try fileManager.copyFile(at: versionPath, to: binFolderURL)
         
         logger.log("Stellar \(targetVersion) bundled successfully at \(binFolderURL.path)")
     }

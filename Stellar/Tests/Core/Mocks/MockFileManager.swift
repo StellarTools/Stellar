@@ -17,11 +17,6 @@ class MockFileManager: FileManaging {
         fatalError()
     }
     
-    func copyFile(from location: URL, to destination: URL) throws {
-        fatalError()
-    }
-    
-    
     enum MockFileManagerError: Error {
         case missingFile(URL)
         case missingFolder(URL)
