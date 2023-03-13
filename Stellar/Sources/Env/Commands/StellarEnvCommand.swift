@@ -25,8 +25,11 @@ struct StellarEnvCommand: ParsableCommand {
     
     static func main(_: [String]? = nil) {
         let cmdsList = commandArguments().dropFirst()
-        if cmdsList.isEmpty {
-            _exit(0)
+        
+        // Help env
+        if cmdsList.first == "--help-env" {
+            let error = CleanExit.helpRequest(self)
+            exit(withError: error)
         }
         
         // PARSE RECEIVED COMMAND
