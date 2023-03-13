@@ -72,18 +72,6 @@ extension FileManager: FileManaging {
         enumerator(at: location, includingPropertiesForKeys: [], options: [])
     }
     
-    public func copyFile(from location: URL, to destination: URL) throws {
-        guard fileExists(atPath: location.path) else {
-            return
-        }
-        
-        if fileExists(atPath: destination.path) {
-            try removeItem(atPath: destination.path)
-        }
-        
-        try copyItem(atPath: location.path, toPath: destination.path)
-    }
-    
     /// Create a temporary directory and evaluates a closure with the directory path as an argument.
     ///
     ///

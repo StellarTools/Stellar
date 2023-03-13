@@ -1,25 +1,27 @@
+//  UpdateService.swift
+
 import Foundation
 
-// MARK: - UpdaterServiceProtocol
+// MARK: - UpdateServiceProtocol
 
-protocol UpdaterServiceProtocol: AnyObject {
+protocol UpdateServiceProtocol: AnyObject {
         
     /// Download and update both CLI and Env tools to the specified version.
     ///
     /// - Parameter version: version to update. if `nil` a check with the latest remote release is made.
     @discardableResult
-    func update(_ version: String?) throws -> URL?
+    func update(to version: String?) throws -> URL?
     
 }
 
-// MARK: - UpdaterService
+// MARK: - UpdateService
 
-public final class UpdaterService: UpdaterServiceProtocol {
+public final class UpdateService: UpdateServiceProtocol {
     
     // MARK: - Public Properties
     
     public let cliService: CLIService
-    public let envService: ENVService
+    public let envService: EnvService
     
     private let logger = Logger()
     
@@ -42,7 +44,7 @@ public final class UpdaterService: UpdaterServiceProtocol {
     // MARK: - Public Functions
     
     @discardableResult
-    public func update(_ version: String? = nil) throws -> URL? {
+    public func update(to version: String? = nil) throws -> URL? {
         if let version {
             return try update(toVersion: version)
         } else {
@@ -75,7 +77,7 @@ public final class UpdaterService: UpdaterServiceProtocol {
         }
         
         let versionURL = try updateCLIToLatestVersion(release.version)
-        try updateENVToLatestVersion(release.version)
+        try updateEnvToLatestVersion(release.version)
         
         logger.log("Stellar version \(release.description) installed")
         
@@ -98,7 +100,7 @@ public final class UpdaterService: UpdaterServiceProtocol {
         return try cliService.install(version: version.description)
     }
     
-    private func updateENVToLatestVersion(_ version: SemVer) throws {
+    private func updateEnvToLatestVersion(_ version: SemVer) throws {
         logger.log("Updating stellarenv")
         try envService.install(version: version.description)
     }

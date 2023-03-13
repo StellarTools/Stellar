@@ -1,3 +1,5 @@
+//  RemoteRelease.swift
+
 import Foundation
 
 public struct RemoteRelease: Comparable, CustomStringConvertible {

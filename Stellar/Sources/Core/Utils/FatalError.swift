@@ -1,9 +1,4 @@
-//
-//  File.swift
-//  
-//
-//  Created by daniele on 11/03/23.
-//
+//  FatalError.swift
 
 import Foundation
 

@@ -1,26 +1,29 @@
+//  StellarEnvCommand.swift
+
 import ArgumentParser
 import Foundation
 import StellarCore
 
 struct StellarEnvCommand: ParsableCommand {
     
-    public static var configuration: CommandConfiguration {
+    static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "stellar",
             abstract: "Manage multiple stellar versions.",
             subcommands: [
-                LocalCommand.self,
+                BundleCommand.self,
+                InstallCommand.self,
+                InstalledCommand.self,
                 ListCommand.self,
-                CLIInstallCommand.self,
-                UpdateCommand.self,
-                BundleCommand.self
+                PinCommand.self,
+                UpdateCommand.self
             ]
         )
     }
     
-    // MARK: - Public Functions
+    // MARK: - Functions
     
-    public static func main(_: [String]? = nil) {
+    static func main(_: [String]? = nil) {
         let cmdsList = commandArguments().dropFirst()
         
         // Help env
@@ -102,7 +105,7 @@ struct StellarEnvCommand: ParsableCommand {
     /// Return the list of all arguments used to start the command and remove `--verbose` if set.
     /// 
     /// - Returns: list of args.
-    static func commandArguments() -> [String] {
+    private static func commandArguments() -> [String] {
         Array(ProcessInfo.processInfo.arguments).filter { $0 != "--verbose" }
     }
     
