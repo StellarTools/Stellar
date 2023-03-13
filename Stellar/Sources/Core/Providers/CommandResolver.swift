@@ -1,3 +1,5 @@
+//  CommandResolver.swift
+
 import Foundation
 
 public final class CommandResolver {
@@ -6,7 +8,7 @@ public final class CommandResolver {
     
     private let urlManager = URLManager()
     private let versionResolver: VersionResolving
-    private let bundleUpdater: UpdaterService
+    private let updateService: UpdateService
     
     private let logger = Logger()
     
@@ -18,7 +20,7 @@ public final class CommandResolver {
     
     public init(releaseProvider: ReleaseProviding = ReleaseProvider(),
                 versionResolver: VersionResolving = VersionResolver()) {
-        self.bundleUpdater = .init(releaseProvider: releaseProvider)
+        self.updateService = .init(releaseProvider: releaseProvider)
         self.versionResolver = versionResolver
     }
     
@@ -79,7 +81,7 @@ public final class CommandResolver {
         }
             
         // Check if version is available locally, install if necessary.
-        guard let versionURL = try bundleUpdater.update(version) else {
+        guard let versionURL = try updateService.update(to: version) else {
             exiter(1)
             return
         }
@@ -94,20 +96,20 @@ public final class CommandResolver {
     private func runCommandsUsingLatestInstalledVersion(args: [String]) throws {
         var targetVersion: String!
         
-        if let highgestVersion = try bundleUpdater.cliService.latestInstalledVersion() {
+        if let highgestVersion = try updateService.cliService.latestInstalledVersion() {
             // Get the latest version installed locally.
             targetVersion = highgestVersion.version.description
         } else {
             // Nothing installed, we try to update all.
-            _ = try bundleUpdater.update()
-            guard let highgestVersion = try bundleUpdater.cliService.latestInstalledVersion() else {
+            _ = try updateService.update()
+            guard let highgestVersion = try updateService.cliService.latestInstalledVersion() else {
                 throw Errors.versionNotFound
             }
             
             targetVersion = highgestVersion.version.description
         }
         
-        let targetVersionPath = try bundleUpdater.versionResolver.pathForVersion(targetVersion).path
+        let targetVersionPath = try updateService.versionResolver.pathForVersion(targetVersion).path
         let binURL = URL(fileURLWithPath: targetVersionPath)
         return try runCommandsUsingBinAtPath(binURL, commandArgs: args)
     }

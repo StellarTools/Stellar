@@ -1,9 +1,11 @@
+//  EnvService.swift
+
 import Foundation
 import AppKit
 
-// MARK: - ENVServiceProtocol
+// MARK: - EnvServiceProtocol
 
-protocol ENVServiceProtocol {
+protocol EnvServiceProtocol {
     
     /// Install StellarEnv tool.
     ///
@@ -12,10 +14,10 @@ protocol ENVServiceProtocol {
     
 }
 
-// MARK: - ENVService
+// MARK: - EnvService
 
-/// `ENVService` is used to update the `stellarenv` tool.
-public final class ENVService: ENVServiceProtocol {
+/// `EnvService` is used to update the `stellarenv` tool.
+public final class EnvService: EnvServiceProtocol {
     
     // MARK: - Public Properties
     

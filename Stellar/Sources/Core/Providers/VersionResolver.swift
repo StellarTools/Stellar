@@ -1,3 +1,5 @@
+//  VersionResolver.swift
+
 import Foundation
 
 public protocol VersionResolving {
