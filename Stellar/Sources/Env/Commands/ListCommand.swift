@@ -6,7 +6,7 @@ import StellarCore
 
 struct ListCommand: ParsableCommand {
     
-    public static var configuration: CommandConfiguration {
+    static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "list",
             abstract: "List the released versions of stellar."
@@ -16,17 +16,17 @@ struct ListCommand: ParsableCommand {
     // MARK: - Options
         
     @Flag(help: "Include pre-release versions in the list.")
-    public var preReleases: Bool = false
+    var preReleases: Bool = false
     
     // MARK: - Functions
 
-    public func run() throws {
+    func run() throws {
         try run(includePreRelease: preReleases)
     }
     
     // MARK: - Private Functions
     
-    public func run(includePreRelease preRelease: Bool) throws {
+    private func run(includePreRelease preRelease: Bool) throws {
         let versionsProvider = ReleaseProvider()
         
         let latestReleases = try versionsProvider.availableReleases(preReleases: preRelease)
