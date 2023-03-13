@@ -124,17 +124,17 @@ public final class VersionResolver: VersionResolving {
 
 extension VersionResolver {
     
-    public enum Errors: FatalError, Equatable {
+    enum Errors: FatalError, Equatable {
         case readError(_ versionFileURL: URL)
         
-        public var description: String {
+        var description: String {
             switch self {
             case let .readError(versionFileURL):
                 return "Cannot read the version file at path \(versionFileURL.path)"
             }
         }
         
-        public var type: ErrorType {
+        var type: ErrorType {
             .abort
         }
         
