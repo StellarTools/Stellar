@@ -44,11 +44,7 @@ public final class ENVService: ENVServiceProtocol {
     // MARK: - Private Functions
     
     private func install(version: String) throws {
-        guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
-            logger.log("Tagged release \(version) not found.")
-            return
-        }
-        
+        let taggedRelease = try releaseProvider.releaseWithTag(version)
         try install(release: taggedRelease)
     }
     

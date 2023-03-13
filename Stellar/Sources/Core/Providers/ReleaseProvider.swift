@@ -12,7 +12,7 @@ public protocol ReleaseProviding {
     ///
     /// - Parameter tagName: tag name.
     /// - Returns: remote version
-    func releaseWithTag(_ tagName: String) throws -> RemoteRelease?
+    func releaseWithTag(_ tagName: String) throws -> RemoteRelease
     
     /// Return the latest official release.
     ///
@@ -56,9 +56,13 @@ public final class ReleaseProvider: ReleaseProviding {
         }
     }
     
-    public func releaseWithTag(_ tagName: String) throws -> RemoteRelease? {
-        try? urlSession.gitHubAPI(url: GitHubAPI.apiReleaseTag.appendingPathComponent(tagName),
-                                  decode: RemoteRelease.self)
+    public func releaseWithTag(_ tagName: String) throws -> RemoteRelease {
+        if let release = try urlSession.gitHubAPI(url: GitHubAPI.apiReleaseTag.appendingPathComponent(tagName),
+                                                  decode: RemoteRelease.self) {
+            return release
+        }
+        logger.log("Cannot found release \(tagName) to install from remote")
+        throw Errors.releaseNotAvailable(tagName)
     }
     
     public func latestRelease() throws -> RemoteRelease? {
@@ -79,15 +83,15 @@ public final class ReleaseProvider: ReleaseProviding {
 
 extension ReleaseProvider {
 
-    public enum Errors: FatalError {
+    enum Errors: FatalError {
         case releaseNotAvailable(String)
         case releaseURLNotAvailable(RemoteRelease)
         
-        public var type: ErrorType {
+        var type: ErrorType {
             .abort
         }
         
-        public var description: String {
+        var description: String {
             switch self {
             case .releaseNotAvailable(let version):
                 return "Failed to find version \(version) on remote side"
