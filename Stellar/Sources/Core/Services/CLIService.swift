@@ -90,11 +90,7 @@ public final class CLIService: CLIServiceProtocol {
     ///
     /// - Parameter version: version to install.
     private func install(version: String) throws -> URL {
-        guard let taggedRelease = try releaseProvider.releaseWithTag(version) else {
-            logger.log("Cannot found release \(version) to install from remote")
-            throw ReleaseProvider.Errors.releaseNotAvailable(version)
-        }
-        
+        let taggedRelease = try releaseProvider.releaseWithTag(version)
         let installURL = try urlManager.cliLocation(for: version)
         
         try fileManager.withTemporaryDirectory(

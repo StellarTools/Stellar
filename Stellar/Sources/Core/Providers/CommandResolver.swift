@@ -109,12 +109,7 @@ public final class CommandResolver {
             targetVersion = highgestVersion.version.description
         }
         
-        guard let targetVersionPath = try updateService.versionResolver.pathForVersion(targetVersion)?.path else {
-            logger.log("Failed to use version \(targetVersion ?? ""). Aborting the process...")
-            exiter(1)
-            return
-        }
-        
+        let targetVersionPath = try updateService.versionResolver.pathForVersion(targetVersion).path
         let binURL = URL(fileURLWithPath: targetVersionPath)
         return try runCommandsUsingBinAtPath(binURL, commandArgs: args)
     }

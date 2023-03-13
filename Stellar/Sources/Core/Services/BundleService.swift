@@ -54,10 +54,7 @@ public final class BundleService {
             try cliService.install(version: targetVersion)
         }
         
-        guard let versionPath = try versionResolver.pathForVersion(targetVersion) else {
-            throw Errors.failedToIdentifyVersion(targetVersion)
-        }
-        
+        let versionPath = try versionResolver.pathForVersion(targetVersion)
         if fileManager.folderExists(at: binFolderURL) {
             try fileManager.deleteFolder(at: binFolderURL) // remove any other bundled version
         }
@@ -76,8 +73,6 @@ extension BundleService {
     public enum Errors: FatalError {
         /// Specified path does not contains the .stellar-version with the version to bundle.
         case missingVersionFile(URL)
-        /// Failed to identify local version
-        case failedToIdentifyVersion(String)
         
         public var type: ErrorType {
             .abort
@@ -87,8 +82,6 @@ extension BundleService {
             switch self {
             case .missingVersionFile(let versionFileURL):
                 return "Couldn't find a .stellar-version file in the directory \(versionFileURL.path)"
-            case .failedToIdentifyVersion(let version):
-                return "Failed to get local installed version \(version)"
             }
         }
     }

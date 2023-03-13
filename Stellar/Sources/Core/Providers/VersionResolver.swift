@@ -27,7 +27,7 @@ public protocol VersionResolving {
     ///
     /// - Parameter version: version to get.
     /// - Returns: path if installed, `nil` otherwise.
-    func pathForVersion(_ version: String) throws -> URL?
+    func pathForVersion(_ version: String) throws -> URL
     
     /// Checks if a version is installed.
     ///
@@ -77,15 +77,12 @@ public final class VersionResolver: VersionResolving {
         try installedVersions().first
     }
     
-    public func pathForVersion(_ version: String) throws -> URL? {
+    public func pathForVersion(_ version: String) throws -> URL {
         try urlManager.cliLocation(for: version)
     }
 
     public func isVersionInstalled(_ version: String) throws -> Bool {
-        guard let binURL = try pathForVersion(version)?.appendingPathComponent(FileConstants.binName) else {
-            return false
-        }
-        
+        let binURL = try pathForVersion(version).appendingPathComponent(FileConstants.binName)
         return fileManager.fileExists(at: binURL)
     }
     
@@ -129,17 +126,17 @@ public final class VersionResolver: VersionResolving {
 
 extension VersionResolver {
     
-    public enum Errors: FatalError, Equatable {
+    enum Errors: FatalError, Equatable {
         case readError(_ versionFileURL: URL)
         
-        public var description: String {
+        var description: String {
             switch self {
             case let .readError(versionFileURL):
                 return "Cannot read the version file at path \(versionFileURL.path)"
             }
         }
         
-        public var type: ErrorType {
+        var type: ErrorType {
             .abort
         }
         

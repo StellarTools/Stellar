@@ -62,11 +62,7 @@ public final class UpdateService: UpdateServiceProtocol {
         }
         
         // Attempt to get the path of the release.
-        guard let versionPath = try versionResolver.pathForVersion(version)?.path else {
-            logger.log("Failed to use version \(version). Aborting the process...")
-            return nil
-        }
-        
+        let versionPath = try versionResolver.pathForVersion(version).path
         return URL(fileURLWithPath: versionPath)
     }
 
