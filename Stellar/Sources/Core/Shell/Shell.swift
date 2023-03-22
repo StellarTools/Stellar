@@ -19,6 +19,7 @@ public final class Shell {
     static public func run(
         _ arguments: [String],
         environment: [String: String]? = nil,
+        workingDirectory: String? = nil,
         redirection: TSCBasic.Process.OutputRedirection? = nil,
         sudoIfNeeded: Bool = false
     ) throws -> String {
@@ -28,9 +29,11 @@ public final class Shell {
         }, stderr: { bytes in
             FileHandle.standardError.write(Data(bytes))
         })
+        let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
         do {
             return try run(arguments,
                            environment: environment,
+                           workingDirectory: workingDirectory,
                            redirection: redirection)
         } catch {
             guard sudoIfNeeded else  {
@@ -38,6 +41,7 @@ public final class Shell {
             }
             return try run(["sudo"] + arguments,
                            environment: environment,
+                           workingDirectory: workingDirectory,
                            redirection: redirection)
         }
     }
@@ -47,11 +51,13 @@ public final class Shell {
     static private func run(
         _ arguments: [String],
         environment: [String: String],
+        workingDirectory: String,
         redirection: TSCBasic.Process.OutputRedirection
     ) throws -> String {
         let process = Process(
             arguments: arguments,
             environment: environment,
+            workingDirectory: try AbsolutePath(validating: workingDirectory),
             outputRedirection: redirection,
             startNewProcessGroup: false
         )
