@@ -53,12 +53,7 @@ struct CommonCommands {
     /// - Parameter name: name of the CLI tool to found.
     /// - Returns: path, if found.
     static func which(_ name: String) throws -> String {
-        let arguments = [
-            "/usr/bin/env",
-            "which",
-            name
-        ]
-        return try Shell.runAndCollect(arguments)
+        try Shell.runAndCollect(["/usr/bin/env", "which", name])
     }
 
 }
