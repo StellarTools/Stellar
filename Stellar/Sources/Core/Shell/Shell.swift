@@ -13,15 +13,13 @@ public final class Shell {
     ///   - arguments: command arguments.
     ///   - environment: environment variables.
     ///   - redirection: redirection policy.
-    ///   - sudoOnFailure: retry the command using sudoif fails. Default to `false`.
     /// - Returns: the output of the command.
     @discardableResult
     static public func run(
         _ arguments: [String],
         environment: [String: String]? = nil,
         workingDirectory: String? = nil,
-        redirection: TSCBasic.Process.OutputRedirection? = nil,
-        sudoIfNeeded: Bool = false
+        redirection: TSCBasic.Process.OutputRedirection? = nil
     ) throws -> String {
         let environment = environment ?? ProcessInfo.processInfo.environment
         let redirection = redirection ?? Process.OutputRedirection.stream(stdout: { bytes in
@@ -30,20 +28,10 @@ public final class Shell {
             FileHandle.standardError.write(Data(bytes))
         })
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
-        do {
-            return try run(arguments,
-                           environment: environment,
-                           workingDirectory: workingDirectory,
-                           redirection: redirection)
-        } catch {
-            guard sudoIfNeeded else  {
-                throw error
-            }
-            return try run(["sudo"] + arguments,
-                           environment: environment,
-                           workingDirectory: workingDirectory,
-                           redirection: redirection)
-        }
+        return try run(arguments,
+                       environment: environment,
+                       workingDirectory: workingDirectory,
+                       redirection: redirection)
     }
     
     // MARK: - Private Functions

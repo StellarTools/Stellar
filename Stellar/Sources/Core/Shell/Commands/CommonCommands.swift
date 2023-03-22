@@ -44,8 +44,8 @@ struct CommonCommands {
     ///   - sourceURL: source file.
     ///   - destination: destination location.
     static func copyAndReplace(source: URL, destination: String) throws {
-        try Shell.run(["rm", "-f", destination], sudoIfNeeded: true)
-        try Shell.run(["mv", source.path, destination], sudoIfNeeded: true)
+        try Shell.run(["rm", "-f", destination])
+        try Shell.run(["mv", source.path, destination])
     }
 
     /// Execute which with given target name.
