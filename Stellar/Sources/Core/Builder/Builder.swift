@@ -18,8 +18,8 @@ final public class Builder {
         try Shell.run(["swift", "build", "-c", "release"],
                       workingDirectory: executorLocation.path)
 
-        let binaryPath = try Shell.run(["swift", "build", "-c", "release", "--show-bin-path"],
-                                       workingDirectory: executorLocation.path)
+        let binaryPath = try Shell.runAndCollect(["swift", "build", "-c", "release", "--show-bin-path"],
+                                                 workingDirectory: executorLocation.path)
         
         let binaryLocation = URL(fileURLWithPath: binaryPath)
             .appendingPathComponent(Constants.executor, isDirectory: false)

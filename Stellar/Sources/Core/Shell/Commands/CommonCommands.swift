@@ -58,7 +58,7 @@ struct CommonCommands {
             "which",
             name
         ]
-        return try Shell.run(arguments).cleanShellOutput()
+        return try Shell.runAndCollect(arguments)
     }
 
 }
