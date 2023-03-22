@@ -1,24 +1,8 @@
-//  CommonCommands.swift
+//  Shell+Commands.swift
 
 import Foundation
 
-struct CommonCommands {
-
-    /// Download the resource at a given url.
-    ///
-    /// - Parameters:
-    ///   - url: url of resource to download.
-    ///   - destinationUrl: destination for saving the file to.
-    static func downloadResource(url: URL, at destinationUrl: URL) throws {
-        let arguments = [
-            "/usr/bin/curl",
-            "-LSs",
-            "--output",
-            destinationUrl.path,
-            url.absoluteString
-        ]
-        try Shell.run(arguments)
-    }
+extension Shell {
 
     /// Unzip a file at a given local URL.
     ///
@@ -46,14 +30,6 @@ struct CommonCommands {
     static func copyAndReplace(source: URL, destination: String) throws {
         try Shell.run(["rm", "-f", destination])
         try Shell.run(["mv", source.path, destination])
-    }
-
-    /// Execute which with given target name.
-    ///
-    /// - Parameter name: name of the CLI tool to found.
-    /// - Returns: path, if found.
-    static func which(_ name: String) throws -> String {
-        try Shell.runAndCollect(["/usr/bin/env", "which", name])
     }
 
 }
