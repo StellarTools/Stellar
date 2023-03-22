@@ -15,10 +15,10 @@ final public class Builder {
         let executorLocation = urlManager.executorUrl(at: location)
         try fileManager.verifyFolderExisting(at: executorLocation)
 
-        try Shell.run(["swift", "build", "-c release"],
+        try Shell.run(["swift", "build", "-c", "release"],
                       workingDirectory: executorLocation.path)
 
-        let binaryPath = try Shell.run(["swift", "build", "-c release", "--show-bin-path"],
+        let binaryPath = try Shell.run(["swift", "build", "-c", "release", "--show-bin-path"],
                                        workingDirectory: executorLocation.path)
         
         let binaryLocation = URL(fileURLWithPath: binaryPath)
