@@ -1,12 +1,12 @@
-//  CommandRunner.swift
+//  Shell.swift
 
 import Foundation
 import TSCBasic
 
-public final class CommandRunner {
-
+public final class Shell {
+    
     // MARK: - Public Functions
-
+    
     /// Run a command.
     ///
     /// - Parameters:
@@ -41,7 +41,7 @@ public final class CommandRunner {
                            redirection: redirection)
         }
     }
-
+    
     // MARK: - Private Functions
     
     static private func run(

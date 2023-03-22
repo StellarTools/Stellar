@@ -17,7 +17,7 @@ struct CommonCommands {
             destinationUrl.path,
             url.absoluteString
         ]
-        try CommandRunner.run(arguments)
+        try Shell.run(arguments)
     }
 
     /// Unzip a file at a given local URL.
@@ -35,7 +35,7 @@ struct CommonCommands {
             "-d",
             destinationURL.path
         ].compactMap({ $0 })
-        try CommandRunner.run(arguments)
+        try Shell.run(arguments)
     }
 
     /// Copy and replace a file at given location.
@@ -44,8 +44,8 @@ struct CommonCommands {
     ///   - sourceURL: source file.
     ///   - destination: destination location.
     static func copyAndReplace(source: URL, destination: String) throws {
-        try CommandRunner.run(["rm", "-f", destination], sudoIfNeeded: true)
-        try CommandRunner.run(["mv", source.path, destination], sudoIfNeeded: true)
+        try Shell.run(["rm", "-f", destination], sudoIfNeeded: true)
+        try Shell.run(["mv", source.path, destination], sudoIfNeeded: true)
     }
 
     /// Execute which with given target name.
@@ -58,7 +58,7 @@ struct CommonCommands {
             "which",
             name
         ]
-        return try CommandRunner.run(arguments).cleanShellOutput()
+        return try Shell.run(arguments).cleanShellOutput()
     }
 
 }
