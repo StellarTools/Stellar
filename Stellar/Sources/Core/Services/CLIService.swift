@@ -103,7 +103,7 @@ public final class CLIService: CLIServiceProtocol {
                 try releaseProvider.downloadAsset(type: .cli, ofRelease: taggedRelease, toURL: remoteFileURL)
 
                 // Unzip the file
-                try Shell.shared.unzip(fileURL: remoteFileURL, destinationURL: installURL)
+                try CommonCommands.unzip(fileURL: remoteFileURL, destinationURL: installURL)
                 // NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
                 logger.log("Stellar version \(version) installed")

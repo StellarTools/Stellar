@@ -61,7 +61,7 @@ public final class CommandResolver {
         logger.log("  [Commands will be resolved by stellarCLI v\(path.lastPathComponent)]")
         
         do {
-            try Shell.shared.runAndPrint(args)
+            try CommandRunner.run(args)
         } catch {
             exiter(1)
         }

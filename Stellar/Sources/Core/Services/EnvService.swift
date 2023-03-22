@@ -76,12 +76,12 @@ public final class EnvService: EnvServiceProtocol {
                 
                 // Unzip
                 logger.log("Expading the archive…")
-                try Shell.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
+                try CommonCommands.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
 
                 // Remove old version and replace with the new one
                 logger.log("Installing at \(installURL.path)…")
                 let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
-                try Shell.shared.copyAndReplace(source: cliToolFileURL, destination: installURL.path)
+                try CommonCommands.copyAndReplace(source: cliToolFileURL, destination: installURL.path)
                 
                 logger.log("StellarEnv version \(release) installed")
             }
