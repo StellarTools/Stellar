@@ -20,8 +20,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/apple/swift-tools-support-core.git", .upToNextMajor(from: "0.5.2")),
-        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.8.0")),
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", .upToNextMajor(from: "2.3.0"))
+        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.8.0"))
     ],
     targets: [
         .executableTarget(
@@ -33,7 +32,6 @@ let package = Package(
         .target(
             name: "StellarCore",
             dependencies: [
-                .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "StencilSwiftKit", package: "StencilSwiftKit"),
                 .product(name: "TSCBasic", package: "swift-tools-support-core")
             ],
