@@ -15,18 +15,15 @@ public final class Shell {
     /// Run a command.
     ///
     /// - Parameters:
-    ///   - arguments: command arguments.
-    ///   - environment: environment variables.
-    ///   - redirection: redirection policy.
+    ///   - arguments: the command arguments.
+    ///   - workingDirectory: the directory in which to run the command.
     static public func run(
         _ arguments: [String],
-        environment: [String: String]? = nil,
         workingDirectory: String? = nil
     ) throws {
-        let environment = environment ?? defaultEnvironment
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
         try run(arguments,
-                environment: environment,
+                environment: defaultEnvironment,
                 workingDirectory: workingDirectory,
                 redirection: .stream(stdout: { bytes in
             FileHandle.standardOutput.write(Data(bytes))
@@ -39,18 +36,15 @@ public final class Shell {
     ///
     /// - Parameters:
     ///   - arguments: command arguments.
-    ///   - environment: environment variables.
-    ///   - redirection: redirection policy.
+    ///   - workingDirectory: the directory in which to run the command.
     /// - Returns: stdout and stderr of the command.
     static public func runAndCollect(
         _ arguments: [String],
-        environment: [String: String]? = nil,
         workingDirectory: String? = nil
     ) throws -> String {
-        let environment = environment ?? defaultEnvironment
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
         return try run(arguments,
-                       environment: environment,
+                       environment: defaultEnvironment,
                        workingDirectory: workingDirectory,
                        redirection: .collect)
     }
