@@ -46,6 +46,6 @@ struct RemoteConstants {
     static let releaseZip = "release.zip"
     static let stellarCLI = "StellarCLI"
     static let stellarCLIZipAsset = "\(stellarCLI).zip"
-    static let stellarEnvCLI = "StellarEnv"
-    static let stellarEnvZipAsset = "\(stellarEnvCLI).zip"
+    static let stellarEnv = "StellarEnv"
+    static let stellarEnvZipAsset = "\(stellarEnv).zip"
 }
