@@ -4,6 +4,11 @@ import Foundation
 import TSCBasic
 
 public final class Shell {
+
+    /// Convenience shortcut to the environment.
+    static private var defaultEnvironment: [String: String] {
+        ProcessInfo.processInfo.environment
+    }
     
     // MARK: - Public Functions
 
@@ -18,7 +23,7 @@ public final class Shell {
         environment: [String: String]? = nil,
         workingDirectory: String? = nil
     ) throws {
-        let environment = environment ?? ProcessInfo.processInfo.environment
+        let environment = environment ?? defaultEnvironment
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
         try run(arguments,
                 environment: environment,
@@ -42,7 +47,7 @@ public final class Shell {
         environment: [String: String]? = nil,
         workingDirectory: String? = nil
     ) throws -> String {
-        let environment = environment ?? ProcessInfo.processInfo.environment
+        let environment = environment ?? defaultEnvironment
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
         return try run(arguments,
                        environment: environment,
