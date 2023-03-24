@@ -18,10 +18,10 @@ extension Log {
         private let queue = DispatchQueue(label: "log.transport-manager.queue", attributes: [])
         
         /// Log event filters.
-        private var filters = [TransportFilter]()
+        private var filters = [LogTransportFilter]()
         
         /// Log transports.
-        private var transports = [Transport]()
+        private var transports = [LogTransport]()
 
         // MARK: - Initialization
         

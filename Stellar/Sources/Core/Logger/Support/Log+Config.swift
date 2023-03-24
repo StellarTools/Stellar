@@ -36,10 +36,10 @@ extension Log {
         public var level: Level = .debug
         
         /// Used to decide whether a given event should be passed along to the receiver transports.
-        public var filters = [TransportFilter]()
+        public var filters = [LogTransportFilter]()
         
         /// List of underlying transport layers which can receive and eventually store messages payload (`Event`).
-        public var transports = [Transport]()
+        public var transports = [LogTransport]()
         
         // MARK: - Initialization
         

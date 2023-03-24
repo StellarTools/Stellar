@@ -2,11 +2,11 @@
 
 import Foundation
 
-// MARK: - Transport
+// MARK: - LogTransport
 
 /// A transport is where events are received and stored.
 /// A `Log` instance can have one or more underlying transport services.
-public protocol Transport {
+public protocol LogTransport {
     
     /// GCD queue that will be used when executing tasks related to the receiver.
     var queue: DispatchQueue { get }
@@ -25,11 +25,11 @@ public protocol Transport {
     
 }
 
-// MARK: - TransportFilter
+// MARK: - LogTransportFilter
 
 
 /// Filters are used to early discard message events from being received by a log instance.
-public protocol TransportFilter {
+public protocol LogTransportFilter {
     
     /// Determine if an event should be handled by the log transports.
     ///

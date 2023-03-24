@@ -24,7 +24,7 @@ extension Log.Event.Metadata {
 
 // MARK: - TransportFilter Extension
 
-extension Array where Element == TransportFilter {
+extension Array where Element == LogTransportFilter {
     
     /// Return `true` if event should be accepted by a log instance.
     ///
