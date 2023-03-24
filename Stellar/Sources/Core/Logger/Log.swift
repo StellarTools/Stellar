@@ -2,18 +2,13 @@
 
 import Foundation
 
+// MARK: - Log
+
 /// The logger class used to print messages.
 /// A default log instance is available via `Log.main` static variable.
 public final class Log: Equatable {
     
-    // MARK: - Public Log Properties
-    
-    /// Shared general log instance.
-    public static let main = Log {
-        $0.level = (isRunningInDebug() ? .debug : .info)
-        $0.subsystem = "com.stellar"
-        $0.category = "general"
-    }
+    // MARK: - Public Properties
     
     /// Unique log identifier.
     public let uuid = UUID()
@@ -92,5 +87,28 @@ public final class Log: Equatable {
             }
         }
     }
+    
+}
+
+// MARK: - Shared Log
+
+extension Log {
+    
+    /// Shared general log instance.
+    public static let shared = Log {
+        $0.level = (isRunningInDebug() ? .debug : .info)
+        $0.subsystem = "com.stellar"
+        $0.category = "general"
+        $0.transports = [
+            ConsoleLogTransport()
+        ]
+    }
+    
+    // MARK: - Shortcuts for shared logger
+    
+    public static var debug: Channel? { Log.shared.channels[Level.debug.rawValue] }
+    public static var info: Channel? { Log.shared.channels[Level.info.rawValue] }
+    public static var warning: Channel? { Log.shared.channels[Level.warning.rawValue] }
+    public static var error: Channel? { Log.shared.channels[Level.error.rawValue] }
     
 }
