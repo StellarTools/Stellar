@@ -75,7 +75,7 @@ public final class EnvService: EnvServiceProtocol {
                 // NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip
-                logger.log("Expading the archive…")
+                logger.log("Expanding the archive…")
                 try Shell.unzip(fileURL: packageDestination,
                                 name: RemoteConstants.stellarEnv,
                                 destinationURL: temporaryURL)
