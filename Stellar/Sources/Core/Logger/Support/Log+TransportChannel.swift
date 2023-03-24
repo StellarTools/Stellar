@@ -15,7 +15,7 @@ extension Log {
         private let isSynchronous: Bool
         
         /// Acceptance queue for log events.
-        private let queue = DispatchQueue(label: "glider.transport-manager.acceptqueue", attributes: [])
+        private let queue = DispatchQueue(label: "log.transport-manager.queue", attributes: [])
         
         /// Log event filters.
         private var filters = [TransportFilter]()
@@ -87,7 +87,7 @@ extension Log {
 extension Log {
     
     /// A channel is a message receiver for a particular `Log`'s severity level.
-    public class Channel {
+    public final class Channel {
         
         // MARK: - Private Properties
         
