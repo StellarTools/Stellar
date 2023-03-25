@@ -31,7 +31,6 @@ struct GitHubAPI {
             .appendingPathComponent(GitHubAPI.tokenFile)
         
         guard FileManager.default.fileExists(at: tokenFileURL) else {
-            print(tokenFileURL.path)
             fatalError("Missing \(GitHubAPI.tokenFile) in ~/\(FileConstants.toolFolder) directory.")
         }
         
