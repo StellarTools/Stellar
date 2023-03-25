@@ -105,13 +105,13 @@ extension Logger {
     }
     
     /// Severity level of the shared logger.
-    static var level: Level {
+    public static var level: Level {
         get { Logger.shared.level }
         set { Logger.shared.level = newValue }
     }
     
     /// Set the verbose logging adapting the level of severity.
-    static var verbose: Bool {
+    public static var verbose: Bool {
         get { Logger.shared.level == .debug }
         set { Logger.shared.level = (newValue ? .debug : .info) }
     }
