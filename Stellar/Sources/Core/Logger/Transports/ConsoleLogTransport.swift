@@ -17,10 +17,11 @@ public final class ConsoleLogTransport: LogTransport {
     
     /// Initialize a new console transport.
     ///
-    /// - Parameter formatters: formatters used to transform an event to its serialized representation.
-    init(formatters: [LogEventMessageFormatter] = [XCodeLogEventFormatter()]) {
+    /// - Parameter formatters: Formatters used to transform an event to its serialized representation.
+    ///                         If not set, it will be chosen automatically based on the release mode.
+    init(formatters: [LogEventMessageFormatter]? = nil) {
         self.queue = DispatchQueue(label: String(describing: type(of: self)), attributes: [])
-        self.formatters = formatters
+        self.formatters = formatters ?? [(isRunningInDebug() ? XCodeLogFormatter() : ConsoleLogFormatter())]
     }
     
     // MARK: - Public Methods
