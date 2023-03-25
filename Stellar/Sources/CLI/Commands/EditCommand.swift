@@ -13,6 +13,9 @@ struct EditCommand: ParsableCommand {
 
     // MARK: - Options
     
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
+    
     @Option(name: .shortAndLong, help: "The path to the project. Optional, defaults to the current directory.")
     private var projectPath: String = "./"
     
