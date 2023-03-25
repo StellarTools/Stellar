@@ -16,6 +16,9 @@ extension Log {
         /// Message content.
         public let message: TerminalRepresentable
         
+        /// Event timestamp.
+        public let timestamp = Date.now
+        
         /// Additional metadata dictionary.
         public let extra: Metadata?
         
