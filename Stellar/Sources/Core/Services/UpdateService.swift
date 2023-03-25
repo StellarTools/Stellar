@@ -43,6 +43,7 @@ public final class UpdateService: UpdateServiceProtocol {
     
     @discardableResult
     public func update(to version: String? = nil) throws -> URL? {
+        Logger.info?.write("Checking for updates...")
         if let version {
             return try update(toVersion: version)
         } else {

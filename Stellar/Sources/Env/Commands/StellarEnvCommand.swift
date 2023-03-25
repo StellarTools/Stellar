@@ -21,7 +21,7 @@ struct StellarEnvCommand: ParsableCommand {
         )
     }
     
-    // MARK: - Functions
+    // MARK: - Methods
     
     static func main(_: [String]? = nil) {
         let cmdsList = commandArguments().dropFirst()
@@ -71,7 +71,7 @@ struct StellarEnvCommand: ParsableCommand {
         }
     }
     
-    // MARK: - Private Functions
+    // MARK: - Private Methods
     
     /// Check if the received command is one of the command available in `stellarenv`.
     /// In this case return the appropriate `ParsableCommand` instance to execute.

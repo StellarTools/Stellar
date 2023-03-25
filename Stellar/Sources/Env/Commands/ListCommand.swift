@@ -14,17 +14,21 @@ struct ListCommand: ParsableCommand {
     }
     
     // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
         
     @Flag(help: "Include pre-release versions in the list.")
     var preReleases: Bool = false
     
-    // MARK: - Functions
+    // MARK: - Methods
 
     func run() throws {
+        Logger.verbose = verbose
         try run(includePreRelease: preReleases)
     }
     
-    // MARK: - Private Functions
+    // MARK: - Private Methods
     
     private func run(includePreRelease preRelease: Bool) throws {
         let versionsProvider = ReleaseProvider()

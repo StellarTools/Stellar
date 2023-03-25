@@ -11,13 +11,19 @@ struct InstalledCommand: ParsableCommand {
         abstract: "Prints the local versions."
     )
     
-    // MARK: - Functions
+    // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
+    
+    // MARK: - Methods
     
     func run() throws {
+        Logger.verbose = verbose
         try enumerateInstalledVersions()
     }
     
-    // MARK: - Private Functions
+    // MARK: - Private Methods
     
     /// Enumerate the list of the installed versions of stellar.
     private func enumerateInstalledVersions() throws {
