@@ -84,44 +84,13 @@ extension String.StringInterpolation {
         (.hidden, 8),
         (.strikethrough, 9)
     ]
-
-    // MARK: - Public Methods
-    
-    mutating public func appendInterpolation(_ any: Any, color: TerminalColor) {
-        applyTerminal(color: color, back: nil, style: nil, to: any)
-    }
-    
-    mutating public func appendInterpolation(_ any: Any, back: TerminalColor) {
-        applyTerminal(color: nil, back: back, style: nil, to: any)
-    }
-    
-    mutating public func appendInterpolation(_ any: Any, style: TerminalStyle) {
-        applyTerminal(color: nil, back: nil, style: style, to: any)
-    }
-    
-    mutating public func appendInterpolation(_ any: Any, color: TerminalColor, back: TerminalColor) {
-        applyTerminal(color: color, back: back, style: nil, to: any)
-    }
-    
-    mutating public func appendInterpolation(_ any: Any, back: TerminalColor, style: TerminalStyle) {
-        applyTerminal(color: nil, back: back, style: style, to: any)
-    }
-    
-    mutating public func appendInterpolation(_ any: Any, color: TerminalColor, style: TerminalStyle) {
-        applyTerminal(color: color, back: nil, style: style, to: any)
-    }
-    
-    mutating public func appendInterpolation(_ any: Any, color: TerminalColor, back: TerminalColor, style: TerminalStyle) {
-        applyTerminal(color: color, back: back, style: style, to: any)
-    }
-    
     
     // MARK: - Private Methods
     
-    private mutating func applyTerminal(color: TerminalColor?,
-                                        back: TerminalColor?,
-                                        style: TerminalStyle?,
-                                        to value: Any) {
+    mutating func apply(termColor color: TerminalColor?,
+                        back: TerminalColor?,
+                        style: TerminalStyle?,
+                        to value: Any) {
         
         guard stdOutSupportColors else {
             // If colors are not supported fallback to plain string transparently.
