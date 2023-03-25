@@ -27,5 +27,6 @@ struct BuildCommand: ParsableCommand {
         let location = URL(fileURLWithPath: projectPath)
         try Builder().build(at: location)
     }
+    
 }
 
