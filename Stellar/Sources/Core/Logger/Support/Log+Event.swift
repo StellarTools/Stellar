@@ -14,7 +14,7 @@ extension Log {
         // MARK: - Public Properties
         
         /// Message content.
-        public let message: String
+        public let message: TerminalRepresentable
         
         /// Additional metadata dictionary.
         public let extra: Metadata?
@@ -42,7 +42,7 @@ extension Log {
         ///   - message: content of the message.
         ///   - extra: extra informations.
         ///   - stacktrace: stacktrace informations.
-        init(_ message: String = "", extra: Metadata? = nil, stacktrace: Stacktrace) {
+        init(_ message: TerminalRepresentable = "", extra: Metadata? = nil, stacktrace: Stacktrace) {
             self.message = message
             self.extra = extra
             self.stacktrace = stacktrace

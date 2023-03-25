@@ -118,7 +118,7 @@ extension Log {
         ///   - extra: extra dictionary information.
         /// - Returns: generated event.
         @discardableResult
-        public func write(_ message: @autoclosure @escaping () -> String,
+        public func write(_ message: @autoclosure @escaping () -> TerminalRepresentable,
                           extra: Event.Metadata? = nil,
                           function: String = #function, filePath: String = #file, fileLine: Int = #line) -> Event? {
             
