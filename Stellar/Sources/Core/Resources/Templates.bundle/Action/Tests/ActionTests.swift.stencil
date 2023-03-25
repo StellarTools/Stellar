@@ -1,5 +1,5 @@
 import XCTest
-@testable import {{ name }}Action
+@testable import {{ name }}
 
 final class {{ name }}Tests: XCTestCase {
     
