@@ -10,7 +10,7 @@ public protocol LogEventMessageFormatter {
     /// Create a string representation of the passed event.
     ///
     /// - Returns: serializable representation of the event
-    func format(event: Log.Event) -> LogSerializableData?
+    func format(event: Logger.Event) -> LogSerializableData?
     
 }
 
@@ -18,7 +18,7 @@ public protocol LogEventMessageFormatter {
 
 extension [LogEventMessageFormatter] {
     
-    func format(event: Log.Event) -> LogSerializableData? {
+    func format(event: Logger.Event) -> LogSerializableData? {
         for formatter in self {
             if let formattedString = formatter.format(event: event) {
                 return formattedString

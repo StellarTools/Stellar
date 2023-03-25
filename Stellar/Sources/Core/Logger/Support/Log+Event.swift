@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension Log {
+extension Logger {
     
     // MARK: - Event
     
@@ -26,7 +26,7 @@ extension Log {
         public let stacktrace: Stacktrace
         
         /// Parent log who generates the payload.
-        public internal(set) weak var log: Log?
+        public internal(set) weak var log: Logger?
         
         /// Subsystem.
         public internal(set) var subsystem: String?

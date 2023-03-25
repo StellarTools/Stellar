@@ -23,13 +23,13 @@ struct InstalledCommand: ParsableCommand {
     private func enumerateInstalledVersions() throws {
         let versions = try VersionResolver().installedVersions()
         guard !versions.isEmpty else {
-            Logger().log("No versions of stellar are installed yet")
+            Logger.info?.write("No versions of stellar are installed yet")
             return
         }
         
-        Logger().log("Installed versions are:")
+        Logger.info?.write("Installed versions are:")
         let output = versions.reversed().map { "- \($0)" }.joined(separator: "\n")
-        Logger().log("\n\(output)")
+        Logger.info?.write("\n\(output)")
     }
     
 }

@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension Log {
+extension Logger {
     
     // MARK: - Config
     

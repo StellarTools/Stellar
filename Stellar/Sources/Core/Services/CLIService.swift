@@ -39,7 +39,6 @@ public final class CLIService: CLIServiceProtocol {
     // MARK: - Private Properties
 
     private let urlManager = URLManager()
-    private let logger = Logger()
 
     // MARK: - Initialization
     
@@ -54,14 +53,14 @@ public final class CLIService: CLIServiceProtocol {
     public func pin(url: URL?, toVersion version: String) throws {
         let destinationURL = url ?? urlManager.currentWorkingDirectory()
         
-        logger.log("Generating \(FileConstants.versionsFile) file with version \(version)")
+        Logger.info?.write("Generating \(FileConstants.versionsFile) file with version \(version)")
         let fileURL = destinationURL.appendingPathComponent(FileConstants.versionsFile)
         try version.write(
             to: fileURL,
             atomically: true,
             encoding: .utf8
         )
-        logger.log("File generated at path \(fileURL.path)")
+        Logger.info?.write("File generated at path \(fileURL.path)")
     }
     
     @discardableResult
@@ -72,11 +71,11 @@ public final class CLIService: CLIServiceProtocol {
         
         // Get latest version available.
         guard let latestVersion = try releaseProvider.availableReleases(preReleases: preRelease).first else {
-            logger.log("Failed to evaluate latest available version on remote")
+            Logger.warning?.write("Failed to evaluate latest available version on remote")
             return nil
         }
         
-        logger.log("Latest \(preRelease ? "prerelease" : "stable") release found is \(latestVersion.tagName)")
+        Logger.info?.write("Latest \(preRelease ? "prerelease" : "stable") release found is \(latestVersion.tagName)")
         return try install(version: latestVersion.tagName)
     }
     
@@ -98,7 +97,7 @@ public final class CLIService: CLIServiceProtocol {
             prefix: "com.stellar",
             autoRemove: true, { temporaryURL in
                 // Download the release zip file
-                logger.log("Downloading stellar v.\(version)...")
+                Logger.info?.write("Downloading stellar v.\(version)...")
                 let remoteFileURL = temporaryURL.appendingPathComponent(RemoteConstants.releaseZip)
                 try releaseProvider.downloadAsset(type: .cli, ofRelease: taggedRelease, toURL: remoteFileURL)
 
@@ -106,7 +105,7 @@ public final class CLIService: CLIServiceProtocol {
                 try Shell.unzip(fileURL: remoteFileURL, destinationURL: installURL)
                 // NSWorkspace.shared.activateFileViewerSelecting([installURL])
                 
-                logger.log("Stellar version \(version) installed")
+                Logger.info?.write("Stellar version \(version) installed")
         })
         
         return installURL

@@ -124,7 +124,7 @@ public class Glob: Collection {
             }
         } catch {
             directories = []
-            Logger().log("Error parsing file system item: \(error)")
+            Logger.error?.write("Error parsing file system item: \(error)")
         }
 
         if behavior.includesFilesFromRootOfGlobstar {

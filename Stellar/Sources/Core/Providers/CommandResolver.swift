@@ -9,9 +9,7 @@ public final class CommandResolver {
     private let urlManager = URLManager()
     private let versionResolver: VersionResolving
     private let updateService: UpdateService
-    
-    private let logger = Logger()
-    
+        
     // MARK: - Private Properties
     
     private let exiter: (Int) -> Void = { exit(Int32($0)) }
@@ -32,11 +30,11 @@ public final class CommandResolver {
         let resolvedVersion = try versionResolver.resolveVersionForPath(urlManager.currentWorkingDirectory())
         switch resolvedVersion {
         case .bin(let binURL):
-            logger.log("Using stellar bundled at \(binURL.path)")
+            Logger.debug?.write("Using stellar bundled at \(binURL.path)")
             try runCommandsUsingBinAtPath(URL(fileURLWithPath: binURL.path), commandArgs: args)
         
         case .versionFile(let fileURL, let pinnedVer):
-            logger.log("Using version \(pinnedVer) defined at \(fileURL.path)")
+            Logger.debug?.write("Using version \(pinnedVer) defined at \(fileURL.path)")
             try runCommandsUsingVersion(pinnedVer, args: args)
         
         default:
@@ -58,7 +56,7 @@ public final class CommandResolver {
         ]
         args.append(contentsOf: commandArgs) // forward all params to the tool
 
-        logger.log("  [Commands will be resolved by stellarCLI v\(path.lastPathComponent)]")
+        Logger.debug?.write("Commands will be resolved by stellarCLI v\(path.lastPathComponent)")
         
         do {
             try Shell.run(args)
@@ -75,7 +73,7 @@ public final class CommandResolver {
     private func runCommandsUsingVersion(_ version: String, args: [String]) throws {
         // Validate the format of the version
         guard SemVer(version) != nil else {
-            logger.log("\(version) is not a valid version to use")
+            Logger.info?.write("\(version) is not a valid version to use")
             exiter(1)
             return
         }

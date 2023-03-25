@@ -4,13 +4,13 @@ import Foundation
 
 // MARK: - Log.Event.Metadata Extension
 
-extension Log.Event.Metadata {
+extension Logger.Event.Metadata {
     
     /// Merge the contents of two dictionaries.
     ///
     /// - Parameter otherMetadata: the dictionary merged into self.
     /// - Returns: merged dictionary where `otherMetadata` keys may replace self content.
-    func merge(with otherMetadata: Log.Event.Metadata?) -> Log.Event.Metadata {
+    func merge(with otherMetadata: Logger.Event.Metadata?) -> Logger.Event.Metadata {
         guard let otherMetadata = otherMetadata else {
             return self
         }
@@ -30,7 +30,7 @@ extension Array where Element == LogTransportFilter {
     ///
     /// - Parameter event: event to check.
     /// - Returns: `true` if accepted, `false` otherwise.
-    func canAcceptEvent(_ event: Log.Event) -> Bool {
+    func canAcceptEvent(_ event: Logger.Event) -> Bool {
         guard isEmpty == false else { return true }
         if let _ = first(where: { $0.shouldAccept(event) == false }) {
             return false

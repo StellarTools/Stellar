@@ -22,10 +22,10 @@ final public class ActionCreator {
             try templater.templateFolder(source: actionTemplatesLocation, destination: actionLocation)
             let hintManager = HintManager(hintTemplatesLocation: hintTemplatesLocation)
             let hint = try hintManager.hintForActionCreated(name: name, url: actionLocation.relativePath)
-            Logger().hint(hint)
+            Logger.info?.write(hint)
             
         } catch {
-            Logger().log(error.localizedDescription)
+            Logger.error?.write(error.localizedDescription)
             try fileManager.deleteFolder(at: actionLocation)
         }
     }

@@ -42,9 +42,9 @@ struct StellarEnvCommand: ParsableCommand {
         } catch {
             let exitCode = exitCode(for: error).rawValue
             if exitCode == 0 {
-                Logger().log("\(fullMessage(for: error))")
+                Logger.info?.write(fullMessage(for: error))
             } else {
-                Logger().log("[ERROR] \(fullMessage(for: error))")
+                Logger.error?.write(fullMessage(for: error))
             }
             _exit(exitCode)
         }
@@ -54,7 +54,7 @@ struct StellarEnvCommand: ParsableCommand {
         // call `stellar` CLI tool with the same arguments.
         do {
             if var command {
-                Logger().log("  [Commands will be executed by StellarEnv]")
+                Logger.debug?.write("Commands will be executed by StellarEnv")
                 try command.run()
                 return
             }
@@ -65,7 +65,7 @@ struct StellarEnvCommand: ParsableCommand {
             if exitCode(for: error).rawValue == 0 {
                 exit(withError: error)
             } else {
-                Logger().log("Exited with error: \(error.localizedDescription)")
+                Logger.error?.write("Exited with error: \(error.localizedDescription)")
                 _exit(exitCode(for: error).rawValue)
             }
         }

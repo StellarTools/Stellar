@@ -16,7 +16,7 @@ struct UpdateCommand: ParsableCommand {
     // MARK: - Functions
 
     func run() throws {
-        Logger().log("Checking for updates...")
+        Logger.info?.write("Checking for updates...")
         try UpdateService().update()
     }
     

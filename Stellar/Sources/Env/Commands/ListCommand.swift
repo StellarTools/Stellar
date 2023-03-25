@@ -31,13 +31,13 @@ struct ListCommand: ParsableCommand {
         
         let latestReleases = try versionsProvider.availableReleases(preReleases: preRelease)
         guard !latestReleases.isEmpty else {
-            Logger().log("Failed to evaluate remote releases on stellar project")
+            Logger.warning?.write("Failed to evaluate remote releases on stellar project")
             return
         }
             
-        Logger().log("Latest \(latestReleases.count) release found:")
+        Logger.info?.write("Latest \(latestReleases.count) release found:")
         latestReleases.forEach {
-            Logger().log("  - \($0.tagName) \($0.preRelease ? "[pre-release]" : "")".trimmingCharacters(in: .whitespaces))
+            Logger.info?.write("  - \($0.tagName) \($0.preRelease ? "[pre-release]" : "")".trimmingCharacters(in: .whitespaces))
         }
     }
     

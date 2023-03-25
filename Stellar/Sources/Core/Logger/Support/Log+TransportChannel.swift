@@ -4,7 +4,7 @@ import Foundation
 
 // MARK: - Transporter
 
-extension Log {
+extension Logger {
     
     /// The underlying object used to dispatch events to each log channel.
     final class Transporter {
@@ -28,7 +28,7 @@ extension Log {
         /// Initialize a new transporter for a given log.
         ///
         /// - Parameter config: parent log configuration.
-        init(config: Log.Config) {
+        init(config: Logger.Config) {
             self.isSynchronous = config.isSynchronous
             self.filters = config.filters
             self.transports = config.transports
@@ -84,7 +84,7 @@ extension Log {
 
 // MARK: - Channel
 
-extension Log {
+extension Logger {
     
     /// A channel is a message receiver for a particular `Log`'s severity level.
     public final class Channel {
@@ -92,7 +92,7 @@ extension Log {
         // MARK: - Private Properties
         
         /// Parent log.
-        weak var log: Log?
+        weak var log: Logger?
         
         /// Represented log level.
         let level: Level
@@ -104,7 +104,7 @@ extension Log {
         /// - Parameters:
         ///   - log: parent log instance.
         ///   - level: represented channel level severity.
-        init(log: Log, level: Level) {
+        init(log: Logger, level: Level) {
             self.log = log
             self.level = level
         }

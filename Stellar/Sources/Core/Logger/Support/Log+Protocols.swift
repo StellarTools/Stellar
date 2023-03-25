@@ -15,13 +15,13 @@ public protocol LogTransport {
     var isEnabled: Bool { get set }
     
     /// Used to exclude a transport for events of a certain severity.
-    var minimumAcceptedLevel: Log.Level? { get set }
+    var minimumAcceptedLevel: Logger.Level? { get set }
     
     /// Record a new event into the transport.
     ///
     /// - Parameter event: event to store.
     /// - Returns: `true` if event is stored, `false` otherwise.
-    @discardableResult func record(event: Log.Event) -> Bool
+    @discardableResult func record(event: Logger.Event) -> Bool
     
 }
 
@@ -35,7 +35,7 @@ public protocol LogTransportFilter {
     ///
     /// - Parameter event: event to check.
     /// - Returns: `true` to accept the event, `false` to discard it.
-    func shouldAccept(_ event: Log.Event) -> Bool
+    func shouldAccept(_ event: Logger.Event) -> Bool
     
 }
 

@@ -1,6 +1,6 @@
 import Foundation
 
-extension Log {
+extension Logger {
     
     // MARK: - Level
     

@@ -4,12 +4,12 @@ import Foundation
 
 public final class XCodeLogFormatter: LogEventMessageFormatter {
             
-    public func format(event: Log.Event) -> LogSerializableData? {
+    public func format(event: Logger.Event) -> LogSerializableData? {
         switch event.message {
         case let table as ASCIITable:
             return "\(event.timestamp.iso8601)\n\(table.stringValue)"
         default:
-            return "\(event.timestamp.iso8601, pad: .left(25))\(event.level.shortDescription) \(event.message.stringValue)"
+            return "\(event.timestamp.iso8601, pad: .left(22))\(event.level.shortDescription) \(event.message.stringValue)"
         }
     }
     

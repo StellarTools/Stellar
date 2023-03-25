@@ -8,7 +8,7 @@ public final class ConsoleLogTransport: LogTransport {
     // MARK: - Public Properties
     
     public var isEnabled = true
-    public var minimumAcceptedLevel: Log.Level? = nil
+    public var minimumAcceptedLevel: Logger.Level? = nil
 
     public let queue: DispatchQueue
     public let formatters: [LogEventMessageFormatter]
@@ -26,7 +26,7 @@ public final class ConsoleLogTransport: LogTransport {
     
     // MARK: - Public Methods
     
-    public func record(event: Log.Event) -> Bool {
+    public func record(event: Logger.Event) -> Bool {
         guard let message = formatters.format(event: event)?.asString(),
               message.isEmpty == false else {
             return false

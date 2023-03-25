@@ -4,7 +4,7 @@ import Foundation
 
 public final class ConsoleLogFormatter: LogEventMessageFormatter {
     
-    public func format(event: Log.Event) -> LogSerializableData? {
+    public func format(event: Logger.Event) -> LogSerializableData? {
         event.message.stringValue
     }
     
