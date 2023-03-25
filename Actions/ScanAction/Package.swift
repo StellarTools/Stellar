@@ -16,7 +16,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/StellarTools/Stellar.git", branch: "scan-action")
+        // This is just a temporary solution
+        .package(path: "../../Stellar")
     ],
     targets: [
         .executableTarget(
