@@ -22,10 +22,10 @@ extension Log {
         /// Short identifier of the severity level.
         public var shortDescription: String {
             switch self {
-            case .debug:    return "DEBG"
-            case .info:     return "INFO"
-            case .warning:  return "WARN"
-            case .error:    return "ERRR"
+            case .debug:    return "[DEBG]"
+            case .info:     return "[INFO]"
+            case .warning:  return "[WARN]"
+            case .error:    return "[ERRR]"
             }
         }
         
