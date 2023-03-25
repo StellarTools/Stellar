@@ -1,5 +1,5 @@
 import XCTest
-@testable import ScanActionAction
+@testable import ScanAction
 
 final class ScanActionTests: XCTestCase {
     
