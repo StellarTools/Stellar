@@ -19,17 +19,27 @@ public final class Shell {
     ///   - workingDirectory: the directory in which to run the command.
     static public func run(
         _ arguments: [String],
+        sudoIfNeeded: Bool = false,
         workingDirectory: String? = nil
     ) throws {
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
-        try run(arguments,
-                environment: defaultEnvironment,
-                workingDirectory: workingDirectory,
-                redirection: .stream(stdout: { bytes in
+        let redirection: TSCBasic.Process.OutputRedirection = .stream(stdout: { bytes in
             FileHandle.standardOutput.write(Data(bytes))
         }, stderr: { bytes in
             FileHandle.standardError.write(Data(bytes))
-        }))
+        })
+        do {
+            try run(arguments,
+                    environment: defaultEnvironment,
+                    workingDirectory: workingDirectory,
+                    redirection: redirection)
+        } catch {
+            guard sudoIfNeeded else  { throw error }
+            try run(["sudo"] + arguments,
+                    environment: defaultEnvironment,
+                    workingDirectory: workingDirectory,
+                    redirection: redirection)
+        }
     }
 
     /// Run a command collecting stdout and stderr in the result.
@@ -40,13 +50,23 @@ public final class Shell {
     /// - Returns: stdout and stderr of the command.
     static public func runAndCollect(
         _ arguments: [String],
+        sudoIfNeeded: Bool = false,
         workingDirectory: String? = nil
     ) throws -> String {
         let workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
-        return try run(arguments,
-                       environment: defaultEnvironment,
-                       workingDirectory: workingDirectory,
-                       redirection: .collect)
+        let redirection: TSCBasic.Process.OutputRedirection = .collect
+        do {
+            return try run(arguments,
+                           environment: defaultEnvironment,
+                           workingDirectory: workingDirectory,
+                           redirection: redirection)
+        } catch {
+            guard sudoIfNeeded else  { throw error }
+            return try run(["sudo"] + arguments,
+                           environment: defaultEnvironment,
+                           workingDirectory: workingDirectory,
+                           redirection: redirection)
+        }
     }
     
     // MARK: - Private Functions
