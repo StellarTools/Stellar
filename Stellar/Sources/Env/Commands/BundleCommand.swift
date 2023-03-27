@@ -12,10 +12,16 @@ struct BundleCommand: ParsableCommand {
             abstract: "Bundle the version specified in the .stellar-version file into the .stellar-bin directory."
         )
     }
+    
+    // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
 
-    // MARK: - Functions
+    // MARK: - Methods
     
     func run() throws {
+        Logger.verbose = verbose
         try BundleService().run()
     }
     

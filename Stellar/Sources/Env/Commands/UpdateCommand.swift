@@ -13,10 +13,15 @@ struct UpdateCommand: ParsableCommand {
         )
     }
     
-    // MARK: - Functions
+    // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
+    
+    // MARK: - Methods
 
     func run() throws {
-        Logger().log("Checking for updates...")
+        Logger.verbose = verbose
         try UpdateService().update()
     }
     

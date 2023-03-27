@@ -5,6 +5,6 @@ import StellarCore
 
 final class VersionService {
     func run() throws {
-        Logger().log("\(Constants.version)")
+        Logger.info?.write(Constants.version)
     }
 }

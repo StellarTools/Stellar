@@ -5,9 +5,16 @@ import Foundation
 import StellarCore
 
 struct CreateTaskCommand: ParsableCommand {
+    
     static let configuration = CommandConfiguration(
         commandName: "create-task",
-        abstract: "Create a task for a Swift project.")
+        abstract: "Create a task for a Swift project."
+    )
+    
+    // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
     
     @Option(name: .shortAndLong, help: "The name of the Task. Must have the 'Task' suffix.")
     private var name: String
@@ -18,7 +25,11 @@ struct CreateTaskCommand: ParsableCommand {
     @Option(name: .shortAndLong, help: "The path to the templates. Optional, defaults to the templates shipped with the release.")
     private var templatesPath: String?
     
+    // MARK: - Methods
+    
     func run() throws {
+        Logger.verbose = verbose
+
         let location = URL(fileURLWithPath: projectPath)
         let taskTemplateLocation = TemplatesLocationFactory(templatesPath: templatesPath).taskTemplatesLocation
             .appendingPathComponent("Task.stencil", isDirectory: false)
@@ -31,5 +42,6 @@ struct CreateTaskCommand: ParsableCommand {
             throw ValidationError("'name' must have '\(suffix)' suffix.")
         }
     }
+    
 }
 

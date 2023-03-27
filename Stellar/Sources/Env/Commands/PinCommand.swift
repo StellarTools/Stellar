@@ -13,19 +13,23 @@ struct PinCommand: ParsableCommand {
     
     // MARK: - Options
 
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
+    
     @Option(help: "The version that you would like to pin to.")
     var version: String
     
     @Option(help: "Directory path used when pinning the version. Optional, defaults to the current directory. (default: ./)")
     var path: String?
     
-    // MARK: - Functions
+    // MARK: - Methods
     
     func run() throws {
+        Logger.verbose = verbose
         try pin(path: path, toVersion: version)
     }
     
-    // MARK: - Private Functions
+    // MARK: - Private Methods
     
     /// Pin project at `path` to a specified version of stellar.
     ///

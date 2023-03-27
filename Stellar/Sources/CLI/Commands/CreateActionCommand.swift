@@ -5,9 +5,16 @@ import Foundation
 import StellarCore
 
 struct CreateActionCommand: ParsableCommand {
+    
     static let configuration = CommandConfiguration(
         commandName: "create-action",
-        abstract: "Create an action that can be used by the tasks.")
+        abstract: "Create an action that can be used by the tasks."
+    )
+    
+    // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
     
     @Option(name: .shortAndLong, help: "The name of the Action. Must have the 'Action' suffix.")
     private var name: String
@@ -18,7 +25,11 @@ struct CreateActionCommand: ParsableCommand {
     @Option(name: .shortAndLong, help: "The path to the templates. Optional, defaults to the templates shipped with the release.")
     private var templatesPath: String?
     
+    // MARK: - Methods
+    
     func run() throws {
+        Logger.verbose = verbose
+
         try validate()
         let location = URLManager().dotStellarActionsLocation(outputPath)
         let templatesLocationFactory = TemplatesLocationFactory(templatesPath: templatesPath)
@@ -29,12 +40,13 @@ struct CreateActionCommand: ParsableCommand {
                                          actionTemplatesLocation: actionTemplatesLocation,
                                          hintTemplatesLocation: hintTemplatesLocation)
     }
-    
+        
     func validate() throws {
         let suffix = "Action"
         guard name.hasSuffix(suffix) else {
             throw ValidationError("'name' must have '\(suffix)' suffix.")
         }
     }
+    
 }
 

@@ -14,30 +14,34 @@ struct ListCommand: ParsableCommand {
     }
     
     // MARK: - Options
+    
+    @Flag(help: "Enable verbose logging.")
+    var verbose: Bool = false
         
     @Flag(help: "Include pre-release versions in the list.")
     var preReleases: Bool = false
     
-    // MARK: - Functions
+    // MARK: - Methods
 
     func run() throws {
+        Logger.verbose = verbose
         try run(includePreRelease: preReleases)
     }
     
-    // MARK: - Private Functions
+    // MARK: - Private Methods
     
     private func run(includePreRelease preRelease: Bool) throws {
         let versionsProvider = ReleaseProvider()
         
         let latestReleases = try versionsProvider.availableReleases(preReleases: preRelease)
         guard !latestReleases.isEmpty else {
-            Logger().log("Failed to evaluate remote releases on stellar project")
+            Logger.warning?.write("Failed to evaluate remote releases on stellar project")
             return
         }
             
-        Logger().log("Latest \(latestReleases.count) release found:")
+        Logger.info?.write("Latest \(latestReleases.count) release found:")
         latestReleases.forEach {
-            Logger().log("  - \($0.tagName) \($0.preRelease ? "[pre-release]" : "")".trimmingCharacters(in: .whitespaces))
+            Logger.info?.write("  - \($0.tagName) \($0.preRelease ? "[pre-release]" : "")".trimmingCharacters(in: .whitespaces))
         }
     }
     

@@ -20,7 +20,6 @@ public final class BundleService {
     // MARK: - Private Properties
     
     private let urlManager = URLManager()
-    private let logger = Logger()
     
     // MARK: - Initialization
     
@@ -47,10 +46,10 @@ public final class BundleService {
         }
         
         let targetVersion = try String(contentsOf: versionsFileURL).trimmingCharacters(in: .whitespacesAndNewlines)
-        logger.log("Bundling the version \(targetVersion) in \(binFolderURL.path)")
+        Logger.info?.write("Bundling the version \(targetVersion) in \(binFolderURL.path)")
         
         if try !versionResolver.isVersionInstalled(targetVersion) {
-            logger.log("Version \(targetVersion) not available locally. Installing...")
+            Logger.info?.write("Version \(targetVersion) not available locally. Installing...")
             try cliService.install(version: targetVersion)
         }
         
@@ -61,7 +60,7 @@ public final class BundleService {
         
         try fileManager.copyFile(at: versionPath, to: binFolderURL)
         
-        logger.log("Stellar \(targetVersion) bundled successfully at \(binFolderURL.path)")
+        Logger.info?.write("Stellar \(targetVersion) bundled successfully at \(binFolderURL.path)")
     }
     
 }

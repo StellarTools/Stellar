@@ -22,9 +22,7 @@ public final class UpdateService: UpdateServiceProtocol {
     
     public let cliService: CLIService
     public let envService: EnvService
-    
-    private let logger = Logger()
-    
+        
     public var releaseProvider: ReleaseProviding {
         cliService.releaseProvider
     }
@@ -45,6 +43,7 @@ public final class UpdateService: UpdateServiceProtocol {
     
     @discardableResult
     public func update(to version: String? = nil) throws -> URL? {
+        Logger.info?.write("Checking for updates...")
         if let version {
             return try update(toVersion: version)
         } else {
@@ -57,7 +56,7 @@ public final class UpdateService: UpdateServiceProtocol {
     private func update(toVersion version: String) throws -> URL? {
         // Version is not available locally, we retrive it remotely.
         if try versionResolver.isVersionInstalled(version) == false {
-            logger.log("Version \(version) not found locally. Installing...")
+            Logger.info?.write("Version \(version) not found locally. Installing...")
             return try cliService.install(version: version)
         }
         
@@ -68,14 +67,14 @@ public final class UpdateService: UpdateServiceProtocol {
 
     private func updateToLatestVersion() throws -> URL? {
         guard let release = try releaseProvider.latestRelease() else {
-            logger.log("No remote version found")
+            Logger.error?.write("No remote version found")
             return nil
         }
         
         let versionURL = try updateCLIToLatestVersion(release.version)
         try updateEnvToLatestVersion(release.version)
         
-        logger.log("Stellar version \(release.description) installed")
+        Logger.info?.write("Stellar version \(release.description) installed")
         
         return versionURL
     }
@@ -83,13 +82,13 @@ public final class UpdateService: UpdateServiceProtocol {
     private func updateCLIToLatestVersion(_ version: SemVer) throws -> URL? {
         if let latestLocalVersion = try cliService.latestInstalledVersion() {
             guard version > latestLocalVersion.version else {
-                logger.log("Version \(latestLocalVersion) is installed and greater than latest available \(version)")
+                Logger.info?.write("Version \(latestLocalVersion) is installed and greater than latest available \(version)")
                 return nil
             }
             
-            logger.log("Installing new version available \(version)")
+            Logger.info?.write("Installing new version available \(version)")
         } else {
-            logger.log("No local version available. Installing latest version \(version)")
+            Logger.info?.write("No local version available. Installing latest version \(version)")
         }
         
         // Install version of stellar
@@ -97,7 +96,7 @@ public final class UpdateService: UpdateServiceProtocol {
     }
     
     private func updateEnvToLatestVersion(_ version: SemVer) throws {
-        logger.log("Updating stellarenv")
+        Logger.info?.write("Updating stellarenv")
         try envService.install(version: version.description)
     }
     

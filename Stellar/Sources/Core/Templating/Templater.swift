@@ -24,7 +24,7 @@ struct Templater {
     }
     
     func templateFolder(source: URL, destination: URL) throws {
-        Logger().log("Creating folder structure at \(destination.relativePath)")
+        Logger.info?.write("Creating folder structure at \(destination.relativePath)")
         try fileManager.verifyFolderExisting(at: source)
         try fileManager.verifyFolderExisting(at: destination)
         
@@ -54,7 +54,7 @@ struct Templater {
     }
     
     func templateFile(source: URL, destination: URL) throws {
-        Logger().log("Creating \(destination.relativePath)")
+        Logger.info?.write("Creating \(destination.relativePath)")
         
         guard source.pathExtension == Constants.stencil.rawValue else {
             throw TemplaterError.invalidTemplateFile(source)

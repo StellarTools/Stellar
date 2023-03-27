@@ -36,9 +36,7 @@ public protocol ReleaseProviding {
 public final class ReleaseProvider: ReleaseProviding {
         
     public let urlSession: URLSession
-    
-    private let logger = Logger()
-    
+        
     public init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
     }
@@ -63,7 +61,7 @@ public final class ReleaseProvider: ReleaseProviding {
                                                   decode: RemoteRelease.self) {
             return release
         }
-        logger.log("Cannot found release \(tagName) to install from remote")
+        Logger.info?.write("Cannot found release \(tagName) to install from remote")
         throw Errors.releaseNotAvailable(tagName)
     }
     
@@ -77,7 +75,7 @@ public final class ReleaseProvider: ReleaseProviding {
             throw Errors.releaseURLNotAvailable(release)
         }
         
-        logger.log("Downloading package \(type.name) at \(url.absoluteString)...")
+        Logger.debug?.write("Downloading package \(type.name) at \(url.absoluteString)...")
         try urlSession.downloadFile(atURL: url, saveAtURL: toURL)
     }
     

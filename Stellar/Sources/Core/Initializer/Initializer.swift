@@ -20,7 +20,7 @@ final public class Initializer {
         do {
             try templater.templateFolder(source: templatesLocation, destination: executorLocation)
         } catch {
-            Logger().log(error.localizedDescription)
+            Logger.error?.write(error.localizedDescription)
             try fileManager.deleteFolder(at: executorLocation)
         }
     }
