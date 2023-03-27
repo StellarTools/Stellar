@@ -1,7 +1,6 @@
 //  Editor.swift
 
 import Foundation
-import ShellOut
 
 final public class Editor {
     
@@ -15,11 +14,6 @@ final public class Editor {
     public func edit(at location: URL) throws {
         let executorUrl = urlManager.executorUrl(at: location)
         try fileManager.verifyFolderExisting(at: executorUrl)
-        
-        try shellOut(
-            to: "xed",
-            arguments: [executorUrl.path],
-            outputHandle: .standardOutput,
-            errorHandle: .standardError)
+        try Shell.run(["xed", executorUrl.path])
     }
 }

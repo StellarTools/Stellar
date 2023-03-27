@@ -1,7 +1,6 @@
 //  Builder.swift
 
 import Foundation
-import ShellOut
 
 final public class Builder {
     
@@ -15,18 +14,16 @@ final public class Builder {
     public func build(at location: URL) throws {
         let executorLocation = urlManager.executorUrl(at: location)
         try fileManager.verifyFolderExisting(at: executorLocation)
-        try shellOut(
-            to: "swift",
-            arguments: ["build", "-c release"],
-            at: executorLocation.path,
-            outputHandle: .standardOutput,
-            errorHandle: .standardError)
-        
-        let binaryPath = try shellOut(
-            to: "swift",
-            arguments: ["build", "-c release", "--show-bin-path"],
-            at: executorLocation.path,
-            errorHandle: .standardError)
+
+        try Shell.run(
+            ["swift", "build", "-c", "release"],
+            workingDirectory: executorLocation.path
+        )
+
+        let binaryPath = try Shell.runAndCollect(
+            ["swift", "build", "-c", "release", "--show-bin-path"],
+            workingDirectory: executorLocation.path
+        )
         
         let binaryLocation = URL(fileURLWithPath: binaryPath)
             .appendingPathComponent(Constants.executor, isDirectory: false)

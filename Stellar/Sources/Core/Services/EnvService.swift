@@ -75,13 +75,15 @@ public final class EnvService: EnvServiceProtocol {
                 // NSWorkspace.shared.activateFileViewerSelecting([packageDestination])
                 
                 // Unzip
-                logger.log("Expading the archive…")
-                try Shell.shared.unzip(fileURL: packageDestination, name: RemoteConstants.stellarEnvCLI, destinationURL: temporaryURL)
+                logger.log("Expanding the archive…")
+                try Shell.unzip(fileURL: packageDestination,
+                                name: RemoteConstants.stellarEnv,
+                                destinationURL: temporaryURL)
 
                 // Remove old version and replace with the new one
                 logger.log("Installing at \(installURL.path)…")
-                let cliToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnvCLI)
-                try Shell.shared.copyAndReplace(source: cliToolFileURL, destination: installURL.path)
+                let envToolFileURL = temporaryURL.appendingPathComponent(RemoteConstants.stellarEnv)
+                try Shell.copyAndReplace(source: envToolFileURL, destination: installURL.path)
                 
                 logger.log("StellarEnv version \(release) installed")
             }
