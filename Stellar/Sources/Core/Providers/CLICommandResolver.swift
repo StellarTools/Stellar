@@ -1,8 +1,8 @@
-//  CommandResolver.swift
+//  CLICommandResolver.swift
 
 import Foundation
 
-public final class CommandResolver {
+public final class CLICommandResolver {
 
     // MARK: - Public Properties
     
@@ -116,7 +116,7 @@ public final class CommandResolver {
 
 // MARK: - Errors
 
-extension CommandResolver {
+extension CLICommandResolver {
     
     enum Errors: FatalError {
         case versionNotFound

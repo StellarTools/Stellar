@@ -59,7 +59,7 @@ struct StellarEnvCommand: ParsableCommand {
                 return
             }
             
-            try CommandResolver().run(args: cmdsList)
+            try CLICommandResolver().run(args: cmdsList)
             _exit(0)
         } catch { // Exit cleanly
             if exitCode(for: error).rawValue == 0 {
