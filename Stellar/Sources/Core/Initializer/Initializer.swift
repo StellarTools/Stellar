@@ -12,7 +12,7 @@ final public class Initializer {
     }
     
     public func install(at appLocation: URL, templatesLocation: URL) throws {
-        let executorLocation = urlManager.executorUrl(at: appLocation)
+        let executorLocation = urlManager.executorPackageUrl(at: appLocation)
         try fileManager.createFolder(at: executorLocation)
         
         let context = TemplatingContextFactory().makeTemplatingContext(name: Constants.executor)

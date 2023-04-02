@@ -12,7 +12,7 @@ final public class TaskCreator {
     }
     
     public func createTask(name: String, at appLocation: URL, templateLocation: URL) throws {
-        let executorSourcesUrl = urlManager.executorSourcesUrl(at: appLocation)
+        let executorSourcesUrl = urlManager.executorPackageSourcesUrl(at: appLocation)
         try fileManager.verifyFolderExisting(at: executorSourcesUrl)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
         let templater = Templater(templatingContext: context)
