@@ -52,6 +52,28 @@ struct StellarCLICommand: ParsableCommand {
                 return
             }
 
+            // Forward the arguments to the executor
+            if cmdsList.first == "exec" {
+                let arguments = Array(cmdsList.dropFirst())
+                if let index = arguments.firstIndex(of: "--project-path") {
+                    if arguments.count > index + 1 {
+                        let projectUrl = URL(fileURLWithPath: arguments[index + 1])
+                        var executorArguments = arguments
+                        executorArguments.removeSubrange(index...index + 1)
+                        try ExecutorCommandResolver().run(projectUrl: projectUrl, args: executorArguments)
+                    }
+                    else {
+                        throw ValidationError("No project path provided.")
+                    }
+                } else {
+                    let fileManager = FileManager.default
+                    try ExecutorCommandResolver().run(projectUrl: fileManager.currentLocation, args: arguments)
+                }
+            }
+            else {
+                throw ValidationError("Invalid involcation.")
+            }
+            
             _exit(0)
         } catch {
             // Exit cleanly
