@@ -27,8 +27,8 @@ struct InitCommand: ParsableCommand {
     func run() throws {
         Logger.verbose = verbose
 
-        let appLocation = URL(fileURLWithPath: projectPath)
+        let projectUrl = URL(fileURLWithPath: projectPath)
         let executorTemplatesLocation = TemplatesLocationFactory(templatesPath: templatesPath).executorTemplatesLocation
-        try Initializer().install(at: appLocation, templatesLocation: executorTemplatesLocation)
+        try Initializer().install(at: projectUrl, templatesLocation: executorTemplatesLocation)
     }
 }

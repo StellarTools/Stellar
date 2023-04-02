@@ -13,33 +13,33 @@ final class URLManager {
     // MARK: Paths
     
     // <app_path>/.stellar
-    func dotStellarUrl(at appLocation: URL) -> URL {
-        appLocation.appendingPathComponent(PathConstants.dotStellarFolder, isDirectory: true)
+    func dotStellarUrl(at projectUrl: URL) -> URL {
+        projectUrl.appendingPathComponent(PathConstants.dotStellarFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages
-    func packagesUrl(at appLocation: URL) -> URL {
-        dotStellarUrl(at: appLocation).appendingPathComponent(PathConstants.packagesFolder, isDirectory: true)
+    func packagesUrl(at projectUrl: URL) -> URL {
+        dotStellarUrl(at: projectUrl).appendingPathComponent(PathConstants.packagesFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages/Executor
-    func executorPackageUrl(at appLocation: URL) -> URL {
-        packagesUrl(at: appLocation).appendingPathComponent(PathConstants.executorFolder, isDirectory: true)
+    func executorPackageUrl(at projectUrl: URL) -> URL {
+        packagesUrl(at: projectUrl).appendingPathComponent(PathConstants.executorFolder, isDirectory: true)
     }
     
     // <app_path>/.stellar/Packages/Executor/Sources
-    func executorPackageSourcesUrl(at appLocation: URL) -> URL {
-        executorPackageUrl(at: appLocation).appendingPathComponent(PathConstants.sourcesFolder, isDirectory: true)
+    func executorPackageSourcesUrl(at projectUrl: URL) -> URL {
+        executorPackageUrl(at: projectUrl).appendingPathComponent(PathConstants.sourcesFolder, isDirectory: true)
     }
 
     // <app_path>/.stellar/Executables/
-    func executablesUrl(at appLocation: URL) -> URL {
-        dotStellarUrl(at: appLocation).appendingPathComponent(PathConstants.executablesFolder, isDirectory: true)
+    func executablesUrl(at projectUrl: URL) -> URL {
+        dotStellarUrl(at: projectUrl).appendingPathComponent(PathConstants.executablesFolder, isDirectory: true)
     }
 
     // <app_path>/.stellar/Executables/Executor
-    func executorBinaryUrl(at appLocation: URL) -> URL {
-        executablesUrl(at: appLocation).appendingPathComponent(Constants.executor)
+    func executorBinaryUrl(at projectUrl: URL) -> URL {
+        executablesUrl(at: projectUrl).appendingPathComponent(Constants.executor)
     }
     
     func currentWorkingDirectory() -> URL {

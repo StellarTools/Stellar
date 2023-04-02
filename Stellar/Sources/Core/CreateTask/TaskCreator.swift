@@ -11,8 +11,8 @@ final public class TaskCreator {
         self.fileManager = fileManager
     }
     
-    public func createTask(name: String, at appLocation: URL, templateLocation: URL) throws {
-        let executorSourcesUrl = urlManager.executorPackageSourcesUrl(at: appLocation)
+    public func createTask(name: String, at projectUrl: URL, templateLocation: URL) throws {
+        let executorSourcesUrl = urlManager.executorPackageSourcesUrl(at: projectUrl)
         try fileManager.verifyFolderExisting(at: executorSourcesUrl)
         let context = TemplatingContextFactory().makeTemplatingContext(name: name)
         let templater = Templater(templatingContext: context)
