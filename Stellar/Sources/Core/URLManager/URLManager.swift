@@ -36,6 +36,11 @@ final class URLManager {
     func executablesUrl(at appLocation: URL) -> URL {
         dotStellarUrl(at: appLocation).appendingPathComponent(PathConstants.executablesFolder, isDirectory: true)
     }
+
+    // <app_path>/.stellar/Executables/Executor
+    func executorBinaryUrl(at appLocation: URL) -> URL {
+        executablesUrl(at: appLocation).appendingPathComponent(Constants.executor)
+    }
     
     func currentWorkingDirectory() -> URL {
         fileManager.currentLocation

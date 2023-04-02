@@ -30,8 +30,7 @@ final public class Builder {
         
         let executablesLocation = urlManager.executablesUrl(at: location)
         try? fileManager.createFolder(at: executablesLocation)
-        try fileManager.copyFile(at: binaryLocation,
-                                 to: executablesLocation.appendingPathComponent(Constants.executor))
+        try fileManager.copyFile(at: binaryLocation, to: urlManager.executorBinaryUrl(at: location))
     }
     
 }
