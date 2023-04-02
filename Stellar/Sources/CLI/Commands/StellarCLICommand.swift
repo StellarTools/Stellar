@@ -22,7 +22,7 @@ struct StellarCLICommand: ParsableCommand {
 
     // MARK: - Methods
 
-    static func main(arguments: [String]) {
+    static func main(arguments: [String]) throws {
         let cmdsList = Array(arguments.dropFirst())
 
         // Help env
