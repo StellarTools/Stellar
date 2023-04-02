@@ -23,8 +23,8 @@ struct StellarEnvCommand: ParsableCommand {
     
     // MARK: - Methods
     
-    static func main(_: [String]? = nil) {
-        let cmdsList = commandArguments().dropFirst()
+    static func main(arguments: [String]) {
+        let cmdsList = Array(arguments.dropFirst())
         
         // Help env
         if cmdsList.first == "--help-env" {
@@ -38,7 +38,7 @@ struct StellarEnvCommand: ParsableCommand {
         // versions installed at `~/.stellar`.
         var command: ParsableCommand?
         do {
-            command = try suitableEnvCommand()
+            command = try suitableEnvCommand(arguments: cmdsList)
         } catch {
             let exitCode = exitCode(for: error).rawValue
             if exitCode == 0 {
@@ -59,7 +59,7 @@ struct StellarEnvCommand: ParsableCommand {
                 return
             }
             
-            try CommandResolver().run(args: Array(commandArguments().dropFirst()))
+            try CommandResolver().run(args: cmdsList)
             _exit(0)
         } catch { // Exit cleanly
             if exitCode(for: error).rawValue == 0 {
@@ -80,16 +80,15 @@ struct StellarEnvCommand: ParsableCommand {
     /// in `stellar` cli tool.
     ///
     /// - Returns: `stellarenv` parsable command, if available.
-    private static func suitableEnvCommand() throws -> ParsableCommand? {
-        guard let parsedArguments = try parseCommands() else {
+    private static func suitableEnvCommand(arguments: [String]) throws -> ParsableCommand? {
+        guard let parsedArguments = try parseCommands(arguments: arguments) else {
             return nil
         }
         
         return try parseAsRoot(parsedArguments)
     }
     
-    private static func parseCommands() throws -> [String]? {
-        let arguments = Array(commandArguments().dropFirst())
+    private static func parseCommands(arguments: [String]) throws -> [String]? {
         guard let firstArgument = arguments.first else {
             return nil // no arguments provided.
         }
@@ -100,13 +99,6 @@ struct StellarEnvCommand: ParsableCommand {
         }.contains(firstArgument)
 
         return (containsCommand ? arguments : nil)
-    }
-    
-    /// Return the list of all arguments used to start the command and remove `--verbose` if set.
-    /// 
-    /// - Returns: list of args.
-    private static func commandArguments() -> [String] {
-        Array(ProcessInfo.processInfo.arguments).filter { $0 != "--verbose" }
     }
     
 }
