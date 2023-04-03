@@ -27,7 +27,7 @@ public final class UninstallService: UninstallServiceProtocol {
             .appendingPathComponent(version)
         
         guard fileManager.folderExists(at: installationURL) else {
-            Logger.error?.write("Stellar version not found at: \(installationURL.path)")
+            Logger.error?.write("StellarEnv version not found at: \(installationURL.path)")
             return
         }
         
