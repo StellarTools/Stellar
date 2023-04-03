@@ -7,7 +7,7 @@ import Foundation
 protocol UninstallServiceProtocol: AnyObject {
     var fileManager: FileManaging { get }
     
-    /// Uninstall StellarEnv tool.
+    /// Uninstall Stellar tool.
     ///
     /// - Parameter version: the version to uninstall.
     func uninstall(version: String) throws
@@ -23,15 +23,15 @@ public final class UninstallService: UninstallServiceProtocol {
     
     public func uninstall(version: String) throws {
         let installationURL = URLManager(fileManager: fileManager)
-            .homeStellarLocation(subfolder: FileConstants.versionsFolder)
+            .homeStellarLocation(subfolder: PathConstants.versionsFolder)
             .appendingPathComponent(version)
         
         guard fileManager.folderExists(at: installationURL) else {
-            Logger.error?.write("StellarEnv version not found at: \(installationURL.path)")
+            Logger.error?.write("Stellar version not found at: \(installationURL.path)")
             return
         }
         
         try fileManager.deleteFolder(at: installationURL)
-        Logger.info?.write("StellarEnv version \(version) uninstalled")
+        Logger.info?.write("Stellar version \(version) uninstalled")
     }
 }

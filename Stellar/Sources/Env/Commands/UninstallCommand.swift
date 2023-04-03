@@ -9,7 +9,7 @@ struct UninstallCommand: ParsableCommand {
     static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "uninstall",
-            abstract: "Uninstall a version of StellarEnv."
+            abstract: "Uninstall a version of Stellar."
         )
     }
     
