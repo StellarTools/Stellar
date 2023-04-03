@@ -1,8 +1,8 @@
-//  CLICommandResolver.swift
+//  CLIInvoker.swift
 
 import Foundation
 
-public final class CLICommandResolver {
+public final class CLIInvoker {
 
     // MARK: - Public Properties
     
@@ -116,7 +116,7 @@ public final class CLICommandResolver {
 
 // MARK: - Errors
 
-extension CLICommandResolver {
+extension CLIInvoker {
     
     enum Errors: FatalError {
         case versionNotFound

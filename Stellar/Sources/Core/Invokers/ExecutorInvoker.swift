@@ -1,24 +1,27 @@
-//  ExecutorCommandResolver.swift
+//  ExecutorInvoker.swift
 
 import Foundation
 
-public final class ExecutorCommandResolver {
+public final class ExecutorInvoker {
 
     // MARK: - Public Properties
-    
+
     private let urlManager = URLManager()
+    private let projectUrl: URL
+
+    // MARK: - Initializer
+
+    public init(projectUrl: URL) {
+        self.projectUrl = projectUrl
+    }
 
     // MARK: - Private Properties
     
     private let exiter: (Int) -> Void = { exit(Int32($0)) }
-
-    // MARK: - Initialization
-    
-    public init() {}
     
     // MARK: - Public Functions
     
-    public func run(projectUrl: URL, args: [String]) throws {
+    public func run(args: [String]) throws {
         let executorBinaryUrl = URLManager().executorBinaryUrl(at: projectUrl)
         try runCommand(binaryUrl: executorBinaryUrl, commandArgs: args)
     }

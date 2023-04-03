@@ -20,13 +20,15 @@ struct StellarCLICommand: ParsableCommand {
         )
     }
 
+    static let fileManager = FileManager.default
+
     // MARK: - Methods
 
-    static func main(arguments: [String]) throws {
-        let cmdsList = Array(arguments.dropFirst())
+    static func main(args: [String]) throws {
+        let arguments = Array(args.dropFirst())
 
         // Help env
-        if cmdsList.first == "--help" {
+        if arguments.first == "--help" {
             let error = CleanExit.helpRequest(self)
             exit(withError: error)
         }
@@ -34,7 +36,7 @@ struct StellarCLICommand: ParsableCommand {
         // Parse received arguments
         var command: ParsableCommand?
         do {
-            command = try suitableCLICommand(arguments: cmdsList)
+            command = try recognizedParsableCommand(for: arguments)
         } catch {
             let exitCode = exitCode(for: error).rawValue
             if exitCode == 0 {
@@ -47,28 +49,14 @@ struct StellarCLICommand: ParsableCommand {
 
         do {
             if var command {
-                Logger.debug?.write("Commands will be executed by Executor")
+                Logger.debug?.write("Commands will be executed by StellarCLI")
                 try command.run()
                 return
             }
 
             // Forward the arguments to the executor
-            if cmdsList.first == "exec" {
-                let arguments = Array(cmdsList.dropFirst())
-                if let index = arguments.firstIndex(of: "--project-path") {
-                    if arguments.count > index + 1 {
-                        let projectUrl = URL(fileURLWithPath: arguments[index + 1])
-                        var executorArguments = arguments
-                        executorArguments.removeSubrange(index...index + 1)
-                        try ExecutorCommandResolver().run(projectUrl: projectUrl, args: executorArguments)
-                    }
-                    else {
-                        throw ValidationError("No project path provided.")
-                    }
-                } else {
-                    let fileManager = FileManager.default
-                    try ExecutorCommandResolver().run(projectUrl: fileManager.currentLocation, args: arguments)
-                }
+            if arguments.first == "exec" {
+                try callExecutor(using: Array(arguments.dropFirst()))
             }
             else {
                 throw ValidationError("Invalid involcation.")
@@ -88,32 +76,27 @@ struct StellarCLICommand: ParsableCommand {
 
     // MARK: - Private Methods
 
-    /// Check if the received command is one of the command available in `stellarenv`.
-    /// In this case return the appropriate `ParsableCommand` instance to execute.
-    ///
-    /// If the result is `nil`, the command is probably one of the commands available
-    /// in `stellar` cli tool.
-    ///
-    /// - Returns: `stellarenv` parsable command, if available.
-    private static func suitableCLICommand(arguments: [String]) throws -> ParsableCommand? {
-        guard let parsedArguments = try parseCommands(arguments: arguments) else {
-            return nil
+    /// Call the Executor passing the list of provided arguments.
+    /// If the `--project-path` argument is in the list, the value is used to execute the Executor from the defined path
+    /// and it and its value are removed when executing the Executor.
+    /// and
+    /// - Parameter arguments: List of arguments starting with the command.
+    private static func callExecutor(using arguments: [String]) throws {
+        if let index = arguments.firstIndex(of: "--project-path") {
+            if arguments.count > index + 1 {
+                let projectUrl = URL(fileURLWithPath: arguments[index + 1])
+                var executorArguments = arguments
+                executorArguments.removeSubrange(index...index + 1)
+                let executorInvoker = ExecutorInvoker(projectUrl: projectUrl)
+                try executorInvoker.run(args: executorArguments)
+            }
+            else {
+                throw ValidationError("No project path provided.")
+            }
+        } else {
+            let executorRunner = ExecutorInvoker(projectUrl: fileManager.currentLocation)
+            try executorRunner.run(args: arguments)
         }
-
-        return try parseAsRoot(parsedArguments)
-    }
-
-    private static func parseCommands(arguments: [String]) throws -> [String]? {
-        guard let firstArgument = arguments.first else {
-            return nil // no arguments provided.
-        }
-
-        // Is the invoked command one of the commands of the `stellarenv` tool?
-        let containsCommand = configuration.subcommands.map {
-            $0.configuration.commandName
-        }.contains(firstArgument)
-
-        return (containsCommand ? arguments : nil)
     }
 
 }
