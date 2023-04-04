@@ -59,7 +59,7 @@ struct StellarCLICommand: ParsableCommand {
                 try callExecutor(using: Array(arguments.dropFirst()))
             }
             else {
-                throw ValidationError("Invalid involcation.")
+                throw ValidationError("Invalid invocation.")
             }
             
             _exit(0)
