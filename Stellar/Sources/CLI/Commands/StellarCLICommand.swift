@@ -78,8 +78,8 @@ struct StellarCLICommand: ParsableCommand {
 
     /// Call the Executor passing the list of provided arguments.
     /// If the `--project-path` argument is in the list, the value is used to execute the Executor from the defined path
-    /// and it and its value are removed when executing the Executor.
-    /// and
+    /// and its value are removed when executing the Executor.
+    ///
     /// - Parameter arguments: List of arguments starting with the command.
     private static func callExecutor(using arguments: [String]) throws {
         if let index = arguments.firstIndex(of: "--project-path") {
