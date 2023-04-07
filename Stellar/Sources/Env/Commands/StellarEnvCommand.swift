@@ -16,6 +16,7 @@ struct StellarEnvCommand: ParsableCommand {
                 InstalledCommand.self,
                 ListCommand.self,
                 PinCommand.self,
+                UninstallCommand.self,
                 UpdateCommand.self
             ]
         )
