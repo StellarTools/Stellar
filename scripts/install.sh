@@ -24,7 +24,7 @@ LATEST_VERSION=$(git ls-remote -t --sort=v:refname https://github.com/StellarToo
 ohai "Downloading StellarEnv..."
 [ -f /tmp/StellarEnv.zip ] && rm /tmp/StellarEnv.zip
 [ -f /tmp/StellarEnv ] && rm /tmp/StellarEnv
-curl -LSsf --output /tmp/StellarCLI.zip https://github.com/InterstellarTools/StellarPrototype/releases/download/${LATEST_VERSION}/StellarCLI.zip
+curl -LSsf --output /tmp/StellarCLI.zip https://github.com/InterstellarTools/StellarPrototype/releases/download/${LATEST_VERSION}/StellarEnv.zip
 ohai "Unzipping StellarEnv..."
 unzip -o /tmp/StellarEnv.zip -d /tmp/StellarEnv > /dev/null
 ohai "Installing StellarEnv..."
@@ -44,18 +44,18 @@ if [[ ! -d $INSTALL_DIR ]]; then
   sudo_if_install_dir_not_writeable "mkdir -p ${INSTALL_DIR}"
 fi
 
-if [[ -f "${INSTALL_DIR}/StellarEnv" ]]; then
-  sudo_if_install_dir_not_writeable "rm ${INSTALL_DIR}/StellarEnv"
+if [[ -f "${INSTALL_DIR}/stellar" ]]; then
+  sudo_if_install_dir_not_writeable "rm ${INSTALL_DIR}/stellar"
 fi
 
-sudo_if_install_dir_not_writeable "mv /tmp/StellarEnv/StellarEnv \"${INSTALL_DIR}/StellarEnv\""
-sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/StellarEnv\""
+sudo_if_install_dir_not_writeable "mv /tmp/stellarenv/stellarenv \"${INSTALL_DIR}/stellar\""
+sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/stellar\""
 
 rm -rf /tmp/StellarEnv
 rm /tmp/StellarEnv.zip
 
 # Also install the CLI environment for this version.
 ohai "Installing latest version of CLI..."
-stellarenv install
+stellar install
 
-ohai "StellarEnv v.$TAG installed! Try running 'stellarenv'"
+ohai "StellarEnv v.$TAG installed! Try running 'stellar'."

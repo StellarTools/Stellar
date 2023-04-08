@@ -69,17 +69,17 @@ if [[ ! -d $INSTALL_DIR ]]; then
 fi
 
 if [[ -f "${INSTALL_DIR}/StellarEnv" ]]; then
-  sudo_if_install_dir_not_writeable "rm ${INSTALL_DIR}/StellarEnv"
+  sudo_if_install_dir_not_writeable "rm ${INSTALL_DIR}/stellar"
 fi
 
-sudo_if_install_dir_not_writeable "mv /tmp/StellarEnv/StellarEnv \"${INSTALL_DIR}/StellarEnv\""
-sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/StellarEnv\""
+sudo_if_install_dir_not_writeable "mv /tmp/StellarEnv/StellarEnv \"${INSTALL_DIR}/stellar\""
+sudo_if_install_dir_not_writeable "chmod +x \"${INSTALL_DIR}/stellar\""
 
 rm -rf /tmp/StellarEnv
 rm /tmp/StellarEnv.zip
 
 # Also install the CLI environment for this version.
 ohai "Installing latest version of CLI..."
-stellarenv install
+stellar install
 
-ohai "StellarEnv v.$TAG installed! Try running 'stellarenv'"
+ohai "StellarEnv v.$TAG installed! Try running 'stellar'."
