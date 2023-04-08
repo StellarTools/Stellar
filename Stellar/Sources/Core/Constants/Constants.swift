@@ -14,7 +14,7 @@ struct FileConstants {
     static let binName = "stellarCLI"
     static let toolFolder = ".stellar"
     static let envInstallDirectory = "/usr/local/bin"
-    static let envBinName = "stellarenv"
+    static let envBinName = "stellar"
 }
 
 struct GitHubAPI {
