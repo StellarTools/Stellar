@@ -16,9 +16,13 @@ struct StellarEnvCommand: ParsableCommand {
                 InstalledCommand.self,
                 ListCommand.self,
                 PinCommand.self,
+<<<<<<< HEAD
                 UninstallCommand.self,
+                UpdateCommand.self
+=======
                 UpdateCommand.self,
                 VersionCommand.self
+>>>>>>> d04a190 (Implement version command for stellarenv)
             ]
         )
     }

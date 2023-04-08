@@ -73,7 +73,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--help-env"
+            argument = "uninstall"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "&lt;STELLAR_VERSION&gt;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

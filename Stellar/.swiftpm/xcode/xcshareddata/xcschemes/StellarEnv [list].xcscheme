@@ -73,7 +73,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--help-env"
+            argument = "list"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

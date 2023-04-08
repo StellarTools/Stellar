@@ -28,8 +28,8 @@ extension Shell {
     ///   - sourceURL: source file.
     ///   - destination: destination location.
     static func copyAndReplace(source: URL, destination: String) throws {
-        try Shell.run(["rm", "-f", destination])
-        try Shell.run(["mv", source.path, destination])
+        try Shell.run(["rm", "-f", destination], sudoIfNeeded: true)
+        try Shell.run(["mv", source.path, destination], sudoIfNeeded: true)
     }
 
 }
