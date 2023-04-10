@@ -79,11 +79,11 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--project MY_PROJECT"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--scheme MY_SCHME"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--version 15.0"

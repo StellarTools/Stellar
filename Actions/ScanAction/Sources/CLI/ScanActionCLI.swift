@@ -9,7 +9,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
     
     // MARK: - Private Properties
     
-     private static var availableOptions = [ActionOptionProtocol]()
+     private static var allConfigurationOptions = [ActionOptionProtocol]()
     
     // This configuration contains all configuration parameters of the action
     // read directly from the command line interface.
@@ -44,7 +44,9 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
     
      // This should be not necessary.
      static func preprocess(_ arguments: [String]) throws {
-         Self.availableOptions = Action.actionOptions()
+         Self.allConfigurationOptions = Action.actionOptions()
+         // print("Parameters defined in configuration are: \(Self.allConfigurationOptions.map { $0.name! })")
+         // print("Parameters passed via CLI: \(arguments)")
     }
      
     
@@ -54,16 +56,18 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
         // At the end of this function, we have created a list of our variables
         // that were directly read from the action configuration.
         var list = [Mirror.Child]()
-        for property in Self.availableOptions {
+        for property in Self.allConfigurationOptions {
             let child: Mirror.Child
+            let name = property.name!
             // We can make something better here, it's just to test how it works with optional parasmeters.
             if property.isRequired {
-                child = Mirror.Child(label: property.name!, value: Option<String>(name: .shortAndLong))
+                child = Mirror.Child(label: name, value: Option<String>(name: .shortAndLong))
             } else {
-                child = Mirror.Child(label: property.name!, value: Option<Optional<String>>(name: .shortAndLong))
+                child = Mirror.Child(label: name, value: Option<Optional<String>>(name: .shortAndLong))
             }
             list.append(child)
         }
+        
         return Mirror(ScanActionCLI(), children: list)
     }
     
@@ -76,9 +80,17 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         var parsedAttributes = [String: String]()
-        try Self.availableOptions.forEach { option in
-            if let name = option.name,
-               let value = try container.decodeIfPresent(String.self, forKey: .custom(name)) {
+        try Self.allConfigurationOptions.forEach { option in
+            if let name = option.name {
+                let value: String
+                if option.isRequired == false {
+                    // This extra check is needed to continue in case of non-required optional value.
+                    // Yeah, we should handle better these cases but it's just a test!
+                    value = try container.decodeIfPresent(String.self, forKey: .custom(name)) ?? option.defaultValue!
+                } else {
+                    // If decode fails this will trigger an error to the cli "missing argument".
+                    value = try container.decode(String.self, forKey: .custom(name))
+                }
                 parsedAttributes[name] = value
             }
         }
