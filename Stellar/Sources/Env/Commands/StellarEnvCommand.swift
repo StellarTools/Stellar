@@ -25,11 +25,11 @@ struct StellarEnvCommand: ParsableCommand {
     
     // MARK: - Methods
     
-    static func main(_: [String]? = nil) {
-        let cmdsList = commandArguments().dropFirst()
+    static func main(args: [String]) throws {
+        let arguments = Array(args.dropFirst())
         
         // Help env
-        if cmdsList.first == "--help-env" {
+        if arguments.first == "--help-env" {
             let error = CleanExit.helpRequest(self)
             exit(withError: error)
         }
@@ -40,7 +40,7 @@ struct StellarEnvCommand: ParsableCommand {
         // versions installed at `~/.stellar`.
         var command: ParsableCommand?
         do {
-            command = try suitableEnvCommand()
+            command = try recognizedParsableCommand(for: arguments)
         } catch {
             let exitCode = exitCode(for: error).rawValue
             if exitCode == 0 {
@@ -61,7 +61,7 @@ struct StellarEnvCommand: ParsableCommand {
                 return
             }
             
-            try CommandResolver().run(args: Array(commandArguments().dropFirst()))
+            try CLIInvoker().run(args: arguments)
             _exit(0)
         } catch { // Exit cleanly
             if exitCode(for: error).rawValue == 0 {
@@ -72,43 +72,5 @@ struct StellarEnvCommand: ParsableCommand {
             }
         }
     }
-    
-    // MARK: - Private Methods
-    
-    /// Check if the received command is one of the command available in `stellarenv`.
-    /// In this case return the appropriate `ParsableCommand` instance to execute.
-    ///
-    /// If the result is `nil`, the command is probably one of the commands available
-    /// in `stellar` cli tool.
-    ///
-    /// - Returns: `stellarenv` parsable command, if available.
-    private static func suitableEnvCommand() throws -> ParsableCommand? {
-        guard let parsedArguments = try parseCommands() else {
-            return nil
-        }
-        
-        return try parseAsRoot(parsedArguments)
-    }
-    
-    private static func parseCommands() throws -> [String]? {
-        let arguments = Array(commandArguments().dropFirst())
-        guard let firstArgument = arguments.first else {
-            return nil // no arguments provided.
-        }
 
-        // Is the invoked command one of the commands of the `stellarenv` tool?
-        let containsCommand = configuration.subcommands.map {
-            $0.configuration.commandName
-        }.contains(firstArgument)
-
-        return (containsCommand ? arguments : nil)
-    }
-    
-    /// Return the list of all arguments used to start the command and remove `--verbose` if set.
-    /// 
-    /// - Returns: list of args.
-    private static func commandArguments() -> [String] {
-        Array(ProcessInfo.processInfo.arguments).filter { $0 != "--verbose" }
-    }
-    
 }

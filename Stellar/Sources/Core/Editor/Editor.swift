@@ -12,7 +12,7 @@ final public class Editor {
     }
     
     public func edit(at location: URL) throws {
-        let executorUrl = urlManager.executorUrl(at: location)
+        let executorUrl = urlManager.executorPackageUrl(at: location)
         try fileManager.verifyFolderExisting(at: executorUrl)
         try Shell.run(["xed", executorUrl.path])
     }

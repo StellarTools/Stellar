@@ -24,13 +24,14 @@ final class URLManager {
             .appendingPathComponent(PathConstants.actionsFolder)
     }
     
-    // Default: <cwd>/.stellar/Templates
+    // Default: ~/.stellar/Versions/x.y.z/Templates.bundle
     
     func templatesLocation(_ templates: String?) -> URL {
         if let templates = templates {
             return URL(fileURLWithPath: templates)
         }
-        return fileManager.executableLocation.appendingPathComponent(PathConstants.templatesBundle)
+        return fileManager.executableLocation
+            .appendingPathComponent(PathConstants.templatesBundle)
     }
     
 }

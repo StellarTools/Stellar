@@ -12,17 +12,17 @@ final public class Builder {
     }
     
     public func build(at location: URL) throws {
-        let executorLocation = urlManager.executorUrl(at: location)
-        try fileManager.verifyFolderExisting(at: executorLocation)
+        let executorPackageLocation = urlManager.executorPackageUrl(at: location)
+        try fileManager.verifyFolderExisting(at: executorPackageLocation)
 
         try Shell.run(
             ["swift", "build", "-c", "release"],
-            workingDirectory: executorLocation.path
+            workingDirectory: executorPackageLocation.path
         )
 
         let binaryPath = try Shell.runAndCollect(
             ["swift", "build", "-c", "release", "--show-bin-path"],
-            workingDirectory: executorLocation.path
+            workingDirectory: executorPackageLocation.path
         )
         
         let binaryLocation = URL(fileURLWithPath: binaryPath)
@@ -30,8 +30,7 @@ final public class Builder {
         
         let executablesLocation = urlManager.executablesUrl(at: location)
         try? fileManager.createFolder(at: executablesLocation)
-        try fileManager.copyFile(at: binaryLocation,
-                                 to: executablesLocation.appendingPathComponent(Constants.executor))
+        try fileManager.copyFile(at: binaryLocation, to: urlManager.executorBinaryUrl(at: location))
     }
     
 }
