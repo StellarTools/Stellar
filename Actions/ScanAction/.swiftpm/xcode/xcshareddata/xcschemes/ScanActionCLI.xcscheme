@@ -78,12 +78,16 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--workflow MYWORKFLOW"
-            isEnabled = "YES">
+            argument = "--project MY_PROJECT"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--project MYPROJECT"
-            isEnabled = "YES">
+            argument = "--scheme MY_SCHME"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--version 15.0"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

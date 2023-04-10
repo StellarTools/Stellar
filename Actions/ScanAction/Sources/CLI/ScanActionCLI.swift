@@ -9,7 +9,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
     
     // MARK: - Private Properties
     
-    // private static var availableOptions = [ActionOptionProtocol]()
+     private static var availableOptions = [ActionOptionProtocol]()
     
     // This configuration contains all configuration parameters of the action
     // read directly from the command line interface.
@@ -41,12 +41,12 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
     // We want to mock the  ArgumentParser  so that it will believe
     // that it contains properties declared in the `Action.Configuration`.
     
-    /*
+    
      // This should be not necessary.
      static func preprocess(_ arguments: [String]) throws {
          Self.availableOptions = Action.actionOptions()
     }
-     */
+     
     
     public var customMirror: Mirror {
         // By implementing a custom Mirror, we can mock the  ArgumentParser  which uses Mirror to read the
@@ -54,7 +54,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
         // At the end of this function, we have created a list of our variables
         // that were directly read from the action configuration.
         var list = [Mirror.Child]()
-        for property in Action.actionOptions() { // Self.availableOptions {
+        for property in Self.availableOptions {
             let child: Mirror.Child
             // We can make something better here, it's just to test how it works with optional parasmeters.
             if property.isRequired {
@@ -64,7 +64,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
             }
             list.append(child)
         }
-        return Mirror(Self(), children: list)
+        return Mirror(ScanActionCLI(), children: list)
     }
     
     // PART 2:
@@ -76,10 +76,10 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         var parsedAttributes = [String: String]()
-        try Action.actionOptions().forEach { option in
-        // try Self.availableOptions.forEach { option in
-            if let name = option.name {
-                parsedAttributes[name] = try container.decodeIfPresent(String.self, forKey: .custom(name))
+        try Self.availableOptions.forEach { option in
+            if let name = option.name,
+               let value = try container.decodeIfPresent(String.self, forKey: .custom(name)) {
+                parsedAttributes[name] = value
             }
         }
         

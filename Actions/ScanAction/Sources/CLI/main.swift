@@ -1,4 +1,4 @@
 import Foundation
 
-// try? ScanCLI.preprocess(CommandLine.arguments)
+try? ScanActionCLI.preprocess(CommandLine.arguments)
 ScanActionCLI.main()

@@ -1,11 +1,11 @@
 //  ScanAction.swift
 
 public class ScanAction: ActionProtocol {
-    public typealias Configuration = ScanActionOptions
+    public typealias Configuration = ScanActionConfiguration
     
     // MARK: - Properties
     
-    public static var configType = ScanActionOptions.self
+    public static var configType = ScanActionConfiguration.self
     
     // MARK: - Initialization
     
@@ -13,26 +13,26 @@ public class ScanAction: ActionProtocol {
 
     // MARK: - Execute Action
 
-    public func run(config: ScanActionOptions) throws {
+    public func run(config: ScanActionConfiguration) throws {
         print("Now executing ScanAction with configuration:")
-        print("- Workflow: \(config.workflow ?? "")")
-        print("-  Project: \(config.project ?? "")")
-        print("-    XCode: \(config.xcode ?? "")")
+        print("- Project: \(config.project ?? "")")
+        print("-  Scheme: \(config.scheme ?? "")")
+        print("-   XCode: \(config.version ?? "")")
     }
 }
 
-// MARK: - ScanActionOptions
+// MARK: - ScanActionConfiguration
 
-public class ScanActionOptions: ActionConfigurationProtocol {
+public class ScanActionConfiguration: ActionConfigurationProtocol {
     
-    @ActionParam(environment: "WORKFLOW_NAME", required: true)
-    public var workflow: String?
-   
-    @ActionParam(environment: "PROJECT_NAME", required: true)
+    @ActionParam(environment: "XCODE_PROJECT", required: true)
     public var project: String?
+   
+    @ActionParam(environment: "XCODE_SCHEME", required: true)
+    public var scheme: String?
     
     @ActionParam(environment: "XCODE_VERSION", defaultValue: "14.3", required: false)
-    public var xcode: String?
+    public var version: String?
     
     required public init() { }
     
