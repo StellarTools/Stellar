@@ -42,7 +42,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
     // that it contains properties declared in the `Action.Configuration`.
     
     
-     // This should be not necessary.
+     // NOTE: This should be not necessary, we can safely remove it.
      static func preprocess(_ arguments: [String]) throws {
          Self.allConfigurationOptions = Action.actionOptions()
          // print("Parameters defined in configuration are: \(Self.allConfigurationOptions.map { $0.name! })")

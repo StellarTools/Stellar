@@ -15,14 +15,15 @@ public class ScanAction: ActionProtocol {
 
     public func run(config: ScanActionConfiguration) throws {
         print("Now executing ScanAction with configuration:")
-        print("- Project: \(config.project ?? "")")
-        print("-  Scheme: \(config.scheme ?? "")")
-        print("-   XCode: \(config.version ?? "")")
+        print("\t- Project: \(config.project ?? "")")
+        print("\t-  Scheme: \(config.scheme ?? "")")
+        print("\t-   XCode: \(config.version ?? "")")
     }
 }
 
 // MARK: - ScanActionConfiguration
 
+/// Defines custom collection of options for scan action.
 public class ScanActionConfiguration: ActionConfigurationProtocol {
     
     @ActionParam(environment: "XCODE_PROJECT", required: true)
