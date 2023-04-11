@@ -11,8 +11,8 @@ final public class Initializer {
         self.fileManager = fileManager
     }
     
-    public func install(at appLocation: URL, templatesLocation: URL) throws {
-        let executorLocation = urlManager.executorUrl(at: appLocation)
+    public func install(at projectUrl: URL, templatesLocation: URL) throws {
+        let executorLocation = urlManager.executorPackageUrl(at: projectUrl)
         try fileManager.createFolder(at: executorLocation)
         
         let context = TemplatingContextFactory().makeTemplatingContext(name: Constants.executor)
