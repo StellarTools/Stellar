@@ -2,20 +2,20 @@
 
 import Foundation
 
-public enum CodingKeys: CodingKey {
+enum CodingKeys: CodingKey {
     case custom(String)
  
-    public init?(stringValue: String) {
+    init?(stringValue: String) {
         self = .custom(stringValue)
     }
     
-    public var stringValue: String {
+    var stringValue: String {
         switch self {
         case let .custom(name): return name
         }
     }
     
     // Just to silence the compiler, never used.
-    public var intValue: Int? { nil }
-    public init?(intValue _: Int) { nil }
+    var intValue: Int? { nil }
+    init?(intValue _: Int) { nil }
 }

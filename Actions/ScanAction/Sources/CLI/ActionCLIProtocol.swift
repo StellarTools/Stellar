@@ -1,9 +1,10 @@
 //  ActionCLIProtocol.swift
 
 import Foundation
+import ScanAction
 import ArgumentParser
 
-public protocol ActionCLIProtocol: CustomReflectable {
+protocol ActionCLIProtocol: CustomReflectable {
     
     associatedtype Action: ActionProtocol
 
@@ -41,8 +42,5 @@ extension ActionCLIProtocol {
         
         return Mirror(Action(), children: list)
     }
-    
-
-    
 
 }

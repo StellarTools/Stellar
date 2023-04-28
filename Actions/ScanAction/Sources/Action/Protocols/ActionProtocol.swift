@@ -13,7 +13,7 @@ public protocol ActionProtocol {
     
     init()
 
-    
+
 }
 
 extension ActionProtocol {
@@ -26,5 +26,5 @@ extension ActionProtocol {
     /*public static func newOptions() -> Configuration {
         configType.init()
     }*/
-    
+
 }

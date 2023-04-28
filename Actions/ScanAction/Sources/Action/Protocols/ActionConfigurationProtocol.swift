@@ -14,7 +14,7 @@ public protocol ActionConfigurationProtocol: Decodable {
 extension ActionConfigurationProtocol {
     
     public func options() -> [ActionParamProtocol] {
-        let dummyInstance =  Self.init()
+        let dummyInstance = Self.init()
         let mirror = Mirror(reflecting: dummyInstance)
         
         let properties: [ActionParamProtocol] = mirror.children.compactMap { (label, value) in
