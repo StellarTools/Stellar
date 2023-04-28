@@ -23,13 +23,16 @@ let package = Package(
         .executableTarget(
             name: "ScanActionCLI",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "ScanAction",
+                //.product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "StellarCore", package: "Stellar")
             ],
             path: "Sources/CLI"),
         .target(
             name: "ScanAction",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ],
             path: "Sources/Action"),
         .testTarget(
             name: "ScanActionTests",

@@ -4,16 +4,16 @@ import ArgumentParser
 import Foundation
 import ScanAction
 
-public class ScanActionCLI: ParsableCommand, CustomReflectable  {
+public struct ScanActionCLI: ParsableCommand, ActionCLIProtocol {
     public typealias Action = ScanAction
     
     // MARK: - Private Properties
     
-     private static var allConfigurationOptions = [ActionOptionProtocol]()
+    private(set) public static var allConfigurationOptions = Action.actionOptions()
     
     // This configuration contains all configuration parameters of the action
     // read directly from the command line interface.
-    private var config: Action.Configuration!
+    private(set) public var config: Action.Configuration!
     
     // MARK: - Public Properties
     
@@ -25,7 +25,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
     // At the end `run()` is cal automatically the action specified with the configuration read.
     
     /// Required by ParsableCommand
-    required public init() { }
+    public init() { }
     
     // MARK: - Run
     
@@ -35,48 +35,13 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
         try action.run(config: config)
     }
     
-    // MARK: - Private Methods
-    
-    // PART 1:
-    // We want to mock the  ArgumentParser  so that it will believe
-    // that it contains properties declared in the `Action.Configuration`.
-    
-    
-     // NOTE: This should be not necessary, we can safely remove it.
-     static func preprocess(_ arguments: [String]) throws {
-         Self.allConfigurationOptions = Action.actionOptions()
-         // print("Parameters defined in configuration are: \(Self.allConfigurationOptions.map { $0.name! })")
-         // print("Parameters passed via CLI: \(arguments)")
-    }
-     
-    
-    public var customMirror: Mirror {
-        // By implementing a custom Mirror, we can mock the  ArgumentParser  which uses Mirror to read the
-        // variables declared in the class, such as  @Flag ,  @Option , and so on.
-        // At the end of this function, we have created a list of our variables
-        // that were directly read from the action configuration.
-        var list = [Mirror.Child]()
-        for property in Self.allConfigurationOptions {
-            let child: Mirror.Child
-            let name = property.name!
-            // We can make something better here, it's just to test how it works with optional parasmeters.
-            if property.isRequired {
-                child = Mirror.Child(label: name, value: Option<String>(name: .shortAndLong))
-            } else {
-                child = Mirror.Child(label: name, value: Option<Optional<String>>(name: .shortAndLong))
-            }
-            list.append(child)
-        }
-        
-        return Mirror(ScanActionCLI(), children: list)
-    }
-    
+
     // PART 2:
     // Since Argument Parser read values of the command line directly from Codable interface
     // we'll parse these values and assign via Mirror to our `config`'s `wrappedValue`.
     // Et voilà!
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         var parsedAttributes = [String: String]()
@@ -96,7 +61,7 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
         }
         
         
-        self.config = .init()
+        self.config = Action.Configuration.init()
         let mirror = Mirror(reflecting: config!)
         for property in mirror.children {
             if let name = property.label?.trimmingCharacters(in: .init(charactersIn: "_")),
@@ -104,24 +69,6 @@ public class ScanActionCLI: ParsableCommand, CustomReflectable  {
                 (property.value as! ActionParam).wrappedValue = parsedValue
             }
         }
-    }
-    
-    enum CodingKeys: CodingKey {
-        case custom(String)
-     
-        init?(stringValue: String) {
-            self = .custom(stringValue)
-        }
-        
-        var stringValue: String {
-            switch self {
-            case let .custom(name): return name
-            }
-        }
-        
-        // Just to silence the compiler, never used.
-        var intValue: Int? { nil }
-        init?(intValue _: Int) { nil }
     }
     
 }

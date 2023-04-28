@@ -11,12 +11,15 @@ public protocol ActionProtocol {
     
     func run(config: Configuration) throws
     
+    init()
+
+    
 }
 
 extension ActionProtocol {
     
     // Helper to print all the properties defined into the action's configuration!
-    public static func actionOptions() -> [ActionOptionProtocol] {
+    public static func actionOptions() -> [ActionParamProtocol] {
         configType.init().options()
     }
     

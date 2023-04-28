@@ -7,18 +7,18 @@ public protocol ActionConfigurationProtocol: Decodable {
     
     init()
 
-    func options() -> [ActionOptionProtocol]
+    func options() -> [ActionParamProtocol]
 
 }
 
 extension ActionConfigurationProtocol {
     
-    public func options() -> [ActionOptionProtocol] {
+    public func options() -> [ActionParamProtocol] {
         let dummyInstance =  Self.init()
         let mirror = Mirror(reflecting: dummyInstance)
         
-        let properties: [ActionOptionProtocol] = mirror.children.compactMap { (label, value) in
-            guard var property = value as? ActionOptionProtocol else {
+        let properties: [ActionParamProtocol] = mirror.children.compactMap { (label, value) in
+            guard var property = value as? ActionParamProtocol else {
                 return nil
             }
             property.name = label?.trimmingCharacters(in: .init(charactersIn: "_"))
