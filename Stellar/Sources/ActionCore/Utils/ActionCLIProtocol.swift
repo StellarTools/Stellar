@@ -1,14 +1,13 @@
 //  ActionCLIProtocol.swift
 
 import Foundation
-import ScanAction
 import ArgumentParser
 
 public protocol ActionCLIProtocol: CustomReflectable {
     
     associatedtype Action: ActionProtocol
 
-    static var allConfigurationOptions: [ActionParamProtocol] { get }
+    var allConfigurationOptions: [ActionParamProtocol] { get }
     
     var config: Action.Configuration! { get }
     
@@ -29,7 +28,7 @@ extension ActionCLIProtocol {
         // At the end of this function, we have created a list of our variables
         // that were directly read from the action configuration.
         var list = [Mirror.Child]()
-        for property in Self.allConfigurationOptions {
+        for property in self.allConfigurationOptions {
             let child: Mirror.Child
             let name = property.name!
             // We can make something better here, it's just to test how it works with optional parasmeters.

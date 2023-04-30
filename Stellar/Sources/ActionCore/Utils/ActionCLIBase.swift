@@ -1,16 +1,15 @@
 //  ActionCLIBase.swift
 
 import Foundation
-import ScanAction
 import ArgumentParser
 
-public class ActionCLIBase: ParsableCommand, ActionCLIProtocol {
+open class ActionCLIBase<A: ActionProtocol>: ParsableCommand, ActionCLIProtocol {
     
-    public typealias Action = ScanAction
+    public typealias Action = A
 
     // MARK: - Private Properties
     
-    private(set) public static var allConfigurationOptions = Action.actionOptions()
+    private(set) public var allConfigurationOptions = Action.actionOptions()
     
     // This configuration contains all configuration parameters of the action
     // read directly from the command line interface.
@@ -45,7 +44,7 @@ public class ActionCLIBase: ParsableCommand, ActionCLIProtocol {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         var parsedAttributes = [String: String]()
-        try Self.allConfigurationOptions.forEach { option in
+        try self.allConfigurationOptions.forEach { option in
             if let name = option.name {
                 let value: String
                 if option.isRequired == false {

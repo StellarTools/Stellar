@@ -1,6 +1,5 @@
 //  ScanAction.swift
 
-import StellarCore
 import StellarActionCore
 
 public struct ScanAction: ActionProtocol {

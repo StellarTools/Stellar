@@ -15,18 +15,26 @@ let package = Package(
             targets: ["UploadAction"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0"))
+        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
+        // This is just a temporary solution
+        .package(path: "../../Stellar")
     ],
     targets: [
         .executableTarget(
             name: "UploadActionCLI",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .target(name: "UploadAction")
+                "UploadAction",
+                .product(name: "StellarCore", package: "Stellar"),
+                .product(name: "StellarActionCore", package: "Stellar")
             ],
             path: "Sources/CLI"),
         .target(
             name: "UploadAction",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "StellarCore", package: "Stellar"),
+                .product(name: "StellarActionCore", package: "Stellar")
+            ],
             path: "Sources/Action"),
         .testTarget(
             name: "UploadActionTests",

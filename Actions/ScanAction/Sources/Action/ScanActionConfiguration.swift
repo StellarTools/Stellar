@@ -1,6 +1,7 @@
 //  ScanActionConfiguration.swift
 
 import Foundation
+import StellarActionCore
 
 /// Defines custom collection of options for scan action.
 public struct ScanActionConfiguration: ActionConfigurationProtocol {

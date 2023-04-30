@@ -1,8 +1,7 @@
-//  Command.swift
+//  ScanActionCLI.swift
 
 import Foundation
 import ScanAction
+import StellarActionCore
 
-public class ScanActionCLI: ActionCLIBase {
-    public typealias Action = ScanAction
-}
+public class ScanActionCLI: ActionCLIBase<ScanAction> {}
