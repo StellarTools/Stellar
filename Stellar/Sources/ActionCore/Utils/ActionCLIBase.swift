@@ -43,8 +43,7 @@ open class ActionCLIBase<A: ActionProtocol>: ParsableCommand, ActionCLIProtocol 
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        var parsedAttributes = [String: String]()
-        try self.allConfigurationOptions.forEach { option in
+        let parsedAttributes: [String: String] = try self.allConfigurationOptions.reduce(into: [:]) { partialResult, option in
             if let name = option.name {
                 let value: String
                 if option.isRequired == false {
@@ -55,7 +54,7 @@ open class ActionCLIBase<A: ActionProtocol>: ParsableCommand, ActionCLIProtocol 
                     // If decode fails this will trigger an error to the cli "missing argument".
                     value = try container.decode(String.self, forKey: .custom(name))
                 }
-                parsedAttributes[name] = value
+                partialResult[name] = value
             }
         }
         

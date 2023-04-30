@@ -27,17 +27,16 @@ extension ActionCLIProtocol {
         // variables declared in the class, such as  @Flag ,  @Option , and so on.
         // At the end of this function, we have created a list of our variables
         // that were directly read from the action configuration.
-        var list = [Mirror.Child]()
-        for property in self.allConfigurationOptions {
+        let list: [Mirror.Child] = self.allConfigurationOptions.map { property in
             let child: Mirror.Child
             let name = property.name!
-            // We can make something better here, it's just to test how it works with optional parasmeters.
+            // We can make something better here, it's just to test how it works with optional parameters.
             if property.isRequired {
                 child = Mirror.Child(label: name, value: Option<String>(name: .shortAndLong))
             } else {
                 child = Mirror.Child(label: name, value: Option<Optional<String>>(name: .shortAndLong))
             }
-            list.append(child)
+            return child
         }
         
         return Mirror(Action(), children: list)

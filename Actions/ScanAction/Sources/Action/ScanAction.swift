@@ -35,5 +35,7 @@ public struct ScanAction: ActionProtocol {
         print("\t- projectEnv: \(projectEnv ?? "")")
         print("\t-  schemeEnv: \(schemeEnv ?? "")")
         print("\t- versionEnv: \(versionEnv ?? "")")
+        
+        print()
     }
 }

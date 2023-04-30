@@ -38,6 +38,8 @@ public struct UploadAction: ActionProtocol {
         print("Now executing UploadAction enviroment print:")
         print("\t- whateverEnv: \(whateverEnv ?? "")")
         print("\t-  projectEnv: \(projectEnv ?? "")")
+        
+        print()
 
     }
     
