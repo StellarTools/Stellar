@@ -25,7 +25,8 @@ let package = Package(
             dependencies: [
                 "ScanAction",
                 //.product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "StellarCore", package: "Stellar")
+                .product(name: "StellarCore", package: "Stellar"),
+                .product(name: "StellarActionCore", package: "Stellar")
             ],
             path: "Sources/CLI"),
         .target(

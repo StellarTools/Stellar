@@ -16,6 +16,9 @@ let package = Package(
         .library(
             name: "StellarCore",
             targets: ["StellarCore"]),
+        .library(
+            name: "StellarActionCore",
+            targets: ["StellarActionCore"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
@@ -37,6 +40,13 @@ let package = Package(
             ],
             path: "Sources/Core",
             resources: [.copy("Resources")]),
+        .target(
+            name: "StellarActionCore",
+            dependencies: [
+                .product(name: "StencilSwiftKit", package: "StencilSwiftKit"),
+                .product(name: "TSCBasic", package: "swift-tools-support-core")
+            ],
+            path: "Sources/ActionCore"),
         .executableTarget(
             name: "StellarEnv",
             dependencies: [

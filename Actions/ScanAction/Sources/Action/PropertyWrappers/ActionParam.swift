@@ -6,7 +6,6 @@ import Foundation
     
     public let environment: String?
     public let defaultValue: String?
-    public var wrappedValue: String?
     public var isRequired: Bool
     public var name: String?
     
@@ -15,4 +14,16 @@ import Foundation
         self.environment = environment
         self.isRequired = required
     }
+    
+    public var wrappedValue: String? {
+        
+        didSet {
+            if let environment {
+                EnvironmentManager.shared.addVariable(wrappedValue ?? "", for: environment)
+            }
+            
+        }
+        
+    }
+    
 }

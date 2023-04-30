@@ -4,13 +4,14 @@ import Foundation
 import ScanAction
 import ArgumentParser
 
-protocol ActionCLIProtocol: CustomReflectable {
+public protocol ActionCLIProtocol: CustomReflectable {
     
     associatedtype Action: ActionProtocol
 
     static var allConfigurationOptions: [ActionParamProtocol] { get }
     
     var config: Action.Configuration! { get }
+    
 }
 
 

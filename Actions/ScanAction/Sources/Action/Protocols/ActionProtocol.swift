@@ -4,6 +4,7 @@ import Foundation
 
 // Define the protocol for an action.
 public protocol ActionProtocol {
+    
     associatedtype Configuration: ActionConfigurationProtocol
     
     // What's the configuration object used to configure this action.
@@ -22,9 +23,5 @@ extension ActionProtocol {
     public static func actionOptions() -> [ActionParamProtocol] {
         configType.init().options()
     }
-    
-    /*public static func newOptions() -> Configuration {
-        configType.init()
-    }*/
 
 }
