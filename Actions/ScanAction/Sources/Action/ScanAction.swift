@@ -29,11 +29,11 @@ public struct ScanAction: ActionProtocol {
         print("\t-  Scheme: \(config.scheme ?? "")")
         print("\t-   XCode: \(config.version ?? "")")
         
-        config.project = "TestTestTest"
+        config.project = "ScanAction Inner Variable Set"
         
-        print("\t-    projectEnv: \(projectEnv ?? "")")
-        print("\t-     projectEnv: \(schemeEnv ?? "")")
-        print("\t-      projectEnv: \(versionEnv ?? "")")
-
+        print("Now executing ScanAction enviroment print:")
+        print("\t- projectEnv: \(projectEnv ?? "")")
+        print("\t-  schemeEnv: \(schemeEnv ?? "")")
+        print("\t- versionEnv: \(versionEnv ?? "")")
     }
 }

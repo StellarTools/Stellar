@@ -78,7 +78,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--whatever MY_PROJECT"
+            argument = "--whatever WHATEVER"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

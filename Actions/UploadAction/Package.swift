@@ -17,7 +17,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
         // This is just a temporary solution
-        .package(path: "../../Stellar")
+        .package(path: "../../Stellar"),
+        .package(path: "../ScanAction")
     ],
     targets: [
         .executableTarget(
@@ -25,7 +26,8 @@ let package = Package(
             dependencies: [
                 "UploadAction",
                 .product(name: "StellarCore", package: "Stellar"),
-                .product(name: "StellarActionCore", package: "Stellar")
+                .product(name: "StellarActionCore", package: "Stellar"),
+                .product(name: "ScanAction", package: "ScanAction")
             ],
             path: "Sources/CLI"),
         .target(
@@ -33,7 +35,8 @@ let package = Package(
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "StellarCore", package: "Stellar"),
-                .product(name: "StellarActionCore", package: "Stellar")
+                .product(name: "StellarActionCore", package: "Stellar"),
+                .product(name: "ScanAction", package: "ScanAction")
             ],
             path: "Sources/Action"),
         .testTarget(

@@ -1,6 +1,7 @@
 //  UploadAction.swift
 
 import StellarActionCore
+import ScanAction
 
 public struct UploadAction: ActionProtocol {
     
@@ -8,8 +9,11 @@ public struct UploadAction: ActionProtocol {
     
     public static var configType = UploadActionConfiguration.self
     
-    @ActionParam(environment: "XCODE_WHATEVER", required: true)
-    public var whatever: String?
+    @Environment(name: "XCODE_WHATEVER")
+    public var whateverEnv: String?
+    
+    @Environment(name: "XCODE_PROJECT")
+    public var projectEnv: String?
    
     // MARK: - Initialization
     
@@ -18,8 +22,22 @@ public struct UploadAction: ActionProtocol {
     // MARK: - Execute Action
 
     public func run(config: Configuration) throws {
-        print("Now executing ScanAction with configuration:")
+        
+        let scanAction = ScanAction()
+        let scanConfiguration = ScanActionConfiguration()
+        
+        scanConfiguration.project = "Initial_project"
+        scanConfiguration.scheme = "Initial_scheme"
+        scanConfiguration.version = "Initial_version"
+
+        try scanAction.run(config: scanConfiguration)
+        
+        print("Now executing UploadAction with configuration:")
         print("\t- Whatever: \(config.whatever ?? "")")
+        
+        print("Now executing UploadAction enviroment print:")
+        print("\t- whateverEnv: \(whateverEnv ?? "")")
+        print("\t-  projectEnv: \(projectEnv ?? "")")
 
     }
     
