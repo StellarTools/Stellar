@@ -1,11 +1,21 @@
 //  ScanAction.swift
 
-public class ScanAction: ActionProtocol {
-    public typealias Configuration = ScanActionConfiguration
+import StellarActionCore
+
+public struct ScanAction: ActionProtocol {
     
     // MARK: - Properties
     
     public static var configType = ScanActionConfiguration.self
+        
+    @Environment(name: "XCODE_PROJECT")
+    var projectEnv: String?
+    
+    @Environment(name: "XCODE_SCHEME")
+    var schemeEnv: String?
+    
+    @Environment(name: "XCODE_VERSION")
+    var versionEnv: String?
     
     // MARK: - Initialization
     
@@ -13,29 +23,19 @@ public class ScanAction: ActionProtocol {
 
     // MARK: - Execute Action
 
-    public func run(config: ScanActionConfiguration) throws {
+    public func run(config: Configuration) throws {
         print("Now executing ScanAction with configuration:")
         print("\t- Project: \(config.project ?? "")")
         print("\t-  Scheme: \(config.scheme ?? "")")
         print("\t-   XCode: \(config.version ?? "")")
+        
+        config.project = "ScanAction Inner Variable Set"
+        
+        print("Now executing ScanAction enviroment print:")
+        print("\t- projectEnv: \(projectEnv ?? "")")
+        print("\t-  schemeEnv: \(schemeEnv ?? "")")
+        print("\t- versionEnv: \(versionEnv ?? "")")
+        
+        print()
     }
 }
-
-// MARK: - ScanActionConfiguration
-
-/// Defines custom collection of options for scan action.
-public class ScanActionConfiguration: ActionConfigurationProtocol {
-    
-    @ActionParam(environment: "XCODE_PROJECT", required: true)
-    public var project: String?
-   
-    @ActionParam(environment: "XCODE_SCHEME", required: true)
-    public var scheme: String?
-    
-    @ActionParam(environment: "XCODE_VERSION", defaultValue: "14.3", required: false)
-    public var version: String?
-    
-    required public init() { }
-    
-}
-

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ScanActionCLI"
-               BuildableName = "ScanActionCLI"
-               BlueprintName = "ScanActionCLI"
+               BlueprintIdentifier = "UploadActionCLI"
+               BuildableName = "UploadActionCLI"
+               BlueprintName = "UploadActionCLI"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ScanActionTests"
-               BuildableName = "ScanActionTests"
-               BlueprintName = "ScanActionTests"
+               BlueprintIdentifier = "UploadActionTests"
+               BuildableName = "UploadActionTests"
+               BlueprintName = "UploadActionTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ScanActionTests"
-               BuildableName = "ScanActionTests"
-               BlueprintName = "ScanActionTests"
+               BlueprintIdentifier = "UploadActionTests"
+               BuildableName = "UploadActionTests"
+               BlueprintName = "UploadActionTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
@@ -61,7 +61,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      customWorkingDirectory = "/Users/pasqualecerqua/Desktop/Side/StellarPrototype/Actions/ScanAction"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -71,23 +70,15 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ScanActionCLI"
-            BuildableName = "ScanActionCLI"
-            BlueprintName = "ScanActionCLI"
+            BlueprintIdentifier = "UploadActionCLI"
+            BuildableName = "UploadActionCLI"
+            BlueprintName = "UploadActionCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--project MY_PROJECT"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--scheme MY_SCHEME"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--version 15.0"
+            argument = "--whatever WHATEVER"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
@@ -102,9 +93,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ScanActionCLI"
-            BuildableName = "ScanActionCLI"
-            BlueprintName = "ScanActionCLI"
+            BlueprintIdentifier = "UploadActionCLI"
+            BuildableName = "UploadActionCLI"
+            BlueprintName = "UploadActionCLI"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -3,4 +3,4 @@
 import Foundation
 import StellarActionCore
 
-ScanActionCLI.main()
+UploadActionCLI.main()

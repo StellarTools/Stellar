@@ -4,41 +4,44 @@
 import PackageDescription
 
 let package = Package(
-    name: "ScanAction",
+    name: "UploadAction",
     platforms: [.macOS(.v12)],
     products: [
         .executable(
-            name: "ScanActionCLI",
-            targets: ["ScanActionCLI"]),
+            name: "UploadActionCLI",
+            targets: ["UploadActionCLI"]),
         .library(
-            name: "ScanAction",
-            targets: ["ScanAction"])
+            name: "UploadAction",
+            targets: ["UploadAction"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
         // This is just a temporary solution
-        .package(path: "../../Stellar")
+        .package(path: "../../Stellar"),
+        .package(path: "../ScanAction")
     ],
     targets: [
         .executableTarget(
-            name: "ScanActionCLI",
+            name: "UploadActionCLI",
             dependencies: [
-                "ScanAction",
+                "UploadAction",
                 .product(name: "StellarCore", package: "Stellar"),
-                .product(name: "StellarActionCore", package: "Stellar")
+                .product(name: "StellarActionCore", package: "Stellar"),
+                .product(name: "ScanAction", package: "ScanAction")
             ],
             path: "Sources/CLI"),
         .target(
-            name: "ScanAction",
+            name: "UploadAction",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "StellarCore", package: "Stellar"),
-                .product(name: "StellarActionCore", package: "Stellar")
+                .product(name: "StellarActionCore", package: "Stellar"),
+                .product(name: "ScanAction", package: "ScanAction")
             ],
             path: "Sources/Action"),
         .testTarget(
-            name: "ScanActionTests",
-            dependencies: ["ScanAction"],
+            name: "UploadActionTests",
+            dependencies: ["UploadAction"],
             path: "Tests"),
     ]
 )
