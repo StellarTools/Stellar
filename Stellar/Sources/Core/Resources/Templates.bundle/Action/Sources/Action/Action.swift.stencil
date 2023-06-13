@@ -1,14 +1,24 @@
 //  {{ name }}.swift
 
-public struct {{ name }} {
+import ActionDSL
+import Foundation
+
+public class {{ name }}: ActionProtocol {
     
-    private var argument: String
+    public typealias Configuration = {{ name }}Configuration
     
-    public init(argument: String) {
-        self.argument = argument
-    }
+    // MARK: - Properties
     
-    public func call() {
-        print("{{ name }} called with argument 'argument' of value '\(argument)'.")
+    public static var configType = {{ name }}Configuration.self
+    
+    // MARK: - Initialization
+    
+    public init() {}
+
+    // MARK: - Execute Action
+
+    public func run(config: {{ name }}Configuration) throws {
+        print("Running {{ name }} with configuration:")
+        print("\t- param: \(config.param ?? "")")
     }
 }

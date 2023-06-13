@@ -1,0 +1,12 @@
+//  {{ name }}Configuration.swift
+
+import ActionDSL
+import Foundation
+
+public class {{ name }}Configuration: ActionConfigurationProtocol {
+    
+    @ActionParam(environment: "PARAM", required: true)
+    public var param: String?
+    
+    required public init() { }
+}

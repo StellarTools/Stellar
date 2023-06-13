@@ -1,0 +1,4 @@
+import Foundation
+
+try? {{ name }}ParsableCommand.processArguments()
+{{ name }}ParsableCommand.main()
