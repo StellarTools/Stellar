@@ -10,11 +10,15 @@ let package = Package(
             name: "ActionDSL",
             targets: ["ActionDSL"]),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0"))
+    ],
     targets: [
         .target(
             name: "ActionDSL",
-            dependencies: []),
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]),
         .testTarget(
             name: "ActionDSLTests",
             dependencies: ["ActionDSL"]),

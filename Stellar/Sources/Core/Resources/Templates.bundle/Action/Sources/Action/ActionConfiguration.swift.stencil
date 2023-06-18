@@ -3,10 +3,10 @@
 import ActionDSL
 import Foundation
 
-public class {{ name }}Configuration: ActionConfigurationProtocol {
+public struct {{ name }}Configuration: ActionConfigurationProtocol {
     
-    @ActionParam(environment: "PARAM", required: true)
+    @ActionParam(environment: "PARAM", isRequired: true)
     public var param: String?
     
-    required public init() { }
+    public init() { }
 }

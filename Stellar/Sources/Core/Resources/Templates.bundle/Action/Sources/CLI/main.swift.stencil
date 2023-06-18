@@ -1,4 +1,5 @@
+//  main.swift
+
 import Foundation
 
-try? {{ name }}ParsableCommand.processArguments()
-{{ name }}ParsableCommand.main()
+{{ name }}CLICommand.main()
