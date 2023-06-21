@@ -6,7 +6,7 @@ Stellar is a project made and maintained by:
 
 - Alberto De Bortoli [@albertodebortoli](https://github.com/albertodebortoli)
 - Daniele Margutti [@malcommac](https://github.com/malcommac)
-- Pasquale Cerqua [@xl4k](https://github.com/xl4kj)
+- Pasquale Cerqua [@xl4kj](https://github.com/xl4kj)
 
 They represent the core team behind the project.
 
