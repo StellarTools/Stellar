@@ -1,0 +1,7 @@
+//  {{ name }}CLICommand.swift
+
+import ActionDSL
+import Foundation
+import {{ name }}
+
+public class {{ name }}CLICommand: ActionCLIBaseCommand<{{ name }}> {}

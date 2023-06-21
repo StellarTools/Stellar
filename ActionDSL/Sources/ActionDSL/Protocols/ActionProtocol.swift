@@ -8,6 +8,8 @@ public protocol ActionProtocol {
     static var configType: Configuration.Type { get set }
     
     func run(config: Configuration) throws
+    
+    init()
 }
 
 extension ActionProtocol {

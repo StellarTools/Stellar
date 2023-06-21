@@ -3,7 +3,7 @@
 import ActionDSL
 import Foundation
 
-public class {{ name }}: ActionProtocol {
+public struct {{ name }}: ActionProtocol {
     
     public typealias Configuration = {{ name }}Configuration
     
