@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.0.0")),
-        .package(path: "../../ActionDSL")
+        .package(url: "https://github.com/StellarTools/ActionDSL", .upToNextMajor(from: "0.0.1"))
     ],
     targets: [
         .executableTarget(
