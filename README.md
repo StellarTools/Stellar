@@ -2,7 +2,7 @@
 
 ![](./images/logo.png)
 
-Stellar is a project made and maintained by:
+Stellar is a project made by:
 
 - Alberto De Bortoli [@albertodebortoli](https://github.com/albertodebortoli)
 - Daniele Margutti [@malcommac](https://github.com/malcommac)
